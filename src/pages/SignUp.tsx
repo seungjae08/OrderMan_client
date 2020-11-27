@@ -1,14 +1,16 @@
-import React from 'react'
+import React, {useState, ChangeEvent} from 'react'
 import {Link} from 'react-router-dom';
 import Button from 'components/Button';
 
 export default function SignUp() {
+  const [id, setId] = useState('');
+
   return (
     <div id="wrap" className="Login-wrap">
       <div className="mb-view verCenter">
         <h2>회원가입</h2>
         <div className="inputWrap">
-          <input type="text" placeholder="아이디"/>
+          <input type="text" placeholder="아이디" value={id} onChange={(e:ChangeEvent<HTMLInputElement>)=>setId(e.target.value)}/>
           <input type="password" placeholder="비밀번호"/>
           <div className="flex">
             <input type="text" placeholder="핸드폰 인증"/>
