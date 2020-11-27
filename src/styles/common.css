@@ -5,9 +5,16 @@ body,html{
 }
 
 a{
+  display: inline-block;
   font-style: none;
   text-decoration: none;
 }
+
+textarea:focus,
+input:focus {
+  outline: none;
+}
+
 
 /*Button*/
 .Button-wrap{
@@ -36,4 +43,20 @@ input{
   box-sizing: border-box;
   height: 40px;
   margin-bottom: 15px;
+}
+
+/* btn style */
+.btn{
+  height:40px;
+  max-height:40px;
+  white-space: nowrap;
+  box-sizing: border-box;
+  border: none;
+  font-weight: bold;
+}
+
+.btn.st1{
+  color:white;
+  background-color:#ff7f00;
+  padding: 0 20px;
 }

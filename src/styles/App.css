@@ -1,15 +1,28 @@
 /* 페이지, 컴포넌트 별 세부 적용 사항 CSS */
-/* 클래스 네임 규칙 ex) Component-inputWrap */
+/* 클래스 네임 규칙 ex) Component-inputWrap*/
 
 /* Main */
 
 
 /* Login */
-.mb-view.Login .Button-wrap {
+.Login-wrap .Button-wrap {
   margin-bottom: 10px;
 }
 
-.mb-view.Login .socialBtnList{
+.Login-wrap .socialBtnList {
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.Login-wrap .flex {
+  display: flex;
+
+}
+
+.Login-wrap .flex .btn {
+  margin-left: 0.3rem;
+}
+
+.Login-wrap .Login-submitBtn {
+  margin-top: 20px;
 }

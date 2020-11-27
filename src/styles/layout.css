@@ -11,9 +11,11 @@
 .mb-view{
   width:100%;
   height: 100%;
+  overflow-y: auto;
   max-width:450px;
   max-height: 850px;
   padding:20px;
+  padding-top: 55px;
   background-color: white;
   box-sizing: border-box;
   font-weight: bold;
