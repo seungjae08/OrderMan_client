@@ -6,6 +6,7 @@ export default function SignUp() {
   return (
     <div id="wrap" className="Login-wrap">
       <div className="mb-view verCenter">
+        <h2>회원가입</h2>
         <div className="inputWrap">
           <input type="text" placeholder="아이디"/>
           <input type="password" placeholder="비밀번호"/>
