@@ -1,6 +1,13 @@
 
 /* 공통 적용 CSS */
+body,html{
+  font-size: 16px;
+}
 
+a{
+  font-style: none;
+  text-decoration: none;
+}
 
 /*Button*/
 .Button-wrap{
@@ -11,4 +18,22 @@
   height:45px;
   color:white;
   background-color:#ff7f00;
+  border-radius: 3px;
+}
+
+/*input*/
+input{
+  border:1px solid black;
+  font-size: 0.9rem;
+}
+
+/*inputWrap*/
+.inputWrap{
+  width:100%;
+}
+.inputWrap input{
+  width:100%;
+  box-sizing: border-box;
+  height: 40px;
+  margin-bottom: 15px;
 }

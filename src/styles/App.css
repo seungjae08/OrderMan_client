@@ -2,3 +2,14 @@
 /* 클래스 네임 규칙 ex) Component-inputWrap */
 
 /* Main */
+
+
+/* Login */
+.mb-view.Login .Button-wrap {
+  margin-bottom: 10px;
+}
+
+.mb-view.Login .socialBtnList{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
