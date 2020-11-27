@@ -29,7 +29,7 @@ export default function SignUp() {
             <Button>회원가입</Button>
           </Link>
           <Link to="/order">
-            <Button>카카오톡으로 로그인</Button>
+            <Button color="#3B1D1D" bgColor="#FFEB00">카카오톡으로 로그인</Button>
           </Link>
         </div>
       </div>
