@@ -15,6 +15,14 @@ input:focus {
   outline: none;
 }
 
+/*flex*/
+.flex {
+  display: flex;
+}
+
+.flex .btn {
+  margin-left: 0.3rem;
+}
 
 /*Button*/
 .Button-wrap{

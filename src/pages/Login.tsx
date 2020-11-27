@@ -4,8 +4,8 @@ import Button from 'components/Button'
 
 export default function Login() {
   return (
-    <div id="wrap">
-      <div className="mb-view verCenter Login">
+    <div id="wrap" className="Login-wrap">
+      <div className="mb-view verCenter">
         <div className="inputWrap">
           <input type="text" placeholder="아이디"/>
           <input type="password" placeholder="비밀번호"/>

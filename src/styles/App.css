@@ -5,6 +5,7 @@
 
 
 /* Login */
+
 .Login-wrap .Button-wrap {
   margin-bottom: 10px;
 }
@@ -14,15 +15,11 @@
   margin-bottom: 20px;
 }
 
-.Login-wrap .flex {
-  display: flex;
-
-}
-
-.Login-wrap .flex .btn {
-  margin-left: 0.3rem;
+.Login-wrap .socialBtnList a{
+  width:100%;
 }
 
 .Login-wrap .Login-submitBtn {
   margin-top: 20px;
 }
+
