@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import main from './main';
+import {MainReducer} from './main';
 
 const rootReducer = combineReducers({
-  main
+  MainReducer
 });
 
 // 루트 리듀서를 내보내주세요.
