@@ -37,33 +37,21 @@ export default function OrderOption() {
 
         <h3>언제 받으시겠어요?</h3>
         <div className="flex Order-selList2">
-          <select>
+          <select defaultValue={thisMonth}>
             {monthList && monthList.map((month:string)=>{
-              if(month === thisMonth){
-                return <option key={`month${month}`} selected>{month}</option>
-              }else{
-                return <option key={`month${month}`}>{month}</option>
-              }
+              return <option key={`month${month}`}>{month}</option>
             })}
           </select>
           <span>월</span>
-          <select>
+          <select defaultValue={thisDay}>
             {dayList && dayList.map((day:string)=>{
-              if(day === thisDay){
-                return <option key={`day${day}`} selected>{day}</option>
-              }else{
-                return <option key={`day${day}`}>{day}</option>
-              }
+              return <option key={`day${day}`}>{day}</option>
             })}
           </select>
           <span>일</span>
-          <select>
+          <select  defaultValue={thisHour}>
             {hourList && hourList.map((hour:string)=>{
-              if(hour === thisHour){
-                return <option key={`hour${hour}`} selected>{hour}</option>
-              }else{
-                return <option key={`hour${hour}`}>{hour}</option>
-              }
+              return <option key={`hour${hour}`}>{hour}</option>
             })}
           </select>
           <span>시</span>

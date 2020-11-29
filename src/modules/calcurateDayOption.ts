@@ -17,7 +17,7 @@ for (let i = 1; i <= 12; i++) {
 for (let i = 1; i <= 31; i++) {
   dayList.push(String(i));
 }
-for (let i = 0; i <= 20; i++) {
+for (let i = 10; i <= 20; i++) {
   if(i<10){
     hourList.push('0'+String(i));
   }else{

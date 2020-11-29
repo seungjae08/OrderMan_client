@@ -23,9 +23,11 @@ export default function Login() {
       id:inputs.id,
       password:inputs.password
     },{ withCredentials: true }).then(res=>{
-
+      //로그인성공
+    }).catch(e=>{
+      //로그인실패
     })
-  },[inputs.id,inputs.password]);
+  },[inputs]);
 
   return (
     <div id="wrap" className="Login-wrap">
