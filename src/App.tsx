@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { BrowserRouter as Router,Switch,Route,Redirect } from 'react-router-dom';
 import Main from 'pages/Main';
 import Login from 'pages/Login'
 import SignUp  from 'pages/SignUp';
