@@ -64,6 +64,10 @@ export default function SignUpSocial(props: propsTypes) {
           <input type="text" placeholder="주소" value={inputs.address} name="address" onChange={onChange}/>
           <input type="text" placeholder="상호명" value={inputs.brand} name="brand" onChange={onChange}/>
         </div>
+        {
+          errorMsg  &&
+          <div className="warning_text">{errorMsg}</div>
+        }
         <div onClick={onSubmitSignUpSocial}>
           <Button>가입하기</Button>
         </div>
