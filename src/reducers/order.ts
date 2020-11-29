@@ -14,6 +14,9 @@ export const OrderLoginUser = "ORDER/LOGIN";
 export const OrderNonLoginUser = "ORDER/NONLOGIN";
 export const OrderCreateItem = "ORDER/CREATEITEM";
 export const OrderDeleteItem = "ORDER/DELETEITEM";
+export const OrderUnitUp = "ORDER/UNITUP";
+export const OrderUnitDown = "ORDER/UNITDOWN";
+export const OrderChangeDates = "ORDER/CHANGEDATES"
 
 // Actions 생성자
 interface OrderLoginUserAction {
@@ -32,8 +35,22 @@ interface OrderCreateItemAction{
 
 interface OrderDeleteItemAction{
     type : typeof OrderDeleteItem;
+    payload :  Item
+}
+
+interface OrderUnitUpAction{
+    type : typeof OrderUnitUp;
     payload :  Item,
-        
+}
+
+interface OrderUnitDownAction{
+    type : typeof OrderUnitDown;
+    payload :  Item,
+}
+
+interface OrderChangeDatesAction {
+    type : typeof OrderChangeDates;
+    payload : Array<Item>
 }
 
 export type OrderActionTypes = 
@@ -41,8 +58,11 @@ export type OrderActionTypes =
     | OrderNonLoginUserAction
     | OrderCreateItemAction
     | OrderDeleteItemAction
+    | OrderUnitUpAction
+    | OrderUnitDownAction
+    | OrderChangeDatesAction
 
-export function orderLoginUser(itemList : NowOrder,market:Market){
+export function orderLoginUser(itemList : Array<Item>,market:Market){
     return{
         type : OrderLoginUser,
         payload : {
@@ -72,11 +92,32 @@ export function orderDeleteNowOrder(item : Item){
     }
 }
 
+export function orderUnitUP(item:Item){
+    return{
+        type: OrderUnitUp,
+        payload:item
+    }
+}
+export function orderUnitDown(item:Item){
+    return{
+        type: OrderUnitDown,
+        payload : item
+    }
+}
+export function orderChangeDates(order:Array<Item>){
+    return{
+        type: OrderChangeDates,
+        payload : order
+    }
+}
 export const actionOrderCreators = {
     orderLoginUser,
     orderNonLoginUser,
     orderCreateNowOrder,
-    orderDeleteNowOrder
+    orderDeleteNowOrder,
+    orderUnitUP,
+    orderUnitDown,
+    orderChangeDates
 }
 
 const initialState : NowOrder = {
@@ -116,7 +157,43 @@ export function OrderReducer(
         case OrderDeleteItem:
             return {
                 ...state,
-                itemList : state.itemList.filter(ele => ele.item !== action.payload.item) 
+                itemList : state.itemList.filter(ele => ele.item !== action.payload.item 
+                    || ele.unit!==action.payload.unit) 
+            }
+        
+        case OrderUnitUp:
+            return{
+                ...state,
+                itemList : state.itemList.map(ele=>{
+                    if(action.payload.item === ele.item){
+                        return{
+                            item: ele.item,
+                            unit : ele.unit,
+                            quantity : ele.quantity+1,
+                        }
+                    }
+                    return ele
+                })
+            }
+            
+        case OrderUnitDown:
+            return{
+                ...state,
+                itemList : state.itemList.map(ele=>{
+                    if(action.payload.item === ele.item){
+                        return{
+                            item: ele.item,
+                            unit : ele.unit,
+                            quantity : (ele.quantity<=0) ? 0: ele.quantity-1
+                        }
+                    }
+                    return ele
+                })
+            }
+        case OrderChangeDates:
+            return{
+                ...state,
+                itemList: action.payload
             }
         default:
             return state;
