@@ -14,6 +14,9 @@ export const OrderLoginUser = "ORDER/LOGIN";
 export const OrderNonLoginUser = "ORDER/NONLOGIN";
 export const OrderCreateItem = "ORDER/CREATEITEM";
 export const OrderDeleteItem = "ORDER/DELETEITEM";
+export const OrderUnitUp = "ORDER/UNITUP";
+export const OrderUnitDown = "ORDER/UNITDOWN";
+export const OrderChangeDates = "ORDER/CHANGEDATES"
 
 // Actions 생성자
 interface OrderLoginUserAction {
@@ -30,24 +33,42 @@ interface OrderCreateItemAction {
   payload: Item
 }
 
-interface OrderDeleteItemAction {
-  type: typeof OrderDeleteItem;
-  payload: Item,
-
+interface OrderDeleteItemAction{
+    type : typeof OrderDeleteItem;
+    payload :  Item
 }
 
-export type OrderActionTypes =
-  | OrderLoginUserAction
-  | OrderNonLoginUserAction
-  | OrderCreateItemAction
-  | OrderDeleteItemAction
+interface OrderUnitUpAction{
+    type : typeof OrderUnitUp;
+    payload :  Item,
+}
 
-export function orderLoginUser(itemList: NowOrder, market: Market) {
-  return {
-    type: OrderLoginUser,
-    payload: {
-      itemList,
-      market
+interface OrderUnitDownAction{
+    type : typeof OrderUnitDown;
+    payload :  Item,
+}
+
+interface OrderChangeDatesAction {
+    type : typeof OrderChangeDates;
+    payload : Array<Item>
+}
+
+export type OrderActionTypes = 
+    | OrderLoginUserAction
+    | OrderNonLoginUserAction
+    | OrderCreateItemAction
+    | OrderDeleteItemAction
+    | OrderUnitUpAction
+    | OrderUnitDownAction
+    | OrderChangeDatesAction
+
+export function orderLoginUser(itemList : Array<Item>,market:Market){
+    return{
+        type : OrderLoginUser,
+        payload : {
+            itemList,
+            market
+        }
     }
   }
 }
@@ -72,11 +93,32 @@ export function orderDeleteNowOrder(item: Item) {
   }
 }
 
+export function orderUnitUP(item:Item){
+    return{
+        type: OrderUnitUp,
+        payload:item
+    }
+}
+export function orderUnitDown(item:Item){
+    return{
+        type: OrderUnitDown,
+        payload : item
+    }
+}
+export function orderChangeDates(order:Array<Item>){
+    return{
+        type: OrderChangeDates,
+        payload : order
+    }
+}
 export const actionOrderCreators = {
-  orderLoginUser,
-  orderNonLoginUser,
-  orderCreateNowOrder,
-  orderDeleteNowOrder
+    orderLoginUser,
+    orderNonLoginUser,
+    orderCreateNowOrder,
+    orderDeleteNowOrder,
+    orderUnitUP,
+    orderUnitDown,
+    orderChangeDates
 }
 
 const initialState: NowOrder = {
@@ -87,40 +129,74 @@ const initialState: NowOrder = {
   }
 }
 
-export function orderReducer(
-  state = initialState,
-  action: OrderActionTypes
-): NowOrder {
-  switch (action.type) {
-    case OrderLoginUser:
-      return {
-        ...state,
-        itemList: action.payload.itemList,
-        market: {
-          name: action.payload.market.name,
-          mobile: action.payload.market.mobile
-        }
-      }
-    case OrderNonLoginUser:
-      return {
-        ...state,
-        itemList: [],
-        market: {
-          name: "",
-          mobile: ""
-        }
-      }
-    case OrderCreateItem:
-      return {
-        ...state,
-        itemList: [...state.itemList, action.payload]
-      }
-    case OrderDeleteItem:
-      return {
-        ...state,
-        itemList: state.itemList.filter(ele => ele.item !== action.payload.item)
-      }
-    default:
-      return state;
-  }
+export function OrderReducer(
+    state= initialState,
+    action : OrderActionTypes
+) : NowOrder{
+    switch(action.type){
+        case OrderLoginUser:
+            return {
+                itemList : action.payload.itemList,
+                market : {
+                    name : action.payload.market.name,
+                    mobile : action.payload.market.mobile
+                }
+            }
+        case OrderNonLoginUser:
+            return{
+                itemList : [],
+                market : {
+                    name:"",
+                    mobile:""
+                }
+            }
+        case OrderCreateItem:
+            return {
+                ...state,
+                itemList : [...state.itemList,action.payload]
+            }
+        case OrderDeleteItem:
+            return {
+                ...state,
+                itemList : state.itemList.filter(ele => ele.item !== action.payload.item 
+                    || ele.unit!==action.payload.unit) 
+            }
+        
+        case OrderUnitUp:
+            return{
+                ...state,
+                itemList : state.itemList.map(ele=>{
+                    if(action.payload.item === ele.item){
+                        return{
+                            item: ele.item,
+                            unit : ele.unit,
+                            quantity : ele.quantity+1,
+                        }
+                    }
+                    return ele
+                })
+            }
+            
+        case OrderUnitDown:
+            return{
+                ...state,
+                itemList : state.itemList.map(ele=>{
+                    if(action.payload.item === ele.item){
+                        return{
+                            item: ele.item,
+                            unit : ele.unit,
+                            quantity : (ele.quantity<=0) ? 0: ele.quantity-1
+                        }
+                    }
+                    return ele
+                })
+            }
+        case OrderChangeDates:
+            return{
+                ...state,
+                itemList: action.payload
+            }
+        default:
+            return state;
+    }
 }

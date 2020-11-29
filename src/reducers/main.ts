@@ -1,7 +1,7 @@
 //type
 export interface Item{
   item: string;
-  quantity :Number;
+  quantity :number;
   unit : string;
 }
 
@@ -19,7 +19,6 @@ export interface OrderStates{
 export const LoginUser = 'ITMES/LOGIN';
 export const NonLoginUser = 'ITMES/NONLOGIN';
 export const StartUser = "ITEMS/START";
-export const ChangeNowOrderList = "ITEMS/CHANGENOWORDERLIST"
 export const ErrorGet = "ITEMS/ERROR"
 
 // Actions 생성자
@@ -46,12 +45,6 @@ export type MainActionTypes =
   | StartUserAction
   | ErrorGetAction
 
-export function startUser(){
-  return{
-    type: StartUser
-  }
-}
-
 export function loginUser(orderList: OderListInterface){
   return{
     type:LoginUser,
@@ -64,6 +57,14 @@ export function nonLoginUser(){
     type:NonLoginUser,
   }
 }
+
+export function startUser(){
+  return{
+    type: StartUser
+  }
+}
+
+
 
 export function errorGet(){
   return{

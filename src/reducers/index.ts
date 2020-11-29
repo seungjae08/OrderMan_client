@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import {MainReducer} from './main';
-import {orderReducer} from './order';
+import {OrderReducer} from './order'
 
 const rootReducer = combineReducers({
   MainReducer,
-  orderReducer
+  OrderReducer,
 });
 
 // 루트 리듀서를 내보내주세요.

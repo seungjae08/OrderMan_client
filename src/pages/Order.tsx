@@ -1,17 +1,20 @@
 import React, {useEffect} from 'react';
+import {useSelector,useDispatch} from 'react-redux';
 import {Link} from 'react-router-dom';
 import Button from 'components/Button'
 import getDayOption from 'modules/calcurateDayOption';
 import {resultType} from 'modules/calcurateDayOption';
+import { RootState } from 'reducers';
 
 export default function OrderOption() {
 
   const [monthList, dayList, hourList, minList, thisMonth, thisDay, thisHour]:resultType = getDayOption;
-
+  const {itemList} = useSelector((state:RootState)=>state.OrderReducer)
   //마운트시 한번만 실행
   useEffect(() => {
     // return () => {
     // };
+    console.log(itemList)
   }, []);
 
   return (
