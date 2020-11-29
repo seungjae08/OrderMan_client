@@ -33,6 +33,7 @@ export default function Login(props : propsTypes) {
     if(inputs.id === "" || inputs.password === ""){
       return;
     }
+    //로딩창 setLoading true;
     axios.post(serverPath + '/user/login',{
       id:inputs.id,
       password:inputs.password
