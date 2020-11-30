@@ -127,7 +127,6 @@ export default function Order(props:propsTypes) {
 
   //marketMobile
   useEffect(() => {
-    console.log('마운트')
     if(marketMobile!=="" && marketMobile!==null){
       setInputs(inputs=>({
         ...inputs,
@@ -145,7 +144,6 @@ export default function Order(props:propsTypes) {
     }
   }, [marketMobile]);
 
-  //한번만 실행
   useEffect(() => {
     onValidateDate();
   }, []);

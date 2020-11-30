@@ -6,11 +6,12 @@ import { createStore, applyMiddleware } from 'redux';
 import { BrowserRouter } from 'react-router-dom'; 
 import { Provider } from 'react-redux';
 import rootReducer from 'reducers';
+import ReduxThunk from "redux-thunk";
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import reportWebVitals from './reportWebVitals';
 
 const composeEnhancers = composeWithDevTools({});
-const store = createStore(rootReducer,composeEnhancers(applyMiddleware()));
+const store = createStore(rootReducer,composeEnhancers(applyMiddleware(ReduxThunk)));
 
 ReactDOM.render(
   <React.StrictMode>

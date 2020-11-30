@@ -1,3 +1,6 @@
+// import { Dispatch, Action } from 'redux';
+// import { ThunkAction } from 'redux-thunk'
+// import { RootState } from './index'
 import { Item } from '../reducers/main';
 
 //type
@@ -153,6 +156,13 @@ export function orderChangeDates(order: Array<Item>) {
     payload: order,
   };
 }
+
+
+// export const dispatchSignInfo = (userInfo:unSigninInfo) : ThunkAction<void, RootState, unknown, Action<string>> => async dispatch =>{
+//   dispatch(changeUnSignInfo(userInfo));
+//   return Promise.resolve();
+// }
+
 
 export function changeUnSignInfo(userInfo:unSigninInfo) {
   return {

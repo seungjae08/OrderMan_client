@@ -1,9 +1,12 @@
 import React, {useState, useCallback, ChangeEvent} from 'react';
+import {serverPath} from 'modules/serverPath';
 import { History } from 'history';
+import axios from 'axios';
 import {Link} from 'react-router-dom';
-import { useDispatch } from 'react-redux'
+//import { useDispatch, useSelector } from 'react-redux';
+//import { RootState } from 'reducers';
 import Button from 'components/Button';
-import { changeUnSignInfo } from 'reducers/order';
+// import { changeUnSignInfo } from 'reducers/order';
 
 type propsTypes = {
   history : History
@@ -20,7 +23,9 @@ export default function UnSigninOrder
 
   //error Message
   const [errorMsg, setErrorMsg] = useState('');
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
+
+  // const unSignInfo = useSelector((state:RootState)=>state.OrderReducer.unSignInfo);
 
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -30,14 +35,6 @@ export default function UnSigninOrder
     }));
   },[])
 
-  // const onCertificatePhone = useCallback(() => {
-  //   핸드폰 임시설정
-  //   setInputs((inputs)=>({
-  //     ...inputs,
-  //     mobile:"010-1234-4567"
-  //   }));
-  // },[])
-
   const onDispatchUnSignOrder = useCallback(()=>{
     console.log('UnSigninOrder 디스패치 입력..');
     let {mobile, brand, address} = inputs;
@@ -45,9 +42,17 @@ export default function UnSigninOrder
       setErrorMsg('모든 항목을 입력해주세요');
       return;
     }
-    dispatch(changeUnSignInfo({mobile, brand, address}));
-    props.history.push('/order')
-  },[inputs, dispatch, props.history]);
+
+    console.log(inputs);
+    axios.post(serverPath + '/unknown/info',{
+      mobile: inputs.mobile,
+      address: inputs.address,
+      brand : inputs.brand
+    },{ withCredentials: true }).then((res)=>{
+      props.history.push('/order')
+    });
+
+  },[inputs, props.history]);
 
   return (
     <div id="wrap" className="UnSignInOrder-wrap">
