@@ -9,7 +9,6 @@ type ItemsProps ={
 }
 
 export const Items = ({item,deleteItem,upItemsUnit,downItemsUnit}:ItemsProps)=>{
-    
     return(
         <div>
             <p>item : {item.item}</p>
