@@ -16,7 +16,6 @@ export const OrderCreateItem = "ORDER/CREATEITEM";
 export const OrderDeleteItem = "ORDER/DELETEITEM";
 export const OrderUnitUp = "ORDER/UNITUP";
 export const OrderUnitDown = "ORDER/UNITDOWN";
-export const OrderChangeDates = "ORDER/CHANGEDATES"
 
 // Actions 생성자
 interface OrderLoginUserAction {
@@ -48,11 +47,6 @@ interface OrderUnitDownAction{
     payload :  Item,
 }
 
-interface OrderChangeDatesAction {
-    type : typeof OrderChangeDates;
-    payload : Array<Item>
-}
-
 export type OrderActionTypes = 
     | OrderLoginUserAction
     | OrderNonLoginUserAction
@@ -60,7 +54,6 @@ export type OrderActionTypes =
     | OrderDeleteItemAction
     | OrderUnitUpAction
     | OrderUnitDownAction
-    | OrderChangeDatesAction
 
 export function orderLoginUser(itemList : Array<Item>,market:Market){
     return{
@@ -104,12 +97,6 @@ export function orderUnitDown(item:Item){
         payload : item
     }
 }
-export function orderChangeDates(order:Array<Item>){
-    return{
-        type: OrderChangeDates,
-        payload : order
-    }
-}
 export const actionOrderCreators = {
     orderLoginUser,
     orderNonLoginUser,
@@ -117,7 +104,6 @@ export const actionOrderCreators = {
     orderDeleteNowOrder,
     orderUnitUP,
     orderUnitDown,
-    orderChangeDates
 }
 
 const initialState : NowOrder = {
@@ -160,7 +146,6 @@ export function OrderReducer(
                 itemList : state.itemList.filter(ele => ele.item !== action.payload.item 
                     || ele.unit!==action.payload.unit) 
             }
-        
         case OrderUnitUp:
             return{
                 ...state,
@@ -175,7 +160,6 @@ export function OrderReducer(
                     return ele
                 })
             }
-            
         case OrderUnitDown:
             return{
                 ...state,
@@ -189,11 +173,6 @@ export function OrderReducer(
                     }
                     return ele
                 })
-            }
-        case OrderChangeDates:
-            return{
-                ...state,
-                itemList: action.payload
             }
         default:
             return state;
