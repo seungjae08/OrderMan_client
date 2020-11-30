@@ -1,6 +1,7 @@
 import React, {useRef, useState, useEffect, useCallback, ChangeEvent, MouseEvent} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {serverPath} from 'modules/serverPath';
+import { History } from 'history';
 import axios from 'axios';
 import Button from 'components/Button'
 import getDayOption from 'modules/calcurateDayOption';
@@ -8,7 +9,11 @@ import { resultType, validateOrderDate} from 'modules/calcurateDayOption';
 import { RootState } from 'reducers';
 import { changeMarketMobile, changePayment, changeDeliveryTime } from 'reducers/order';
 
-export default function Order() {
+type propsTypes = {
+  history : History
+}
+
+export default function Order(props:propsTypes) {
 
   const dispatch = useDispatch();
 
@@ -26,6 +31,7 @@ export default function Order() {
 
   const marketMobile = useSelector((state:RootState)=>state.OrderReducer.market.mobile);
   const OrderOption = useSelector((state:RootState)=>state.OrderReducer.option);
+  const itemList = useSelector((state:RootState)=>state.OrderReducer.itemList);
 
   const marketRadio1 = useRef<HTMLInputElement>(null);
   const marketRadio2 = useRef<HTMLInputElement>(null);
@@ -85,7 +91,7 @@ export default function Order() {
       setErrorMsg('');
       dispatch(changeDeliveryTime(`${date.slice(2)} ${selectOption.hour}:${selectOption.min}`))
     }else{
-      setErrorMsg('배송 가능 시간: 오전 11시 이전 주문 - 당일 오후부터 가능, 오후 5시 이전 주문 - 익일 오전부터 가능, 오후 5시 이후 주문 - 익일 오후부터 가능')
+      setErrorMsg('배송 가능 시간: \n 오전 11시 이전 주문 - 당일 오후부터 가능, \n 오후 5시 이전 주문 - 익일 오전부터 가능, \n 오후 5시 이후 주문 - 익일 오후부터 가능')
     }
   }
 
@@ -102,18 +108,22 @@ export default function Order() {
     }
     console.log('주문들어갑니다');
 
-    axios.post(serverPath + '/order/market',{
+    const axiosPostMarket = axios.post(serverPath + '/order/market',{
       mobile: marketMobile
-    },{ withCredentials: true }).then(res=>{
-      console.log(res);
-    })
-    axios.post(serverPath + '/order/option',{
+    },{ withCredentials: true });
+    const axiosPostOption = axios.post(serverPath + '/order/items',{
       payment:OrderOption.payment,
-      deliveryTime: OrderOption.deliveryTime
-    },{ withCredentials: true }).then(res=>{
-      console.log(res);
-    })
-  },[errorMsg, marketMobile, OrderOption]);
+      deliveryTime: OrderOption.deliveryTime,
+      itemList
+    },{ withCredentials: true });
+    
+    Promise.all([axiosPostMarket, axiosPostOption]).then(function(values) {
+      //둘다 전송완료 후 
+      console.log(values);
+      props.history.push('/');
+    });
+
+  },[errorMsg, marketMobile, OrderOption, props.history, itemList]);
 
   //marketMobile
   useEffect(() => {
@@ -144,7 +154,6 @@ export default function Order() {
     <div id="wrap" className="Order-wrap">
       <div className="mb-view verCenter">
         <h2>주문 옵션 설정</h2>
-
         <h3>선호하는 거래처가 있으신가요?</h3>
         <ul className="flex Order-selList1" onBlur={dispatchChangeMarket}>
           <li className="flex">
@@ -181,7 +190,11 @@ export default function Order() {
         </div>
         {
           errorMsg && 
-          <div className="warning_text" style={{marginTop:'10px'}}>{errorMsg}</div>
+          <div className="warning_text" style={{marginTop:'10px', marginBottom:'0'}}>
+            {
+              errorMsg.split('\n').map( line => {return (<span key={line}>{line}<br/></span>)})
+            }
+          </div>
         }
         <h3>어떻게 결제하시겠어요?</h3>
         <div className="warning_text">오다맨 결제는 현장결제로 이뤄집니다</div>
