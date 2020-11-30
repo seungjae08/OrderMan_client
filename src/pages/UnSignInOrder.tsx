@@ -38,21 +38,15 @@ export default function UnSigninOrder
   //   }));
   // },[])
 
-
   const onDispatchUnSignOrder = useCallback(()=>{
     console.log('UnSigninOrder 디스패치 입력..');
     let {mobile, brand, address} = inputs;
-    
-
     if(mobile === "" || brand === "" || address === ""){
       setErrorMsg('모든 항목을 입력해주세요');
       return;
     }
-
     dispatch(changeUnSignInfo({mobile, brand, address}));
-
     props.history.push('/order')
-    
   },[inputs, dispatch, props.history]);
 
   return (

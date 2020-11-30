@@ -11,11 +11,16 @@ export type unSigninInfo =  {
   brand: string;
   address: string;
 }
+export type Option = {
+  payment: string;
+  deliveryTime: string;
+}
 
 export type NowOrder = {
   itemList: Array<Item>;
   market: Market;
-  unSignInfo:unSigninInfo
+  unSignInfo:unSigninInfo;
+  option: Option;
 }
 
 
@@ -29,7 +34,8 @@ export const OrderChangeDates = 'order/CHANGE_DATES' as const;
 
 export const UnSignInfo = 'order/UNSIGN_INFO' as const;
 export const MarketActionType = 'order/MARKET_CHANGE' as const;
-
+export const PaymentChangeActionType = 'order/PAYMENT_CHANGE' as const;
+export const DeliveryTimeChangeActionType = 'order/DELIVERY_TIME_CHANGE' as const;
 
 // Actions 생성자
 type OrderLoginUserAction = {
@@ -76,6 +82,16 @@ type MarketChangeType = {
   payload: string | null
 }
 
+type PaymentChangeType = {
+  type : typeof PaymentChangeActionType,
+  payload: string
+}
+
+type DeliveryTimeChangeType = {
+  type : typeof DeliveryTimeChangeActionType,
+  payload: string
+}
+
 export type OrderActionTypes =
   | OrderLoginUserAction
   | OrderNonLoginUserAction
@@ -85,7 +101,9 @@ export type OrderActionTypes =
   | OrderUnitDownAction
   | OrderChangeDatesAction
   | OrderChangeUnSignInfo
-  | MarketChangeType;
+  | MarketChangeType
+  | PaymentChangeType
+  | DeliveryTimeChangeType;
 
 export function orderLoginUser(itemList: Array<Item>, market: Market) {
   return {
@@ -150,6 +168,20 @@ export function changeMarketMobile(mobile:string|null){
   }
 }
 
+export function changePayment(payment:string){
+  return {
+    type: PaymentChangeActionType,
+    payload: payment
+  }
+}
+
+export function changeDeliveryTime(deliveryTime:string){
+  return {
+    type: DeliveryTimeChangeActionType,
+    payload: deliveryTime
+  }
+}
+
 
 export const actionOrderCreators = {
   orderLoginUser,
@@ -167,12 +199,16 @@ const initialState: NowOrder = {
   itemList: [],
   market: {
     name: '',
-    mobile: '',
+    mobile: null,
   },
   unSignInfo:{
     mobile:'',
     address:'',
     brand:''
+  },
+  option:{
+    payment:'card',
+    deliveryTime:''
   }
 };
 
@@ -259,6 +295,22 @@ export function OrderReducer(
           mobile: action.payload
         }
       };
+    case PaymentChangeActionType:
+      return {
+        ...state,
+        option:{
+          ...state.option,
+          payment: action.payload
+        }
+      }
+    case DeliveryTimeChangeActionType:
+      return {
+        ...state,
+        option:{
+          ...state.option,
+          deliveryTime: action.payload
+        }
+      }
     default:
       return state;
   }
