@@ -4,7 +4,7 @@ import {OrderReducer} from './order'
 
 const rootReducer = combineReducers({
   MainReducer,
-  OrderReducer,
+  OrderReducer
 });
 
 // 루트 리듀서를 내보내주세요.

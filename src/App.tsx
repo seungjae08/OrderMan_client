@@ -17,9 +17,9 @@ function App() {
       <Route path="/" exact component={Main}/>
       <Route path="/login" component={Login}/>
       <Route path="/signup/social" component={OauthSignup}/>
-      <Route path="/signup" component={SignUp}/>
+      <Route path="/signup" exact component={SignUp}/>
       <Route path="/order/unsignin" component={UnSignInOrder}/>
-      <Route path="/order" component={Order}/>
+      <Route path="/order" exact component={Order}/>
     </div>
   );
 }
