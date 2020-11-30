@@ -30,13 +30,13 @@ export default function UnSigninOrder
     }));
   },[])
 
-  const onCertificatePhone = useCallback(() => {
-    //핸드폰 임시설정
-    setInputs((inputs)=>({
-      ...inputs,
-      mobile:"010-1234-4567"
-    }));
-  },[])
+  // const onCertificatePhone = useCallback(() => {
+  //   핸드폰 임시설정
+  //   setInputs((inputs)=>({
+  //     ...inputs,
+  //     mobile:"010-1234-4567"
+  //   }));
+  // },[])
 
 
   const onDispatchUnSignOrder = useCallback(()=>{
@@ -59,13 +59,14 @@ export default function UnSigninOrder
     <div id="wrap" className="UnSignInOrder-wrap">
       <div className="mb-view verCenter">
         <h2>비회원 로그인</h2>
-        <h3>휴대폰인증</h3>
+        {/* <h3>휴대폰인증</h3> */}
         <div className="inputWrap">
           <div className="flex">
-            <input type="text" placeholder="핸드폰 인증" value={inputs.mobile} readOnly/>
-            <div onClick={onCertificatePhone}>
+            {/* <input type="text" placeholder="핸드폰 인증" value={inputs.mobile} readOnly/> */}
+            <input type="text" placeholder="핸드폰" value={inputs.mobile} onChange={onChange} name="mobile"/>
+            {/* <div onClick={onCertificatePhone}>
               <button className="btn st1">인증하기</button>
-            </div>
+            </div> */}
           </div>
           <input type="text" placeholder="주소" value={inputs.address} onChange={onChange} name="address"/>
           <input type="text" placeholder="상호명" value={inputs.brand} onChange={onChange} name="brand"/>

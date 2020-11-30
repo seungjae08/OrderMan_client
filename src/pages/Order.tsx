@@ -1,21 +1,74 @@
-import React, {useEffect} from 'react';
-import {useSelector,useDispatch} from 'react-redux';
-import {Link} from 'react-router-dom';
+import React, {useRef, useState, useEffect, useCallback, ChangeEvent} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
 import Button from 'components/Button'
 import getDayOption from 'modules/calcurateDayOption';
-import {resultType} from 'modules/calcurateDayOption';
+import { resultType } from 'modules/calcurateDayOption';
 import { RootState } from 'reducers';
+import { changeMarketMobile } from 'reducers/order';
 
-export default function OrderOption() {
+export default function Order() {
+
+  const dispatch = useDispatch();
 
   const [monthList, dayList, hourList, minList, thisMonth, thisDay, thisHour]:resultType = getDayOption;
-  const {itemList} = useSelector((state:RootState)=>state.OrderReducer)
-  //마운트시 한번만 실행
+
+  const [inputs, setInputs] = useState({
+    marketMobile:"",
+  });
+
+  const marketMobile = useSelector((state:RootState)=>state.OrderReducer.market.mobile);
+
+  const marketRadio1 = useRef<HTMLInputElement>(null);
+  const marketRadio2 = useRef<HTMLInputElement>(null);
+
+  const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if(name === "marketMobile"){
+      if (!marketRadio1.current) {
+        return;
+      }
+      marketRadio1.current.checked = true; 
+    }
+    setInputs((inputs) => ({
+      ...inputs,
+      [name]: value
+    }));
+  },[])
+
+  const dispatchChangeMarket = function(){
+    if (!marketRadio1.current) {
+      return;
+    }
+    if(marketRadio1.current.checked===true && inputs.marketMobile !== ""){
+      dispatch(changeMarketMobile(inputs.marketMobile))
+    }else{
+      dispatch(changeMarketMobile(null))
+      if (!marketRadio2.current) {
+        return;
+      }
+      marketRadio2.current.checked = true; 
+    }
+  }
+
   useEffect(() => {
-    // return () => {
-    // };
-    console.log(itemList)
-  }, []);
+    console.log('마운트')
+    if(marketMobile!=="" && marketMobile!==null){
+      setInputs(inputs=>({
+        ...inputs,
+        marketMobile:marketMobile
+      }));
+      if (!marketRadio1.current) {
+        return;
+      }
+      marketRadio1.current.checked = true; 
+    }else{
+      if (!marketRadio2.current) {
+        return;
+      }
+      marketRadio2.current.checked = true; 
+    }
+  }, [marketMobile]);
+
 
   return (
     <div id="wrap" className="Order-wrap">
@@ -23,16 +76,16 @@ export default function OrderOption() {
         <h2>주문 옵션 설정</h2>
 
         <h3>선호하는 거래처가 있으신가요?</h3>
-        <ul className="flex Order-selList1">
+        <ul className="flex Order-selList1" onBlur={dispatchChangeMarket}>
           <li className="flex">
             <div className="labelStyle">
-              <input type="radio" id="fav1" name="favoriteMarket"/>
+              <input type="radio" id="fav1" name="favoriteMarket" ref={marketRadio1}/>
               <label htmlFor="fav1"></label>
             </div>
-            <input type="text"/>
+            <input type="text" value={inputs.marketMobile} onChange={onChange} name="marketMobile"/>
           </li>
           <li>
-            <input type="radio" id="fav2" name="favoriteMarket"/>
+            <input type="radio" id="fav2" name="favoriteMarket"  ref={marketRadio2}/>
             <label htmlFor="fav2"></label>
             <span>아니오</span>
           </li>
@@ -68,7 +121,7 @@ export default function OrderOption() {
         <div className="warning_text">오다맨 결제는 현장결제로 이뤄집니다</div>
         <ul className="flex Order-selList3">
           <li className="labelStyle">
-            <input type="radio" id="pay1" name="payment"/>
+            <input type="radio" id="pay1" name="payment" defaultChecked/>
             <label htmlFor="pay1"></label>
             <span>카드결제</span>
           </li>
@@ -78,9 +131,9 @@ export default function OrderOption() {
             <span>현금결제</span>
           </li>
         </ul>
-        <Link to="/signup" className="Login-submitBtn">
+        <div>
           <Button>주문완료</Button>
-        </Link>
+        </div>
       </div>
     </div>
   )

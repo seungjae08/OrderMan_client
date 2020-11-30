@@ -3,7 +3,7 @@ import { Item } from '../reducers/main';
 //type
 export type Market =  {
   name: string;
-  mobile: string;
+  mobile: string | null;
 }
 
 export type unSigninInfo =  {
@@ -27,7 +27,8 @@ export const OrderUnitUp = 'order/UNIT_UP' as const;
 export const OrderUnitDown = 'order/UNIT_DOWN' as const;
 export const OrderChangeDates = 'order/CHANGE_DATES' as const;
 
-export const OrderUnSignInfo = 'order/UNSIGN_INFO' as const;
+export const UnSignInfo = 'order/UNSIGN_INFO' as const;
+export const MarketActionType = 'order/MARKET_CHANGE' as const;
 
 
 // Actions 생성자
@@ -66,10 +67,14 @@ type OrderChangeDatesAction = {
 }
 
 type OrderChangeUnSignInfo = {
-  type: typeof OrderUnSignInfo;
+  type: typeof UnSignInfo;
   payload: unSigninInfo;
 }
 
+type MarketChangeType = {
+  type : typeof MarketActionType,
+  payload: string | null
+}
 
 export type OrderActionTypes =
   | OrderLoginUserAction
@@ -79,7 +84,8 @@ export type OrderActionTypes =
   | OrderUnitUpAction
   | OrderUnitDownAction
   | OrderChangeDatesAction
-  | OrderChangeUnSignInfo;
+  | OrderChangeUnSignInfo
+  | MarketChangeType;
 
 export function orderLoginUser(itemList: Array<Item>, market: Market) {
   return {
@@ -132,9 +138,16 @@ export function orderChangeDates(order: Array<Item>) {
 
 export function changeUnSignInfo(userInfo:unSigninInfo) {
   return {
-    type: OrderUnSignInfo,
+    type: UnSignInfo,
     payload: userInfo,
   };
+}
+
+export function changeMarketMobile(mobile:string|null){
+  return {
+    type: MarketActionType,
+    payload: mobile
+  }
 }
 
 
@@ -214,7 +227,6 @@ export function OrderReducer(
           return ele;
         }),
       };
-
     case OrderUnitDown:
       return {
         ...state,
@@ -234,10 +246,18 @@ export function OrderReducer(
         ...state,
         itemList: action.payload,
       };
-    case OrderUnSignInfo:
+    case UnSignInfo:
       return {
         ...state,
         unSignInfo: action.payload
+      };
+    case MarketActionType:
+      return {
+        ...state,
+        market: {
+          ...state.market,
+          mobile: action.payload
+        }
       };
     default:
       return state;
