@@ -1,7 +1,7 @@
 import React,{useEffect, useState} from 'react';
 import {useSelector,useDispatch} from 'react-redux';
 import {RootState} from "../reducers/index";
-import {actionMainCreators as mainActions, Item, OderListInterface ,MainActionTypes} from "../reducers/main";
+import {actionMainCreators as mainActions, Item, OderListInterface } from "../reducers/main";
 import {actionOrderCreators as orderActions ,Market} from "../reducers/order"
 import PastOrders from 'components/PastOrders'
 import {Header}from 'components/Header'
@@ -11,6 +11,11 @@ import Button from 'components/Button';
 import OrderPage from 'components/OrderPage';
 
 export default function Main() {
+  const {orderList/*,isLoading,hasError*/} = useSelector((state:RootState)=> state.MainReducer);
+  const {itemList} = useSelector((state:RootState)=> state.OrderReducer);
+  const dates = Object.keys(orderList); dates.reverse();
+  // Distpach 선언  
+  const dispatch = useDispatch();
   useEffect(()=>{
     const orderList_ : OderListInterface = {
       "2020-11-20":[
@@ -23,7 +28,6 @@ export default function Main() {
       ]
     }
     const market_ : Market ={
-        name : "세계로마트",
         mobile : "01047589928"
     }
     dispatch(mainActions.startUser())
@@ -37,21 +41,15 @@ export default function Main() {
   },[])
   
 
-  const {orderList,isLoading,hasError} = useSelector((state:RootState)=> state.MainReducer);
-  const {itemList} = useSelector((state:RootState)=> state.OrderReducer);
-  const dates = Object.keys(orderList); dates.reverse();
-  // Distpach 선언  
-  const dispatch = useDispatch();
-
   // useSate
   const [todayOrder,setTodayOrder] = useState(true)
   const [selectDate, setSelectDate] = useState("");
 
   // 컴포넌트들이 쓸 함수들 모음
-  const rendering =() =>{
-    if(isLoading) return <p>Loading~~</p>
-    if(hasError) return <p>has Error</p>
-  }
+  // const rendering =() =>{
+  //   if(isLoading) return <p>Loading~~</p>
+  //   if(hasError) return <p>has Error</p>
+  // }
   const createItem=(item:Item)=>{
     dispatch(orderActions.orderCreateNowOrder(item));
   }
@@ -69,8 +67,8 @@ export default function Main() {
   
   
   return (  
-    <div id="wrap">
-      <div className="mb-view verCenter">
+    <div id="wrap" className="Main-wrap">
+      <div className="mb-view">
       <Header />
       <Date 
         dates={dates} 
@@ -89,9 +87,11 @@ export default function Main() {
         itemList={(selectDate!=="")?orderList[selectDate]:[]}
         createItem={createItem}
       />}
-      <Link to="/Order">
-        <Button>주문하기</Button>
-      </Link>
+      <div className="order">
+        <Link to="/Order">
+          <Button>주문하기</Button>
+        </Link>
+      </div>
       </div>
     </div>
   )

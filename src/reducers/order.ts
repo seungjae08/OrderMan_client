@@ -5,7 +5,6 @@ import { Item } from '../reducers/main';
 
 //type
 export type Market =  {
-  name: string;
   mobile: string | null;
 }
 
@@ -208,7 +207,6 @@ export const actionOrderCreators = {
 const initialState: NowOrder = {
   itemList: [],
   market: {
-    name: '',
     mobile: null,
   },
   unSignInfo:{
@@ -232,7 +230,6 @@ export function OrderReducer(
         ...state,
         itemList: action.payload.itemList,
         market: {
-          name: action.payload.market.name,
           mobile: action.payload.market.mobile,
         },
       };
@@ -241,7 +238,6 @@ export function OrderReducer(
         ...state,
         itemList: [],
         market: {
-          name: '',
           mobile: '',
         },
       };
