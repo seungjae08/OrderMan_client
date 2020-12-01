@@ -9,8 +9,16 @@ import Button from 'components/Button';
 type propsTypes = {
   history : History
 }
+// declare global {
+//   interface Window {
+//     Kakao: any;
+//   }
+// }
+// window.Kakao = window.Kakao || "SomeValue";
+// const {Kakao} = window;
 
 export default function Login(props : propsTypes) {
+  
   const [inputs, setInputs] = useState({
     id: '',
     password: ''
@@ -18,7 +26,6 @@ export default function Login(props : propsTypes) {
 
   //error Message
   const [errorMsg, setErrorMsg] = useState('');
-
 
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -29,6 +36,7 @@ export default function Login(props : propsTypes) {
   },[])
 
   const onSubmitLogin = useCallback(()=>{
+    
     console.log('onSubmitLogin 전송..')
     if(inputs.id === "" || inputs.password === ""){
       return;
@@ -52,6 +60,12 @@ export default function Login(props : propsTypes) {
     })
   },[inputs, props.history]);
 
+  // const onKakaoLoginHandler = function(){
+  //   Kakao.Auth.authorize({
+  //     redirectUri: clientPath+'/signup/social'
+  //   });
+  // }
+
   return (
     <div id="wrap" className="Login-wrap">
       <div className="mb-view verCenter">
@@ -67,12 +81,11 @@ export default function Login(props : propsTypes) {
         <div onClick={onSubmitLogin}>
           <Button>로그인</Button>
         </div> 
-        <div className="socialBtnList">
-          <Link to="/signup/social/">
+        {/* <div className="socialBtnList">
+          <div onClick={onKakaoLoginHandler}>
             <Button color="#3B1D1D" bgColor="#FFEB00">카카오톡으로 로그인</Button>
-          </Link>
-        </div>
-
+          </div>
+        </div> */}
         <Link to="/signup">
           <Button>회원가입</Button>
         </Link>
