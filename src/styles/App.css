@@ -5,21 +5,43 @@
 .Main-wrap .Header-wrap{
   position: relative;
   width: 100%;
-  z-index: 99;
   top: 0;
   left: 0;
 }
 .Main-wrap .Header-gnp{
   position: relative;
+  display: inline-table;
+  text-align: center;
   z-index: 0;
+  width: 100%;
 }
 .Main-wrap .Header-h1{
-  text-align: center;
-  display: block;
-  margin-left: 0;
   line-height: 60px;
-
+  text-align: center;
+  clear: left;
 }
+.Main-wrap .Header-loginbtn{
+  float: right;
+}
+
+.Main-wrap .Main-Date{
+  border: 1px solid #ff7f00;
+  width: 90%;
+  height: 60px;
+  margin:  auto;
+  text-align: center;
+  display: flex;
+  vertical-align: middle;
+  align-items: center;
+  
+}
+.Main-wrap .btn.st1{
+  margin-left: 10px;
+  margin-right: 10px;
+  height: 20px;
+  width: 100px;
+}
+
 /* Login */
 .Login-wrap .Button-wrap {
   margin-bottom: 10px;
