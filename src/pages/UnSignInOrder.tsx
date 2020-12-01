@@ -1,8 +1,9 @@
-import React, {useState, useCallback, ChangeEvent} from 'react';
+import React, {useState, useEffect, useCallback, ChangeEvent} from 'react';
 import {serverPath} from 'modules/serverPath';
 import { History } from 'history';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
+import InputBirth from 'components/InputBirth';
 //import { useDispatch, useSelector } from 'react-redux';
 //import { RootState } from 'reducers';
 import Button from 'components/Button';
@@ -12,13 +13,31 @@ type propsTypes = {
   history : History
 }
 
+type InputTypes = {
+  mobile:string;
+  address:string;
+  brand:string;
+  yearList: number[];
+  monthList: number[];
+  dayList: number[];
+  year: string;
+  month:string;
+  day:string;
+}
+
 export default function UnSigninOrder
 (props: propsTypes) {
 
-  const [inputs, setInputs] = useState({
+  const [inputs, setInputs] = useState<InputTypes>({
     mobile:"",
     address:"",
-    brand:""
+    brand:"",
+    yearList:[],
+    monthList:[],
+    dayList:[],
+    year:"1980",
+    month:"1",
+    day:"1"
   });
 
   //error Message
@@ -26,6 +45,44 @@ export default function UnSigninOrder
   // const dispatch = useDispatch();
 
   // const unSignInfo = useSelector((state:RootState)=>state.OrderReducer.unSignInfo);
+
+  useEffect(() => {
+    //mount
+    let [yearList, monthList, dayList] = generateBirth();
+    setInputs((inputs)=>({
+      ...inputs,
+      yearList,
+      monthList,
+      dayList
+    }))
+  }, []);
+
+  const generateBirth = function(){
+    let yearList = [];
+    let monthList = [];
+    let dayList = [];
+    for(let i=1940; i<2002; i++){
+      yearList.push(i);
+    }
+    for(let i=1; i<=12; i++){
+      monthList.push(i);
+    }
+    for(let i=1; i<=31; i++){
+      dayList.push(i);
+    }
+    return [yearList, monthList, dayList];
+  }
+
+
+  const onChangeSelect = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setInputs((inputs) => ({
+      ...inputs,
+      [name]: value
+    }));
+  },[]);
+
+  
 
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -37,7 +94,7 @@ export default function UnSigninOrder
 
   const onDispatchUnSignOrder = useCallback(()=>{
     console.log('UnSigninOrder 디스패치 입력..');
-    let {mobile, brand, address} = inputs;
+    let {mobile, brand, address, year, month, day} = inputs;
     if(mobile === "" || brand === "" || address === ""){
       setErrorMsg('모든 항목을 입력해주세요');
       return;
@@ -47,7 +104,8 @@ export default function UnSigninOrder
     axios.post(serverPath + '/unknown/info',{
       mobile: inputs.mobile,
       address: inputs.address,
-      brand : inputs.brand
+      brand : inputs.brand,
+      birth:`${year.slice(2)}-${month}-${day}`
     },{ withCredentials: true }).then((res)=>{
       props.history.push('/order')
     });
@@ -67,6 +125,8 @@ export default function UnSigninOrder
               <button className="btn st1">인증하기</button>
             </div> */}
           </div>
+          <h3>생년월일</h3>
+          <InputBirth onChangeSelect={onChangeSelect} yearList={inputs.yearList} monthList={inputs.monthList} dayList={inputs.dayList} year={inputs.year} month={inputs.month} day={inputs.day}/>
           <input type="text" placeholder="주소" value={inputs.address} onChange={onChange} name="address"/>
           <input type="text" placeholder="상호명" value={inputs.brand} onChange={onChange} name="brand"/>
         </div>

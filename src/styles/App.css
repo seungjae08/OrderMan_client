@@ -2,27 +2,6 @@
 /* 클래스 네임 규칙 ex) Component-inputWrap*/
 
 /* Main */
-.Main-wrap .Header-wrap{
-  position: relative;
-  width: 100%;
-  top: 0;
-  left: 0;
-}
-.Main-wrap .Header-gnp{
-  position: relative;
-  display: inline-table;
-  text-align: center;
-  z-index: 0;
-  width: 100%;
-}
-.Main-wrap .Header-h1{
-  line-height: 60px;
-  text-align: center;
-  clear: left;
-}
-.Main-wrap .Header-loginbtn{
-  float: right;
-}
 
 .Main-wrap .Main-Date{
   border: 1px solid #ff7f00;
@@ -91,6 +70,8 @@
   text-align: center;
 
 }
+
+
 /* Login */
 .Login-wrap .Button-wrap {
   margin-bottom: 10px;
@@ -106,9 +87,14 @@
   margin-top: 20px;
 }
 
-/*Signup*/
+/* Signup */
+
+
+
+/*unSignInOrder*/
 .UnSignInOrder-wrap .warning_text {
   margin-top: 15px;
+  
 }
 
 /* Order */
