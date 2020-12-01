@@ -13,11 +13,31 @@ import OrderPage from 'components/OrderPage';
 export default function Main() {
   const {orderList/*,isLoading,hasError*/} = useSelector((state:RootState)=> state.MainReducer);
   const {itemList} = useSelector((state:RootState)=> state.OrderReducer);
-  const dates = Object.keys(orderList); dates.reverse();
+  const dates = Object.keys(orderList);
   // Distpach 선언  
   const dispatch = useDispatch();
   useEffect(()=>{
     const orderList_ : OderListInterface = {
+      "2020-11-10":[
+        {item : "3", quantity: 4, unit : "1kg",},
+        {item : "4", quantity: 39,unit : "1kg" }
+    ],
+      "2020-11-11":[
+        {item : "1", quantity: 4, unit : "1kg",},
+        {item : "2", quantity: 39,unit : "1kg" }
+    ],
+      "2020-11-12":[
+        {item : "가지", quantity: 4, unit : "1kg",},
+        {item : "김", quantity: 39,unit : "1kg" }
+    ],
+      "2020-11-14":[
+        {item : "라면", quantity: 4, unit : "1kg",},
+        {item : "김", quantity: 39,unit : "1kg" }
+    ],
+      "2020-11-17":[
+        {item : "김치", quantity: 4, unit : "1kg",},
+        {item : "소금", quantity: 39,unit : "1kg" }
+    ],
       "2020-11-20":[
           {item : "가지", quantity: 4, unit : "1kg",},
           {item : "고구마", quantity: 39,unit : "1kg" }
