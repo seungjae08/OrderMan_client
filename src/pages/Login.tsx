@@ -5,7 +5,6 @@ import {serverPath} from 'modules/serverPath';
 import axios from 'axios';
 import Button from 'components/Button';
 
-
 type propsTypes = {
   history : History
 }

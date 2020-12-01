@@ -60,9 +60,39 @@
   margin-top: 20px;
 }
 
-/*Signup*/
+/* Signup */
+.Signup-wrap input{
+  padding-left: 10px;
+}
+.Signup-wrap .birthInput{
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.Signup-wrap .birthInput input{
+  margin-bottom: 0;
+  padding-right: 10px;
+  text-align: right;
+}
+
+.Signup-wrap .birthInput select{
+  display:flex;
+  justify-content: center;
+  flex:1;
+  height:40px;
+  text-align-last:center;
+  border:1px solid black;
+}
+
+.Signup-wrap .birthInput span{
+  display: inline-block;
+  margin:5px;
+}
+
+/*unSignInOrder*/
 .UnSignInOrder-wrap .warning_text {
   margin-top: 15px;
+  
 }
 
 /* Order */

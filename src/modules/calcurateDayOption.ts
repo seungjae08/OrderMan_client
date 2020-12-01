@@ -1,32 +1,58 @@
 // const yearList: number[] = [];
 const monthList: string[] = [];
-const dayList: string[] = [];
-const hourList: string[] = [];
 const minList: string[] = ['00','30'];
 
 /* 받고싶은 배달시간 설정 (default: 현재 시각) */
-const today:Date = new Date();
-const thisYear:string = String(today.getFullYear());
-const thisMonth:string = String(today.getMonth()+1);
-const thisDate:string = String(today.getDate());
-/* 시각은 현재 시간으로부터 3시간 이후부터 */
-const thisHour:string = String(today.getHours());
+const checkThisTime = function(){
+  const today:Date = new Date();
+  const thisYear:string = String(today.getFullYear());
+  const thisMonth:string = String(today.getMonth()+1);
+  const thisDate:string = String(today.getDate());
+
+  return [today, thisYear, thisMonth, thisDate];
+}
+
+export const checkThisHour = function(){
+  const today:Date = new Date();
+  const thisHour:string = String(today.getHours());
+
+  return thisHour;
+}
+
+const [today, thisYear, thisMonth, thisDate] = checkThisTime();
+const thisHour = checkThisHour();
 
 for (let i = 1; i <= 12; i++) {
   monthList.push(String(i));
 }
-for (let i = 1; i <= 31; i++) {
-  dayList.push(String(i));
-}
-for (let i = 10; i <= 20; i++) {
-  if(i<10){
-    hourList.push('0'+String(i));
+
+export const createList = function(){
+  const thisHour = checkThisHour();
+  let dayList:string[] = [];
+  let hourList:string[] = [];
+  if(Number(thisHour)<11){
+    dayList = ['당일','익일','모레'];
+    for (let i = 13; i <= 20; i++) {
+      hourList.push(String(i));
+    }
+  }else if(Number(thisHour)<17){
+    dayList = ['익일','모레'];
+    for (let i = 10; i <= 20; i++) {
+      hourList.push(String(i));
+    }
   }else{
-    hourList.push(String(i));
+    dayList = ['익일','모레'];
+    for (let i = 13; i <= 20; i++) {
+      hourList.push(String(i));
+    }
   }
+  return [dayList, hourList];
 }
 
+let [dayList, hourList] = createList();
+
 export type resultType = [
+  string[],
   string[],
   string[],
   string,
@@ -80,7 +106,6 @@ const calculateDays = function(){
 let [toDay, nextDay, afterTomorrow] = calculateDays();
 
 export const validateOrderDate = function(date:string){
-
   let orderDate = new Date(date);
   let limitDate:Date|string = '';
   //5시 이전일 경우
@@ -100,9 +125,32 @@ export const validateOrderDate = function(date:string){
   return limitDate <= orderDate;
 }
 
+export const renderHour = function(date:string){
+  const thisHour = checkThisHour();
+  console.log(thisHour);
+  let hours = [];
+  let range:number[] = [];
+  if(Number(thisHour)<11){
+    if(date==="당일"){
+      range = [13,20];  
+    }else{
+      range = [10,20];
+    }
+  }else if(Number(thisHour)<17){
+    range = [10,20];
+  }else{
+    if(date==="익일"){
+      range = [13,20];
+    }else{
+      range = [10,20];
+    }
+  }
 
+  for(let i=range[0]; i<=range[1]; i++){
+    hours.push(String(i));
+  }
+  return hours;
+}
 
-
-
-let result : resultType = [hourList, minList,  toDay, nextDay, afterTomorrow]
+let result : resultType = [dayList, hourList, minList, toDay, nextDay, afterTomorrow]
 export default result;
