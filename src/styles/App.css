@@ -3,30 +3,6 @@
 
 /* Main */
 
-/*
-.Main-wrap .Header-wrap{
-  position: relative;
-  width: 100%;
-  top: 0;
-  left: 0;
-}
-.Main-wrap .Header-gnp{
-  position: relative;
-  display: inline-table;
-  text-align: center;
-  z-index: 0;
-  width: 100%;
-}
-.Main-wrap .Header-h1{
-  line-height: 60px;
-  text-align: center;
-  clear: left;
-}
-.Main-wrap .Header-loginbtn{
-  float: right;
-}
-*/
-
 .Main-wrap .Main-Date{
   border: 1px solid #ff7f00;
   width: 90%;
