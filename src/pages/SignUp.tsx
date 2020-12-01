@@ -3,7 +3,7 @@ import { History } from 'history';
 import {serverPath} from 'modules/serverPath';
 import axios from 'axios';
 import Button from 'components/Button';
-
+import InputBirth from 'components/InputBirth';
 type propsTypes = {
   history : History
 }
@@ -15,12 +15,12 @@ type InputTypes = {
   mobile:string;
   address:string;
   brand:string;
-  year:string;
+  yearList: number[];
+  monthList: number[];
+  dayList: number[];
+  year: string;
   month:string;
   day:string;
-  yearList:number[];
-  monthList:number[];
-  dayList:number[];
 }
 
 export default function SignUp(props: propsTypes) {
@@ -31,16 +31,17 @@ export default function SignUp(props: propsTypes) {
     mobile:"",
     address:"",
     brand:"",
-    year:"",
-    month:"",
-    day:"",
     yearList:[],
     monthList:[],
-    dayList:[]
+    dayList:[],
+    year:"1980",
+    month:"1",
+    day:"1"
   });
 
   //error Message
   const [errorMsg, setErrorMsg] = useState('');
+
   useEffect(() => {
     //mount
     let [yearList, monthList, dayList] = generateBirth();
@@ -51,7 +52,6 @@ export default function SignUp(props: propsTypes) {
       dayList
     }))
   }, []);
-
 
   const generateBirth = function(){
     let yearList = [];
@@ -69,6 +69,16 @@ export default function SignUp(props: propsTypes) {
     return [yearList, monthList, dayList];
   }
 
+
+  const onChangeSelect = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setInputs((inputs) => ({
+      ...inputs,
+      [name]: value
+    }));
+  },[]);
+
+
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInputs((inputs) => ({
@@ -77,11 +87,12 @@ export default function SignUp(props: propsTypes) {
     }));
   },[])
 
+  
 
   const onSubmitSignUp = useCallback(()=>{
     console.log('onSubmitSignUp 회원가입 전송..');
 
-    let {id, password, passwordCheck, mobile, brand, address} = inputs;
+    let {id, password, passwordCheck, mobile, brand, address, year, month, day} = inputs;
     if(password !== passwordCheck){
       setErrorMsg('비밀번호와 비밀번호 확인은 같아야 합니다');
       return;
@@ -96,7 +107,8 @@ export default function SignUp(props: propsTypes) {
       password, 
       mobile, 
       brand, 
-      address
+      address,
+      birth:`${year.slice(2)}-${month}-${day}`
     },{ withCredentials: true }).then(res=>{
       //회원가입 성공
       //회원가입 성공하면, 로그인페이지로 리다이렉트
@@ -126,27 +138,7 @@ export default function SignUp(props: propsTypes) {
             {/* <button className="btn st1">인증하기</button> */}
           </div>
           <h3>생년월일</h3>
-          <div className="flex birthInput">
-            <select defaultValue="1980">
-              { inputs.yearList && 
-                inputs.yearList.map(year=><option key={year}>{year}</option>)
-              }
-            </select>
-            {/* <input type="text" placeholder="80" value={inputs.year} name="year" onChange={onChange}/> */}
-            <span>년</span>
-            <select>
-              { inputs.monthList && 
-                inputs.monthList.map(month=><option key={month}>{month}</option>)
-              }
-            </select>
-            <span>월</span>
-            <select>
-              { inputs.dayList && 
-                inputs.dayList.map(day=><option key={day}>{day}</option>)
-              }
-            </select>
-            <span>일</span>
-          </div>
+          <InputBirth onChangeSelect={onChangeSelect} yearList={inputs.yearList} monthList={inputs.monthList} dayList={inputs.dayList} year={inputs.year} month={inputs.month} day={inputs.day}/>
           <input type="text" placeholder="주소" value={inputs.address} name="address" onChange={onChange}/>
           <input type="text" placeholder="상호명" value={inputs.brand} name="brand" onChange={onChange}/>
         </div>

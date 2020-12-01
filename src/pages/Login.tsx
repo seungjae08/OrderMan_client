@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import {serverPath} from 'modules/serverPath';
 import axios from 'axios';
 import Button from 'components/Button';
+import {Header} from 'components/Header';
 
 type propsTypes = {
   history : History
@@ -68,6 +69,7 @@ export default function Login(props : propsTypes) {
   return (
     <div id="wrap" className="Login-wrap">
       <div className="mb-view verCenter">
+        <Header/>
         <h2>로그인</h2>
         <div className="inputWrap">
           <input type="text" placeholder="아이디" value={inputs.id} onChange={onChange} name="id"/>
