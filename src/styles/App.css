@@ -30,23 +30,69 @@
 .Main-wrap .Main-Date{
   border: 1px solid #ff7f00;
   width: 90%;
-  height: 60px;
+  height: 100px;
   margin:  auto;
-  text-align: center;
   display: flex;
   vertical-align: middle;
-  align-items: center;
-  
 }
 .Main-wrap .btn.st1{
-  margin-left: 10px;
-  margin-right: 10px;
+  height: 100%;
+  width: 100%;
+}
+.Main-wrap .btn.st1.today{
+  margin: 5px;
   height: 20px;
-  width: 100px;
+  width: 80px;
+  clear: both;
 }
 .Main-wrap .order{
-  position : fixed;
-  
+  position : absolute;
+  right: 20px;
+  bottom: 20px;
+}
+#slide-wrap{
+  width: 100%;
+  height:100%;
+  overflow:hidden;
+  position:relative;
+}
+#slide-wrap ul#slide{
+  height: 100%;
+  position: absolute;
+}
+.slide-btn{
+  margin: auto;
+  top:0px;
+  width: 5px;
+  height: 100%;
+  text-align: center;
+  cursor: pointer;
+}
+
+#next {
+  right: 0px;
+  border-radius: 7px 0px 0px 7px;
+  color: #000000;
+}
+
+#previous {
+  float: left;
+  left: 0px;
+  border-radius: 0px 7px 7px 7px;
+  color: #000000;
+}
+#slide-wrap ul.active #next{
+  right: 0px;
+}
+#slide-wrap ul.active #previous{
+  left: 0px;
+}
+#slide-wrap ul{
+  transition: all 0.3s cubic-bezier(1, .01, .32, 1);
+}
+#Date-wrap{
+  text-align: center;
+
 }
 
 
