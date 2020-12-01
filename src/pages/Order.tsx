@@ -112,7 +112,7 @@ export default function Order(props:propsTypes) {
       mobile: marketMobile
     },{ withCredentials: true });
     const axiosPostOption = axios.post(serverPath + '/order/items',{
-      payment:OrderOption.payment,
+      paymentMethod:OrderOption.payment,
       deliveryTime: OrderOption.deliveryTime,
       itemList
     },{ withCredentials: true });
