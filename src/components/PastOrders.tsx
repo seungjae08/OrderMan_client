@@ -9,8 +9,6 @@ type PastOrdersProps={
 
 export default function PastOrders({orderItemList,itemList,createItem}:PastOrdersProps) {
 
-    
-
     return(
         <div>
             <button onClick={()=>{
