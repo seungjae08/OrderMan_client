@@ -2,7 +2,6 @@ import {Item} from "../reducers/main"
 
 //type
 export interface Market{
-    name:string;
     mobile : string;
 }
 export interface NowOrder{
@@ -109,7 +108,6 @@ export const actionOrderCreators = {
 const initialState : NowOrder = {
     itemList : [],
     market : {
-        name:"",
         mobile:""
     }
 }
@@ -123,7 +121,6 @@ export function OrderReducer(
             return {
                 itemList : action.payload.itemList,
                 market : {
-                    name : action.payload.market.name,
                     mobile : action.payload.market.mobile
                 }
             }
@@ -131,7 +128,6 @@ export function OrderReducer(
             return{
                 itemList : [],
                 market : {
-                    name:"",
                     mobile:""
                 }
             }

@@ -17,6 +17,8 @@ export default function Main() {
   // Distpach 선언  
   const dispatch = useDispatch();
   useEffect(()=>{
+
+    
     const orderList_ : OderListInterface = {
       "2020-11-20":[
           {item : "가지", quantity: 4, unit : "1kg",},
@@ -28,7 +30,6 @@ export default function Main() {
       ]
     }
     const market_ : Market ={
-        name : "세계로마트",
         mobile : "01047589928"
     }
     dispatch(mainActions.startUser())
