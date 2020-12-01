@@ -28,7 +28,6 @@ export default function Main() {
       ]
     }
     const market_ : Market ={
-        name : "세계로마트",
         mobile : "01047589928"
     }
     dispatch(mainActions.startUser())
@@ -88,9 +87,11 @@ export default function Main() {
         itemList={(selectDate!=="")?orderList[selectDate]:[]}
         createItem={createItem}
       />}
-      <Link to="/Order">
-        <Button>주문하기</Button>
-      </Link>
+      <div className="order">
+        <Link to="/Order">
+          <Button>주문하기</Button>
+        </Link>
+      </div>
       </div>
     </div>
   )
