@@ -1,10 +1,19 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
+import { Cookies } from 'react-cookie';
+import { isLogin } from 'modules/checkLogin';
 
-export const Header = () => {
+type propsTypes = {
+  cookies: Cookies
+}
+
+export const Header = (props:propsTypes) => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [loginStatus, setLoginStatus] = useState(false);
 
+  useEffect(() => {
+  }, [])
   const toggleMenuOpen = function(){
     if(isMenuOpen){
       setIsMenuOpen(false);
