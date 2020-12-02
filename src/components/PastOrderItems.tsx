@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Item } from "reducers/main";
 
 type PastOrderItemsProps ={
@@ -8,7 +7,6 @@ type PastOrderItemsProps ={
 }
 
 export default function PastOrderItems({itemList,item,createItem}:PastOrderItemsProps) {
-    const [add,setAdd] = useState(false)
     const addState =()=>{
         const find = itemList.find(ele=>ele.item===item.item)
         if(find===undefined){
@@ -19,16 +17,22 @@ export default function PastOrderItems({itemList,item,createItem}:PastOrderItems
     }
 
     return(
-        <div>
-            <p>item : {item.item}</p>
-            <p>unit : {item.unit}</p>
-            <p>quantity : {item.quantity}</p>
-            <button onClick={()=>{
+        <div className="PastOrderItems-wrap">
+            <div className="items">
+                <ul>
+                    <li>품명 : {item.item}</li>
+                    <li>단위 : {item.unit}</li>
+                    <li>갯수 : {item.quantity}</li>
+                </ul>
+                <button onClick={()=>{
                 const find = itemList.find(ele=>ele.item===item.item)
                 if(find===undefined){
                     createItem(item)
                 }
             }}>{addState()}</button>
+            </div>
+            
+            
         </div>
     )
 }

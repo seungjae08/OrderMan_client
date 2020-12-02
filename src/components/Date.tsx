@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type DateProps = {
     dates : string[]
@@ -9,10 +9,15 @@ type DateProps = {
 }
 
 export const Date = ({dates,nowdate,setNowdate,todayOrder,setTodayOrder}:DateProps)=>{
-    const width = dates.length
-    var ulstyle_width = String(60*width) + "px"
+    var width = dates.length
     var [slideIndex,setSlideIndex] = useState(0);
-
+    var [slide_wrap,setSlide_wrap] = useState(Number(document.getElementById("slide-wrap")?.clientWidth))
+    var ulstyle_width = String(slide_wrap/5*dates.length) + "px"
+    useEffect(()=>{
+        setSlide_wrap(Number(document.getElementById("slide-wrap")?.clientWidth))
+        ulstyle_width = String(slide_wrap/5*dates.length) + "px"
+    },[])
+   
     function plusSlides(n:number) {
         console.log("slideIndex : ",slideIndex)
         setSlideIndex(slideIndex= slideIndex+ n)
@@ -20,43 +25,47 @@ export const Date = ({dates,nowdate,setNowdate,todayOrder,setTodayOrder}:DatePro
     }
     
     function  showSlides(n:number) {
-        var slides = document.querySelectorAll("#slide-wrap ul li");
-        var totalSlides = slides.length-5;
+        var totalSlides = width-5;
         var slider = document.querySelector('#slide-wrap ul#slide');
-        
+        setSlide_wrap(Number(document.getElementById("slide-wrap")?.clientWidth))
+        const dateBox = slide_wrap/5
+
+
         console.log("slideIndex : ",slideIndex,"totalSlide : ",totalSlides)
         if (slideIndex ===-1) {
             setSlideIndex(totalSlides - 1);
-            (slider as HTMLElement).style.left = -(60*totalSlides) + 'px';
-        } else if (slideIndex === totalSlides+1) {
+            (slider as HTMLElement).style.left = -(dateBox*totalSlides) + 'px';
+        } else if (slideIndex === totalSlides+3) {
             setSlideIndex(0);
             (slider as HTMLElement).style.left = -(0) + 'px';
         }else{
-            (slider as HTMLElement).style.left = -(60*slideIndex) + 'px';
+            (slider as HTMLElement).style.left = -(dateBox*slideIndex) + 'px';
         }
     }
     
     return(
-        <div id="Date-wrap">
+        <div id="Date-wrap">구매 내역 선택
+        {(dates.length>5)?<button className="slide-btn" id="previous" onClick={(()=>{plusSlides(-1)})}>{"<"}</button>:""}
+        {(dates.length>5)?<button className="slide-btn" id="next"onClick={(()=>{plusSlides(1)})}>{">"}</button>:""}
         <div className="Main-Date">
-            {(dates.length>5)?<button className="slide-btn" id="previous" onClick={(()=>{plusSlides(-1)})}>{"<"}</button>:""}
+            
             <div id="slide-wrap">
                 <ul style={{
                     left:"0px",
-                    width:ulstyle_width, 
+                    width: ulstyle_width, 
                     display:"flex",
                     transform:"1s",
                     alignItems : "center"
                 }}id="slide">
                     {dates.map((ele)=>{return ((ele === nowdate)? 
-                    <li style={{width:"60px",height:"60px",margin:"5px",alignItems:"center"}}>                    
+                    <li style={{width:"18%",height:"60px",margin:"0.5%",alignItems:"center"}}>                    
                         <button className="btn st1">
                             <p>{ele.slice(5,7)+"월"}</p>
                             <p>{ele.slice(8)+"일"}</p> 
                         </button>
                     </li>
                     : 
-                    <li style={{width:"60px",height:"60px" ,margin:"5px",alignItems:"center"}}>
+                    <li style={{width:"18%",height:"60px" ,margin:"0.5%",alignItems:"center"}}>
                         <button className="btn st1" onClick={()=>{
                             setNowdate(ele); 
                             setTodayOrder(false); 
@@ -67,14 +76,11 @@ export const Date = ({dates,nowdate,setNowdate,todayOrder,setTodayOrder}:DatePro
                     </li>
                     )})}
                 </ul>
-                <div id="slider-pagination-wrap">
-                    <ul>
-                    </ul>
-                </div>
                 
             </div>
-            {(dates.length>5)?<button className="slide-btn" id="next"onClick={(()=>{plusSlides(1)})}>{">"}</button>:""}
+            
         </div>
+        
             <div>
                 {(todayOrder)? "":<button className="btn st1 today" onClick={()=>{setNowdate("");setTodayOrder(true)}}>
                 오늘의주문</button>}

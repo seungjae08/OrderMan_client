@@ -10,8 +10,8 @@ type PastOrdersProps={
 export default function PastOrders({orderItemList,itemList,createItem}:PastOrdersProps) {
 
     return(
-        <div>
-            <button onClick={()=>{
+        <div id="PastOrders">
+            <button className="All-select" onClick={()=>{
                 itemList.forEach((ele)=>{
                     const find =orderItemList.find(orderele=>orderele.item===ele.item)
                     if(find ===undefined){

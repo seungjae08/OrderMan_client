@@ -6,8 +6,6 @@ import {actionOrderCreators as orderActions ,Market} from "../reducers/order"
 import PastOrders from 'components/PastOrders'
 import {Header}from 'components/Header'
 import {Date} from 'components/Date'
-import { Link } from 'react-router-dom';
-import Button from 'components/Button';
 import OrderPage from 'components/OrderPage';
 import { withCookies, Cookies } from 'react-cookie';
 import {isLogin} from 'modules/checkLogin';
@@ -19,7 +17,7 @@ type propsTypes = {
 function Main(props:propsTypes) {
   const {orderList/*,isLoading,hasError*/} = useSelector((state:RootState)=> state.MainReducer);
   const {itemList} = useSelector((state:RootState)=> state.OrderReducer);
-  const dates = Object.keys(orderList);
+  const dates = Object.keys(orderList); dates.reverse()
   // Distpach 선언  
   const dispatch = useDispatch();
   useEffect(()=>{
@@ -90,7 +88,9 @@ function Main(props:propsTypes) {
   const downItemsUnit = (item:Item)=>{
     dispatch(orderActions.orderUnitDown(item))
   }
-  
+  const changeItemsQuantity = (item:Item)=>{
+    dispatch(orderActions.orderQuantityChange(item))
+  }
   
   return (  
     <div id="wrap" className="Main-wrap">
@@ -107,17 +107,14 @@ function Main(props:propsTypes) {
         deleteItem={deleteItem}
         upItemsUnit={upItemsUnit}
         downItemsUnit={downItemsUnit}
+        changeItemsQuantity={changeItemsQuantity}
         itemList={itemList}
       />:<PastOrders 
         orderItemList={itemList}
         itemList={(selectDate!=="")?orderList[selectDate]:[]}
         createItem={createItem}
       />}
-      <div className="order">
-        <Link to="/Order">
-          <Button>주문하기</Button>
-        </Link>
-      </div>
+      
       </div>
     </div>
   )

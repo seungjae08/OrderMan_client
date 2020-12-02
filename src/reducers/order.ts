@@ -32,6 +32,7 @@ export const OrderCreateItem = 'order/CREATE_ITEM' as const;
 export const OrderDeleteItem = 'order/DELETE_ITEM' as const;
 export const OrderUnitUp = 'order/UNIT_UP' as const;
 export const OrderUnitDown = 'order/UNIT_DOWN' as const;
+export const OrderQuantityChange = 'order/Quantity_CHANGE' as const;
 export const OrderChangeDates = 'order/CHANGE_DATES' as const;
 
 export const UnSignInfo = 'order/UNSIGN_INFO' as const;
@@ -69,6 +70,11 @@ type OrderUnitDownAction =  {
   payload: Item;
 }
 
+type OrderQuantityChangeAction={
+  type:typeof OrderQuantityChange;
+  payload : Item
+}
+
 type OrderChangeDatesAction = {
   type: typeof OrderChangeDates;
   payload: Array<Item>;
@@ -101,6 +107,7 @@ export type OrderActionTypes =
   | OrderDeleteItemAction
   | OrderUnitUpAction
   | OrderUnitDownAction
+  | OrderQuantityChangeAction
   | OrderChangeDatesAction
   | OrderChangeUnSignInfo
   | MarketChangeType
@@ -148,6 +155,13 @@ export function orderUnitDown(item: Item) {
     type: OrderUnitDown,
     payload: item,
   };
+}
+
+export function orderQuantityChange(item:Item){
+  return{
+    type: OrderQuantityChange,
+    payload: item
+  }
 }
 export function orderChangeDates(order: Array<Item>) {
   return {
@@ -199,6 +213,7 @@ export const actionOrderCreators = {
   orderDeleteNowOrder,
   orderUnitUP,
   orderUnitDown,
+  orderQuantityChange,
   orderChangeDates,
 };
 
@@ -283,6 +298,20 @@ export function OrderReducer(
           return ele;
         }),
       };
+    case OrderQuantityChange:
+      return{
+        ...state,
+        itemList: state.itemList.map((ele) => {
+          if (action.payload.item === ele.item) {
+            return {
+              item: ele.item,
+              unit: ele.unit,
+              quantity:action.payload.quantity,
+            };
+          }
+          return ele;
+        }),
+      }
     case OrderChangeDates:
       return {
         ...state,
