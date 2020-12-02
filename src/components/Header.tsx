@@ -27,6 +27,9 @@ export const Header = () => {
         <img src="/assets/header_title.png" alt="오다맨"/>
       </h1>
       <div className="Header-loginbtn">
+        <Link to="/Login" >
+          로그인
+        </Link>
         {/* {
           loginStatus?
           (

@@ -113,18 +113,17 @@ export default function SignUp(props: propsTypes) {
     },{ withCredentials: true }).then(res=>{
       //회원가입 성공
       //회원가입 성공하면, 로그인페이지로 리다이렉트
-      alert('회원가입이 완료되었습니다');
-      props.history.push('/login');
+      console.log(res);
+      if(res.status===200){
+        alert('회원가입이 완료되었습니다');
+        props.history.push('/login');
+      }else if(res.status===204){
+        setErrorMsg('이미 존재하는 사용자 입니다');
+      }
+      
     }).catch(e=>{
       //회원가입 실패
-      console.log('회원가입 실패', e)
-      console.dir(e);
-      if(e.respond && e.respond.status === 204){
-        setErrorMsg('이미 존재하는 사용자 입니다');
-      }else{
-        setErrorMsg('회원가입에 실패했습니다.');
-      }
-        
+      setErrorMsg('회원가입에 실패했습니다.');
     })
   },[inputs, props.history]);
 

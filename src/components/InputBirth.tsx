@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback, ChangeEvent} from 'react';
+import React, {ChangeEvent} from 'react';
 
 type propTypes = {
   yearList: number[];
