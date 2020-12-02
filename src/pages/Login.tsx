@@ -55,16 +55,17 @@ function Login(props : propsTypes) {
       password:inputs.password
     },{ withCredentials: true }).then(res=>{
       //로그인성공
+
+      console.log(res);
       //로그인 성공하면, 메인으로 리다이렉트
-      props.history.push('/');
+      if(res.status===200){
+        //props.history.push('/');
+      }else if(res.status===204){
+        setErrorMsg('등록되지 않은 아이디이거나 비밀번호가 맞지 않습니다');
+      }
     }).catch(e=>{
       //로그인실패
-      console.log('로그인 실패', e)
-      if(e.respond && e.respond.status === 204){
-        setErrorMsg('등록되지 않은 아이디이거나 비밀번호가 맞지 않습니다');
-      }else{
-        setErrorMsg('로그인에 실패했습니다');
-      }
+      setErrorMsg('로그인에 실패했습니다');
     })
   },[inputs, props.history]);
 
