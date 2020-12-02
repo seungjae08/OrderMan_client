@@ -109,7 +109,7 @@ export default function SignUp(props: propsTypes) {
       mobile, 
       brand, 
       address,
-      // birth:`${year.slice(2)}-${month}-${day}`
+      birth:`${year.slice(2)}-${month}-${day}`
     },{ withCredentials: true }).then(res=>{
       //회원가입 성공
       //회원가입 성공하면, 로그인페이지로 리다이렉트

@@ -1,24 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
-import { Cookies } from 'react-cookie';
-import { isLogin } from 'modules/checkLogin';
 
-type propsTypes = {
-  cookies: Cookies
-}
 
-export const Header = (props:propsTypes) => {
+export const Header = () => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [loginStatus, setLoginStatus] = useState(false);
 
   useEffect(() => {
-    if(isLogin(props.cookies)){
-      setLoginStatus(true);
-    }else{
-      setLoginStatus(false);
-    }
-  }, [props.cookies])
+  })
 
   const toggleMenuOpen = function(){
     if(isMenuOpen){
@@ -27,10 +16,8 @@ export const Header = (props:propsTypes) => {
       setIsMenuOpen(true);
     }
   }
-  const onLogout = function(){
-    //쿠키파괴
-    props.cookies.remove('accessToken');
-  }
+  // const onLogout = function(){
+  // }
   return (
     <div className={isMenuOpen? "Header-wrap open" : "Header-wrap"}>
       <div className="Header-menuBar" onClick={toggleMenuOpen}>
@@ -40,7 +27,7 @@ export const Header = (props:propsTypes) => {
         <img src="/assets/header_title.png" alt="오다맨"/>
       </h1>
       <div className="Header-loginbtn">
-        {
+        {/* {
           loginStatus?
           (
             <div onClick={onLogout}>
@@ -52,8 +39,7 @@ export const Header = (props:propsTypes) => {
               로그인
             </Link>
           )
-        }
-        
+        } */}
       </div>
       <ul className="Header-menu">
         <li>
@@ -61,14 +47,12 @@ export const Header = (props:propsTypes) => {
         </li>
         {/* <li>마이페이지</li>
         <li>가계부</li> */}
-
-        {
+        {/* {
           loginStatus?
           (
             <li onClick={onLogout}>로그아웃</li>
           ): null
-        }
-        
+        } */}
       </ul>
     </div>
   )

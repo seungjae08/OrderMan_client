@@ -7,11 +7,8 @@ import PastOrders from 'components/PastOrders'
 import {Header}from 'components/Header'
 import {Date} from 'components/Date'
 import OrderPage from 'components/OrderPage';
-import { withCookies, Cookies } from 'react-cookie';
-import {isLogin} from 'modules/checkLogin';
 
 type propsTypes = {
-  cookies: Cookies
 }
 
 function Main(props:propsTypes) {
@@ -95,7 +92,7 @@ function Main(props:propsTypes) {
   return (  
     <div id="wrap" className="Main-wrap">
       <div className="mb-view">
-      <Header cookies={props.cookies}/>
+      <Header/>
       <Date 
         dates={dates} 
         nowdate={selectDate}
@@ -121,4 +118,4 @@ function Main(props:propsTypes) {
 }
 
 
-export default withCookies(Main);
+export default Main;
