@@ -101,21 +101,26 @@ export default function SignUp(props: propsTypes) {
       return;
     }
 
+    console.log(id, password, passwordCheck, mobile, brand, address);
+    console.log(serverPath);
+
     //POST 요청
     axios.post(serverPath + '/user/signup',{
-      id, 
+      userId:id, 
       password, 
       mobile, 
       brand, 
       address,
-      birth:`${year.slice(2)}-${month}-${day}`
+      // birth:`${year.slice(2)}-${month}-${day}`
     },{ withCredentials: true }).then(res=>{
       //회원가입 성공
       //회원가입 성공하면, 로그인페이지로 리다이렉트
+      alert('회원가입이 완료되었습니다');
       props.history.push('/login');
     }).catch(e=>{
       //회원가입 실패
       console.log('회원가입 실패', e)
+      console.dir(e);
       if(e.respond && e.respond.status === 204){
         setErrorMsg('이미 존재하는 사용자 입니다');
       }else{
