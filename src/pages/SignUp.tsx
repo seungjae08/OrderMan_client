@@ -101,8 +101,6 @@ export default function SignUp(props: propsTypes) {
       return;
     }
 
-    console.log(id, password, passwordCheck, mobile, brand, address);
-    console.log(serverPath);
 
     //POST 요청
     axios.post(serverPath + '/user/signup',{
