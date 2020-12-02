@@ -1,13 +1,16 @@
-import React, {useState, useCallback, ChangeEvent} from 'react';
+import React, {useState, useEffect, useCallback, ChangeEvent} from 'react';
 import { History } from 'history';
 import {Link} from 'react-router-dom';
 import {serverPath} from 'modules/serverPath';
 import axios from 'axios';
 import Button from 'components/Button';
 import {Header} from 'components/Header';
+import { withCookies, Cookies } from 'react-cookie';
+import {isLogin} from 'modules/checkLogin';
 
 type propsTypes = {
-  history : History
+  history : History,
+  cookies: Cookies
 }
 // declare global {
 //   interface Window {
@@ -17,7 +20,7 @@ type propsTypes = {
 // window.Kakao = window.Kakao || "SomeValue";
 // const {Kakao} = window;
 
-export default function Login(props : propsTypes) {
+function Login(props : propsTypes) {
   
   const [inputs, setInputs] = useState({
     id: '',
@@ -26,6 +29,13 @@ export default function Login(props : propsTypes) {
 
   //error Message
   const [errorMsg, setErrorMsg] = useState('');
+
+  useEffect(() => {
+    console.log(isLogin(props.cookies));
+    if(isLogin(props.cookies)){
+      props.history.push('/');
+    }
+  }, [])
 
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -41,14 +51,17 @@ export default function Login(props : propsTypes) {
     if(inputs.id === "" || inputs.password === ""){
       return;
     }
+
+    console.log(inputs.id, inputs.password)
     //로딩창 setLoading true;
     axios.post(serverPath + '/user/login',{
-      id:inputs.id,
+      userId:inputs.id,
       password:inputs.password
     },{ withCredentials: true }).then(res=>{
       //로그인성공
       //로그인 성공하면, 메인으로 리다이렉트
-      props.history.push('/');
+      console.log(res);
+      //props.history.push('/');
     }).catch(e=>{
       //로그인실패
       console.log('로그인 실패', e)
@@ -69,7 +82,7 @@ export default function Login(props : propsTypes) {
   return (
     <div id="wrap" className="Login-wrap">
       <div className="mb-view verCenter">
-        <Header/>
+        <Header cookies={props.cookies}/>
         <h2>로그인</h2>
         <div className="inputWrap">
           <input type="text" placeholder="아이디" value={inputs.id} onChange={onChange} name="id"/>
@@ -96,3 +109,5 @@ export default function Login(props : propsTypes) {
   )
 }
 
+
+export default withCookies(Login);

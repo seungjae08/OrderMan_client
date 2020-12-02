@@ -162,7 +162,7 @@ input[type="text"]{
 .Header-wrap h1{
   position: absolute;
   left:50%;
-  margin-left: -27px;
+  margin-left: -44px;
   height:35px;
 }
 .Header-wrap h1 img{
@@ -214,6 +214,7 @@ input[type="text"]{
 .Header-wrap.open .Header-menu {
   display:flex;
   top:0;
+  z-index: 10;
 }
 
 .Header-menu li{

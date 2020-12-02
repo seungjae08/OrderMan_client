@@ -9,8 +9,14 @@ import {Date} from 'components/Date'
 import { Link } from 'react-router-dom';
 import Button from 'components/Button';
 import OrderPage from 'components/OrderPage';
+import { withCookies, Cookies } from 'react-cookie';
+import {isLogin} from 'modules/checkLogin';
 
-export default function Main() {
+type propsTypes = {
+  cookies: Cookies
+}
+
+function Main(props:propsTypes) {
   const {orderList/*,isLoading,hasError*/} = useSelector((state:RootState)=> state.MainReducer);
   const {itemList} = useSelector((state:RootState)=> state.OrderReducer);
   const dates = Object.keys(orderList);
@@ -89,7 +95,7 @@ export default function Main() {
   return (  
     <div id="wrap" className="Main-wrap">
       <div className="mb-view">
-      <Header />
+      <Header cookies={props.cookies}/>
       <Date 
         dates={dates} 
         nowdate={selectDate}
@@ -116,3 +122,6 @@ export default function Main() {
     </div>
   )
 }
+
+
+export default withCookies(Main);
