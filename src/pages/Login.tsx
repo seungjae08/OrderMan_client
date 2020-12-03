@@ -5,12 +5,9 @@ import {serverPath} from 'modules/serverPath';
 import axios from 'axios';
 import Button from 'components/Button';
 import {Header} from 'components/Header';
-import { withCookies, Cookies } from 'react-cookie';
-import {isLogin} from 'modules/checkLogin';
 
 type propsTypes = {
-  history : History,
-  cookies: Cookies
+  history : History
 }
 // declare global {
 //   interface Window {
@@ -31,10 +28,10 @@ function Login(props : propsTypes) {
   const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
-    console.log(isLogin(props.cookies));
-    if(isLogin(props.cookies)){
-      props.history.push('/');
-    }
+    // console.log(isLogin(props.cookies));
+    // if(isLogin(props.cookies)){
+    //   props.history.push('/');
+    // }
   }, [])
 
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -52,24 +49,23 @@ function Login(props : propsTypes) {
       return;
     }
 
-    console.log(inputs.id, inputs.password)
     //로딩창 setLoading true;
     axios.post(serverPath + '/user/login',{
       userId:inputs.id,
       password:inputs.password
     },{ withCredentials: true }).then(res=>{
       //로그인성공
-      //로그인 성공하면, 메인으로 리다이렉트
+
       console.log(res);
-      //props.history.push('/');
+      //로그인 성공하면, 메인으로 리다이렉트
+      if(res.status===200){
+        //props.history.push('/');
+      }else if(res.status===204){
+        setErrorMsg('등록되지 않은 아이디이거나 비밀번호가 맞지 않습니다');
+      }
     }).catch(e=>{
       //로그인실패
-      console.log('로그인 실패', e)
-      if(e.respond && e.respond.status === 204){
-        setErrorMsg('등록되지 않은 아이디이거나 비밀번호가 맞지 않습니다');
-      }else{
-        setErrorMsg('로그인에 실패했습니다');
-      }
+      setErrorMsg('로그인에 실패했습니다');
     })
   },[inputs, props.history]);
 
@@ -82,7 +78,7 @@ function Login(props : propsTypes) {
   return (
     <div id="wrap" className="Login-wrap">
       <div className="mb-view verCenter">
-        <Header cookies={props.cookies}/>
+        <Header/>
         <h2>로그인</h2>
         <div className="inputWrap">
           <input type="text" placeholder="아이디" value={inputs.id} onChange={onChange} name="id"/>
@@ -110,4 +106,4 @@ function Login(props : propsTypes) {
 }
 
 
-export default withCookies(Login);
+export default Login;

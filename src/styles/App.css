@@ -51,17 +51,17 @@
 
 #next {
   float: right;
-  border-color: #ff7f00;
+  border-color: #F87946;
   border-radius: 7px 7px 7px 7px;
-  background-color: #ff7f00;
+  background-color: #F87946;
   color: #ffffff;
 }
 
 #previous {
   float: left;
-  border-color: #ff7f00;
+  border-color: #F87946;
   border-radius: 7px 7px 7px 7px;
-  background-color: #ff7f00;
+  background-color: #F87946;
   color: #ffffff;
 }
 
@@ -116,15 +116,15 @@
   height: 25px;
   margin-left: 5px;
   margin-right: 5px;
-  border-color: #ff7f00;
+  border-color: #F87946;
   border-radius: 7px 7px 7px 7px;
-  background-color: #ff7f00;
+  background-color: #F87946;
   color: #ffffff;
 }
 .item-input-btn button{
-  border-color: #ff7f00;
+  border-color: #F87946;
   border-radius: 7px 7px 7px 7px;
-  background-color: #ff7f00;
+  background-color: #F87946;
   color: #ffffff;
 }
 .item-input-unit input{
@@ -141,7 +141,7 @@
 .Main-wrap .Items{
   width: 100%;
   height: auto;
-  border: medium solid #ff7f00;
+  border: medium solid #F87946;
   margin-top: 3px;
 }
 .Main-wrap .Items .item-unit{
@@ -185,9 +185,9 @@
   height: auto;
   width: auto;
   margin-right: 10px;
-  border-color: #ff7f00;
+  border-color: #F87946;
   border-radius: 7px 7px 7px 7px;
-  background-color: #ff7f00;
+  background-color: #F87946;
   color: #ffffff;
 }
 .Main-wrap .Items .quantity-delete .delete{
@@ -212,18 +212,18 @@
   float: right;
   vertical-align: middle;
   bottom: 10px;
-  border-color: #ff7f00;
+  border-color: #F87946;
   border-radius: 7px 7px 7px 7px;
-  background-color: #ff7f00;
+  background-color: #F87946;
   color: #ffffff;
 }
 .Main-wrap #PastOrders .All-select{
   margin: 5px;
   width: 100%;
   height: auto;
-  border-color: #ff7f00;
+  border-color: #F87946;
   border-radius: 7px 7px 7px 7px;
-  background-color: #ff7f00;
+  background-color: #F87946;
   color: #ffffff;
 }
 

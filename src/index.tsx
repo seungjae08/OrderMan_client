@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { CookiesProvider } from 'react-cookie';
 import { createStore, applyMiddleware } from 'redux';
 import { BrowserRouter } from 'react-router-dom'; 
 import { Provider } from 'react-redux';
@@ -18,9 +17,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <CookiesProvider>
-          <App />
-        </CookiesProvider>
+        <App />
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,
