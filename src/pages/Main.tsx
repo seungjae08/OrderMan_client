@@ -1,17 +1,18 @@
-import React,{ useEffect, useState} from 'react';
+import React,{  useEffect, useState} from 'react';
 import {useSelector,useDispatch} from 'react-redux';
 import {RootState} from "../reducers/index";
-import {actionMainCreators as mainActions, Item, OrderListInterface } from "../reducers/main";
-import {actionOrderCreators as orderActions ,Market} from "../reducers/order"
+import {actionMainCreators as mainActions, Item} from "../reducers/main";
+import {actionOrderCreators as orderActions} from "../reducers/order"
 import PastOrders from 'components/PastOrders'
 import {Header}from 'components/Header'
 import {Date} from 'components/Date'
 import OrderPage from 'components/OrderPage';
+import { serverPath } from 'modules/serverPath';
 
 function Main() {
   // Distpach 선언  
   const dispatch = useDispatch();
-
+  
   useEffect(()=>{
     dispatch(mainActions.startUser())
     try{
@@ -25,7 +26,7 @@ function Main() {
       })
       .then(data=>data.json())
       .then(data=>{
-        fetch("httpsL//ordermanserver.online/order/temp",{
+        fetch("https://ordermanserver.online/order/temp",{
           method:"GET",
           mode:"cors",
           credentials:"include",
@@ -33,12 +34,27 @@ function Main() {
             'Content-Type' : 'application/json'
           }
         })
-        .then(data=>data.json())
+        .then(temp=>{console.log(temp); return temp.json()})
         .then(temp=>{
+          console.log(temp)
           dispatch(mainActions.loginUser(data.orderList));
           dispatch(orderActions.orderLoginUser(temp.itemList,data.market));
           let dates_ = Object.keys(data.orderList); 
           setDates(dates_)
+        })
+        fetch(serverPath+"/user/login",{
+          method:"GET",
+          mode:"cors",
+          credentials:"include",
+          headers:{
+            "Content-Type":"application/json"
+          }
+        }).then(login=>{
+          if(login.status===200){
+            setIsLogin(true);
+          }else{
+            setIsLogin(false);
+          }
         })
       })
     }catch(err){
@@ -52,8 +68,9 @@ function Main() {
   const [todayOrder,setTodayOrder] = useState(true)
   const [selectDate, setSelectDate] = useState("");
   const [dates, setDates] = useState([""])
+  const [hopePrice,setHopePrice] = useState(0)
+  const [isLogin,setIsLogin] = useState(false)
 
-  
   // 컴포넌트들이 쓸 함수들 모음
   const rendering =() =>{
     if(isLoading) return <p>Loading~~</p>
@@ -64,6 +81,9 @@ function Main() {
     upItemsUnit={upItemsUnit}
     downItemsUnit={downItemsUnit}
     changeItemsQuantity={changeItemsQuantity}
+    clickOrderButton={clickOrderButton}
+    setHopePrice={setHopePrice}
+    hopePrice={hopePrice}
     itemList={itemList}
   />:<PastOrders 
     orderItemList={itemList}
@@ -90,7 +110,18 @@ function Main() {
   const changeItemsQuantity = (item:Item)=>{
     dispatch(orderActions.orderQuantityChange(item))
   }
+
+  const clickOrderButton = ()=>{
+    fetch(serverPath+"/order/temp",{
+      method: 'POST',
+      mode: 'cors', 
+      credentials: 'include',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({itemList})
+    })
+  }
   
+ 
   return (  
     <div id="wrap" className="Main-wrap">
       <div className="mb-view">

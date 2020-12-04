@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { serverPath } from 'modules/serverPath';
-import {fetchPost, fetchGet} from 'modules/fetchMethod';
 
 type propTypes = {
   noLoginBtn?:boolean;
@@ -39,17 +38,6 @@ export const Header = (props:propTypes) => {
     }
   }
   const onLogout = function(){
-
-    // fetchGet("/user/logout",
-    // (status, res)=>{
-    //   if(status===200){
-    //     setIsLogin(false);
-    //   }
-    // },(e)=>{
-    //   if(e){
-    //     console.log(e);
-    //   }
-    // })
     console.log(serverPath + '/user/logout');
     fetch(serverPath + '/user/logout', {
       method: 'GET',

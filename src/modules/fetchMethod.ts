@@ -25,9 +25,9 @@ export const fetchPost = function(url:string, body:object, cb:callbackTypes, cat
     credentials: 'include',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(body)
-  }).then(async (res)=>{
+  }).then((res)=>{
     console.log(res);
-    let data = await res.json();
+    let data = res.json();
     cb(res.status, data);
   })
   .catch((e:Error)=>{

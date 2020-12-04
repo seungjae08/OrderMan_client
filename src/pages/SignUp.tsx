@@ -3,6 +3,7 @@ import { History } from 'history';
 import Button from 'components/Button';
 import InputBirth from 'components/InputBirth';
 import {fetchPost} from 'modules/fetchMethod';
+import { serverPath } from 'modules/serverPath';
 type propsTypes = {
   history : History
 }
@@ -86,7 +87,6 @@ export default function SignUp(props: propsTypes) {
   },[])
 
   
-
   const onSubmitSignUp = useCallback(()=>{
     console.log('onSubmitSignUp 회원가입 전송..');
 
@@ -98,25 +98,50 @@ export default function SignUp(props: propsTypes) {
       setErrorMsg('모든 항목을 입력해주세요');
       return;
     }
-
-    fetchPost("/user/login",{
-      userId:id, 
-      password, 
-      mobile, 
-      brand, 
-      address,
-      //서버 반영 후, 적용
-      // birth:`${year.slice(2)}-${month}-${day}`
-    },(status, res)=>{
-      if(status===200){
+  
+    fetch(serverPath+"/user/signup",{
+      method: 'POST',
+      mode: 'cors', 
+      credentials: 'include',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({userId:id, 
+        password, 
+        mobile, 
+        brand, 
+        address,
+        //서버 반영 후, 적용
+        birth:`${year.slice(2)}-${month}-${day}`})
+    }).then(res=>{
+      console.log(res)
+      if(res.status===200){
         alert('회원가입이 완료되었습니다');
         props.history.push('/login');
-      }else if(status===204){
+      }else if(res.status===204){
         setErrorMsg('이미 존재하는 사용자 입니다');
       }
-    },(err)=>{
-      setErrorMsg('회원가입이 정상적으로 이뤄지지 않았습니다');
+      return res.json()
+    }).catch(err=>{
+      setErrorMsg("회원가입이 정상적으로 이뤄지지 않습니다.")
     })
+    // fetchPost("/user/signup",{
+    //   userId:id, 
+    //   password, 
+    //   mobile, 
+    //   brand, 
+    //   address,
+    //   //서버 반영 후, 적용
+    //   birth:`${year.slice(2)}-${month}-${day}`
+    // },(status, res)=>{
+    //   console.log(typeof status)
+    //   if(status===200){
+    //     alert('회원가입이 완료되었습니다');
+    //     props.history.push('/login');
+    //   }else if(status===204){
+    //     setErrorMsg('이미 존재하는 사용자 입니다');
+    //   }
+    // },(err)=>{
+    //   setErrorMsg('회원가입이 정상적으로 이뤄지지 않았습니다');
+    // })
 
   },[inputs, props.history]);
 
