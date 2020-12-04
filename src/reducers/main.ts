@@ -5,12 +5,12 @@ export interface Item{
   unit : string;
 }
 
-export interface OderListInterface{
+export interface OrderListInterface{
   [key:string] : Item[]
 } 
 
 export interface OrderStates{
-  orderList : OderListInterface;
+  orderList : OrderListInterface;
   isLoading : boolean;
   hasError : boolean;
 }
@@ -45,7 +45,7 @@ export type MainActionTypes =
   | StartUserAction
   | ErrorGetAction
 
-export function loginUser(orderList: OderListInterface){
+export function loginUser(orderList: OrderListInterface){
   return{
     type:LoginUser,
     payload : {orderList}
@@ -63,8 +63,6 @@ export function startUser(){
     type: StartUser
   }
 }
-
-
 
 export function errorGet(){
   return{
@@ -112,6 +110,7 @@ export function MainReducer(
     case ErrorGet:
       return {
         ...state,
+        isLoading:false,
         hasError :true
       }
     default:

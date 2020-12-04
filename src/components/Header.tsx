@@ -24,7 +24,7 @@ export const Header = () => {
         <img src="/assets/menu_bar.png" alt="메뉴바"/>
       </div>
       <h1 className="Header-h1">
-        <img src="/assets/header_title.png" alt="오다맨"/>
+          <img src="/assets/header_title.png" alt="오다맨"/>
       </h1>
       <div className="Header-loginbtn">
         <Link to="/Login" >

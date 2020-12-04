@@ -14,6 +14,7 @@ export const Date = ({dates,nowdate,setNowdate,todayOrder,setTodayOrder}:DatePro
     var [slide_wrap,setSlide_wrap] = useState(Number(document.getElementById("slide-wrap")?.clientWidth))
     var ulstyle_width = String(slide_wrap/5*dates.length) + "px"
     useEffect(()=>{
+        console.log(dates.length)
         setSlide_wrap(Number(document.getElementById("slide-wrap")?.clientWidth))
         ulstyle_width = String(slide_wrap/5*dates.length) + "px"
     },[])
@@ -44,7 +45,7 @@ export const Date = ({dates,nowdate,setNowdate,todayOrder,setTodayOrder}:DatePro
     }
     
     return(
-        <div id="Date-wrap">구매 내역 선택
+        <div id="Date-wrap">{(dates.length>0)?"구매 내역 선택":""}
         {(dates.length>5)?<button className="slide-btn" id="previous" onClick={(()=>{plusSlides(-1)})}>{"<"}</button>:""}
         {(dates.length>5)?<button className="slide-btn" id="next"onClick={(()=>{plusSlides(1)})}>{">"}</button>:""}
         <div className="Main-Date">
