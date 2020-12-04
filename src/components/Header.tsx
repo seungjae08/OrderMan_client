@@ -64,9 +64,8 @@ export const Header = (props:propTypes) => {
         <img src="/assets/menu_bar.png" alt="메뉴바"/>
       </div>
       <h1 className="Header-h1">
-        <Link to="/">
           <img src="/assets/header_title.png" alt="오다맨"/>
-        </Link>
+
       </h1>
       <div className="Header-loginbtn">
         {
