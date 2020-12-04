@@ -38,6 +38,7 @@ export const Header = (props:propTypes) => {
     }
   }
   const onLogout = function(){
+
     fetch(serverPath + '/user/logout', {
       method: 'GET',
       mode: 'cors', 

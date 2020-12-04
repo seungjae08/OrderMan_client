@@ -50,7 +50,7 @@ export default function ItemsInput({OrderCreateItem}:ItemsInputProps) {
                 <p id="quantity">수량</p>
                 <div className="item-input-unit">
                     <button onClick={()=>{setQuantity(quantity+1)}}>+</button>
-                    <input value={quantity}  onChange={inputQuantityChange}/>
+                    <input type="number" value={quantity}  onChange={inputQuantityChange}/>
                     <button onClick={()=>{setQuantity((quantity<=0)?0:quantity-1)}}>-</button>
                 </div>
                 <button onClick={onSubmit}>주문 올려놓기!</button>

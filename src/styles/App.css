@@ -48,7 +48,12 @@
   height: 70px;
   cursor: pointer;
 }
-
+.Main-wrap .order-btn{
+  border-color: #F87946;
+  border-radius: 7px 7px 7px 7px;
+  background-color: #F87946;
+  color: #ffffff;
+}
 #next {
   float: right;
   border-color: #F87946;
