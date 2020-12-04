@@ -101,14 +101,27 @@ export default function UnSigninOrder
       return;
     }
 
-    axios.post(serverPath + '/unknown/info',{
-      mobile: inputs.mobile,
-      address: inputs.address,
-      brand : inputs.brand,
-      birth:`${year.slice(2)}-${month}-${day}`
-    },{ withCredentials: true }).then((res)=>{
-      props.history.push('/order');
-    });
+
+    fetch(serverPath + '/unknown/info', {
+      method: 'POST',
+      mode: 'cors', 
+      credentials: 'include',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        mobile: inputs.mobile,
+        address: inputs.address,
+        brand : inputs.brand,
+        birth:`${year.slice(2)}-${Number(month)<10?'0'+month:month}-${Number(day)<10?'0'+day:day}`  
+      })
+    }).then((res)=>{
+      if(res.status===200){
+        props.history.push('/order');
+      }
+    })
+    .catch((e:Error)=>{
+      console.log(e);
+    })
+
 
   },[inputs, props.history]);
 

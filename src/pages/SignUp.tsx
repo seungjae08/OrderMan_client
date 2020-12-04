@@ -98,6 +98,8 @@ export default function SignUp(props: propsTypes) {
       return;
     }
 
+    console.log(month, day);
+
     fetch("https://ordermanserver.online/user/signup", {
       method: 'POST',
       mode: 'cors', 
@@ -109,7 +111,7 @@ export default function SignUp(props: propsTypes) {
         mobile, 
         brand, 
         address,
-        birth:`${year.slice(2)}-${month}-${day}`
+        birth:`${year.slice(2)}-${Number(month)<10?'0'+month:month}-${Number(day)<10?'0'+day:day}`
       })
     }).then((res)=>{
       if(res.status===200){
