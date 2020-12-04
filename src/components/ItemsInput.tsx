@@ -38,7 +38,7 @@ export default function ItemsInput({OrderCreateItem}:ItemsInputProps) {
                 onChange={itemnameChange}
                 />
                 <p>단위를 적어주세요! </p>
-                <p>ex)1kg,1망,1단</p>
+                <p>ex)1kg,1망,1단,1개</p>
                 <input 
                 className="item-input"
                 placeholder="주문 하실 물건의 단위를 입력해주세요"

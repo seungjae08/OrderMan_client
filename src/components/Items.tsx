@@ -16,23 +16,21 @@ export const Items = ({item,deleteItem,upItemsUnit,downItemsUnit,changeItemsQuan
     return(
         <div className="Items">
             <div className="item-unit">
-                <p>품명 : {item.item}</p>
-                <p>단위 : {item.unit} </p>
+                <p>{item.item + "    "} {item.unit}
                 <div className="quantity-delete">
-                
+                    <div className="delete">
+                        <button onClick={()=>{deleteItem(item)}}>삭제</button>
+                    </div>
                     <div className="quantity">
-                        <p>수량 :</p>
                         <div>
                         <button onClick={()=>{upItemsUnit(item)}}>+</button>
                         <input  value={item.quantity} onChange={changeQuantity} />
                         <button onClick={()=>{downItemsUnit(item)}}>-</button>
                         </div>
-                    </div>
-                    <div className="delete">
-                        <button onClick={()=>{deleteItem(item)}}>삭제</button>
-                    </div>
-                    
+                    </div>                    
                 </div>
+                 </p>
+                
             </div>
             
             
