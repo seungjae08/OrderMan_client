@@ -2,8 +2,10 @@ import React, {useState,useEffect, useCallback, ChangeEvent} from 'react';
 import { History } from 'history';
 import Button from 'components/Button';
 import InputBirth from 'components/InputBirth';
+
 import {fetchPost} from 'modules/fetchMethod';
 import { serverPath } from 'modules/serverPath';
+
 type propsTypes = {
   history : History
 }
@@ -98,30 +100,36 @@ export default function SignUp(props: propsTypes) {
       setErrorMsg('모든 항목을 입력해주세요');
       return;
     }
-  
-    fetch(serverPath+"/user/signup",{
+
+
+    fetch("https://ordermanserver.online/user/signup", {
+
       method: 'POST',
       mode: 'cors', 
       credentials: 'include',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({userId:id, 
+
+      body: JSON.stringify({
+        userId:id, 
         password, 
         mobile, 
         brand, 
         address,
-        //서버 반영 후, 적용
-        birth:`${year.slice(2)}-${month}-${day}`})
-    }).then(res=>{
-      console.log(res)
+        birth:`${year.slice(2)}-${Number(month)<10?'0'+month:month}-${Number(day)<10?'0'+day:day}`
+      })
+    }).then((res)=>{
+
       if(res.status===200){
         alert('회원가입이 완료되었습니다');
         props.history.push('/login');
       }else if(res.status===204){
         setErrorMsg('이미 존재하는 사용자 입니다');
       }
-      return res.json()
-    }).catch(err=>{
-      setErrorMsg("회원가입이 정상적으로 이뤄지지 않습니다.")
+
+    })
+    .catch((e:Error)=>{
+      console.log(e);
+
     })
     // fetchPost("/user/signup",{
     //   userId:id, 

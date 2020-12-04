@@ -2,8 +2,8 @@ import React, {useState, useEffect, useCallback, ChangeEvent} from 'react';
 import { History } from 'history';
 import {Link} from 'react-router-dom';
 import Button from 'components/Button';
-import {Header} from 'components/Header';
-import {fetchPost} from 'modules/fetchMethod';
+import { serverPath } from 'modules/serverPath';
+import { Header } from 'components/Header';
 
 type propsTypes = {
   history : History
@@ -48,18 +48,25 @@ function Login(props : propsTypes) {
       return;
     }
 
-  fetchPost("/user/login",{
-    userId: inputs.id,
-    password: inputs.password
-  },(status, res)=>{
-    if(status===200){
-      props.history.push('/');
-    }else if(status===204){
-      setErrorMsg('등록되지 않은 아이디이거나 비밀번호가 맞지 않습니다');
-    }
-  },(e)=>{
-    setErrorMsg('로그인에 실패했습니다');
-  })
+    fetch(serverPath + "/user/login", {
+      method: 'POST',
+      mode: 'cors', 
+      credentials: 'include',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        userId: inputs.id,
+        password: inputs.password
+      })
+    }).then((res)=>{
+      if(res.status===200){
+        props.history.push('/');
+      }else if(res.status===204){
+        setErrorMsg('등록되지 않은 아이디이거나 비밀번호가 맞지 않습니다');
+      }
+    })
+    .catch((e:Error)=>{
+      setErrorMsg('로그인에 실패했습니다');
+    })
   
   },[inputs, props.history]);
 
