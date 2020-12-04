@@ -167,6 +167,11 @@ select {
   margin-left: -44px;
   height:35px;
 }
+
+.Header-wrap h1 > a{
+  height: 100%;
+}
+
 .Header-wrap h1 img{
   height: 100%;
   padding-top: 2px;

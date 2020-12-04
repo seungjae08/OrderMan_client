@@ -2,8 +2,8 @@ import React, {useRef, useState, useEffect, useCallback, ChangeEvent, MouseEvent
 import {useSelector, useDispatch} from 'react-redux';
 import {serverPath} from 'modules/serverPath';
 import { History } from 'history';
-import axios from 'axios';
-import Button from 'components/Button'
+import Button from 'components/Button';
+import {Header} from 'components/Header';
 import getDayOption from 'modules/calcurateDayOption';
 import { renderHour } from 'modules/calcurateDayOption';
 import { resultType, validateOrderDate} from 'modules/calcurateDayOption';
@@ -62,7 +62,6 @@ export default function Order(props:propsTypes) {
   }, [marketMobile]);
 
   useEffect(() => {
-    console.log('mount');
     onValidateDate();
   }, []);
 
@@ -140,16 +139,34 @@ export default function Order(props:propsTypes) {
   const onSubmitOrderOption = useCallback((event: MouseEvent<HTMLInputElement, globalThis.MouseEvent>)=>{
     console.log('주문들어갑니다');
 
-    const axiosPostMarket = axios.post(serverPath + '/order/market',{
+    const fetchPostMarket = fetch( serverPath + "/order/market", {
+      method: 'POST', 
+      mode: 'cors', 
+      credentials: 'include', 
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body:JSON.stringify({
       mobile: marketMobile
-    },{ withCredentials: true });
-    const axiosPostOption = axios.post(serverPath + '/order/items',{
-      paymentMethod:OrderOption.payment,
-      deliveryTime: OrderOption.deliveryTime,
-      itemList
-    },{ withCredentials: true });
+      })
+    })
+
+    const fetchPostOption = fetch( serverPath + '/order/items', {
+      method: 'POST', 
+      mode: 'cors',
+      credentials: 'include', 
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body:JSON.stringify({
+        paymentMethod:OrderOption.payment,
+        deliveryTime: OrderOption.deliveryTime,
+        itemList,
+        //hopePrice
+      })
+    });
     
-    Promise.all([axiosPostMarket, axiosPostOption]).then(function(values) {
+    Promise.all([fetchPostMarket, fetchPostOption]).then(function(values) {
       //둘다 전송완료 후 
       console.log(values);
       props.history.push('/');
@@ -161,6 +178,7 @@ export default function Order(props:propsTypes) {
   return (
     <div id="wrap" className="Order-wrap">
       <div className="mb-view verCenter">
+        <Header/>
         <h2>주문 옵션 설정</h2>
         <h3>선호하는 거래처(연락처)가 있으신가요?</h3>
         <ul className="flex Order-selList1" onBlur={dispatchChangeMarket}>
