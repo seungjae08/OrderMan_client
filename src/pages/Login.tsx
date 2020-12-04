@@ -1,10 +1,9 @@
 import React, {useState, useEffect, useCallback, ChangeEvent} from 'react';
 import { History } from 'history';
 import {Link} from 'react-router-dom';
-import {serverPath} from 'modules/serverPath';
-import axios from 'axios';
 import Button from 'components/Button';
 import {Header} from 'components/Header';
+import {fetchPost} from 'modules/fetchMethod';
 
 type propsTypes = {
   history : History
@@ -49,24 +48,19 @@ function Login(props : propsTypes) {
       return;
     }
 
-    //로딩창 setLoading true;
-    axios.post(serverPath + '/user/login',{
-      userId:inputs.id,
-      password:inputs.password
-    },{ withCredentials: true }).then(res=>{
-      //로그인성공
-
-      console.log(res);
-      //로그인 성공하면, 메인으로 리다이렉트
-      if(res.status===200){
-        //props.history.push('/');
-      }else if(res.status===204){
-        setErrorMsg('등록되지 않은 아이디이거나 비밀번호가 맞지 않습니다');
-      }
-    }).catch(e=>{
-      //로그인실패
-      setErrorMsg('로그인에 실패했습니다');
-    })
+  fetchPost("/user/login",{
+    userId: inputs.id,
+    password: inputs.password
+  },(status, res)=>{
+    if(status===200){
+      props.history.push('/');
+    }else if(status===204){
+      setErrorMsg('등록되지 않은 아이디이거나 비밀번호가 맞지 않습니다');
+    }
+  },(e)=>{
+    setErrorMsg('로그인에 실패했습니다');
+  })
+  
   },[inputs, props.history]);
 
   // const onKakaoLoginHandler = function(){
@@ -104,6 +98,5 @@ function Login(props : propsTypes) {
     </div>
   )
 }
-
 
 export default Login;

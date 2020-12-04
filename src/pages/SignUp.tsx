@@ -1,9 +1,8 @@
 import React, {useState,useEffect, useCallback, ChangeEvent} from 'react';
 import { History } from 'history';
-import {serverPath} from 'modules/serverPath';
-import axios from 'axios';
 import Button from 'components/Button';
 import InputBirth from 'components/InputBirth';
+import {fetchPost} from 'modules/fetchMethod';
 type propsTypes = {
   history : History
 }
@@ -78,7 +77,6 @@ export default function SignUp(props: propsTypes) {
     }));
   },[]);
 
-
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInputs((inputs) => ({
@@ -101,30 +99,25 @@ export default function SignUp(props: propsTypes) {
       return;
     }
 
-
-    //POST 요청
-    axios.post(serverPath + '/user/signup',{
+    fetchPost("/user/login",{
       userId:id, 
       password, 
       mobile, 
       brand, 
       address,
-      birth:`${year.slice(2)}-${month}-${day}`
-    },{ withCredentials: true }).then(res=>{
-      //회원가입 성공
-      //회원가입 성공하면, 로그인페이지로 리다이렉트
-      console.log(res);
-      if(res.status===200){
+      //서버 반영 후, 적용
+      // birth:`${year.slice(2)}-${month}-${day}`
+    },(status, res)=>{
+      if(status===200){
         alert('회원가입이 완료되었습니다');
         props.history.push('/login');
-      }else if(res.status===204){
+      }else if(status===204){
         setErrorMsg('이미 존재하는 사용자 입니다');
       }
-      
-    }).catch(e=>{
-      //회원가입 실패
-      setErrorMsg('회원가입에 실패했습니다.');
+    },(err)=>{
+      setErrorMsg('회원가입이 정상적으로 이뤄지지 않았습니다');
     })
+
   },[inputs, props.history]);
 
   return (

@@ -4,6 +4,7 @@ import { History } from 'history';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 import InputBirth from 'components/InputBirth';
+import { Header } from 'components/Header'
 //import { useDispatch, useSelector } from 'react-redux';
 //import { RootState } from 'reducers';
 import Button from 'components/Button';
@@ -42,12 +43,13 @@ export default function UnSigninOrder
 
   //error Message
   const [errorMsg, setErrorMsg] = useState('');
-  // const dispatch = useDispatch();
-
-  // const unSignInfo = useSelector((state:RootState)=>state.OrderReducer.unSignInfo);
 
   useEffect(() => {
-    //mount
+    //장바구니 임시저장 불러오기
+    axios.get(serverPath + '/order/temp', { withCredentials: true }).then(res=>{
+      console.log(res);
+    })
+
     let [yearList, monthList, dayList] = generateBirth();
     setInputs((inputs)=>({
       ...inputs,
@@ -93,21 +95,19 @@ export default function UnSigninOrder
   },[])
 
   const onDispatchUnSignOrder = useCallback(()=>{
-    console.log('UnSigninOrder 디스패치 입력..');
     let {mobile, brand, address, year, month, day} = inputs;
     if(mobile === "" || brand === "" || address === ""){
       setErrorMsg('모든 항목을 입력해주세요');
       return;
     }
 
-    console.log(inputs);
     axios.post(serverPath + '/unknown/info',{
       mobile: inputs.mobile,
       address: inputs.address,
       brand : inputs.brand,
       birth:`${year.slice(2)}-${month}-${day}`
     },{ withCredentials: true }).then((res)=>{
-      props.history.push('/order')
+      props.history.push('/order');
     });
 
   },[inputs, props.history]);
@@ -115,6 +115,7 @@ export default function UnSigninOrder
   return (
     <div id="wrap" className="UnSignInOrder-wrap">
       <div className="mb-view verCenter">
+        <Header/>
         <h2>비회원 로그인</h2>
         {/* <h3>휴대폰인증</h3> */}
         <div className="inputWrap">
