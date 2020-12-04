@@ -138,39 +138,56 @@ export default function Order(props:propsTypes) {
 
   const onSubmitOrderOption = useCallback((event: MouseEvent<HTMLInputElement, globalThis.MouseEvent>)=>{
     console.log('주문들어갑니다');
+    fetchBoth()
 
-    const fetchPostMarket = fetch( serverPath + "/order/market", {
-      method: 'POST', 
-      mode: 'cors', 
-      credentials: 'include', 
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      body:JSON.stringify({
-      mobile: marketMobile
+    function fetchBoth(){
+      const fetchPostMarket = fetch( serverPath + "/order/market", {
+        method: 'POST', 
+        mode: 'cors', 
+        credentials: 'include', 
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body:JSON.stringify({
+          mobile: marketMobile
+        })
+      }).then(res=>{
+        console.log(res.status);
+      }).catch(e=>{
+        console.log(e)
       })
-    })
 
-    const fetchPostOption = fetch( serverPath + '/order/items', {
-      method: 'POST', 
-      mode: 'cors',
-      credentials: 'include', 
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      body:JSON.stringify({
-        paymentMethod:OrderOption.payment,
-        deliveryTime: OrderOption.deliveryTime,
-        itemList,
-        //hopePrice
-      })
-    });
+  
+      const fetchPostOption = fetch( serverPath + '/order/items', {
+        method: 'POST', 
+        mode: 'cors',
+        credentials: 'include', 
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body:JSON.stringify({
+          paymentMethod:OrderOption.payment,
+          deliveryTime: OrderOption.deliveryTime,
+          itemList,
+          hopePrice:"400000",
+          date: toDay.slice(2)
+        })
+      }).then(res=>{
+        console.log('items', res.status)
+      }).catch(e=>{
+        console.log(e)
+      });
+
+      
+
+      Promise.all([fetchPostMarket, fetchPostOption]).then(function(values) {
+        //둘다 전송완료 후 
+        console.log(fetchPostOption);
+        alert('주문이 완료되었습니다')
+        //props.history.push('/');
+      });
+    }
     
-    Promise.all([fetchPostMarket, fetchPostOption]).then(function(values) {
-      //둘다 전송완료 후 
-      console.log(values);
-      props.history.push('/');
-    });
 
   },[ marketMobile, OrderOption, props.history, itemList]);
 
