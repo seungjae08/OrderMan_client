@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import { serverPath } from 'modules/serverPath';
 
@@ -11,26 +11,6 @@ type propTypes = {
 export const Header = ({noLoginBtn,isLogin,setIsLogin}:propTypes) => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
-
-  // useEffect(() => {
-  //   //로그인확인 
-  //   fetch( serverPath + "/user/login", {
-  //     method: 'GET', 
-  //     mode: 'cors', 
-  //     credentials: 'include', 
-  //     headers: {
-  //         'Content-Type': 'application/json',
-  //     }
-  //   }).then(res=>{
-  //     if(res.status === 200){
-  //       //회원
-  //       setIsLogin(true);
-  //     }else{
-  //       setIsLogin(false);
-  //     }
-  //   });
-  // },[])
 
   const toggleMenuOpen = function(){
     if(isMenuOpen){
@@ -64,29 +44,31 @@ export const Header = ({noLoginBtn,isLogin,setIsLogin}:propTypes) => {
   return (
     <div className={isMenuOpen? "Header-wrap open" : "Header-wrap"}>
       <div className="Header-menuBar" onClick={toggleMenuOpen}>
-        <img src="/assets/menu_bar.png" alt="메뉴바"/>
+        {/* <img src="/assets/menu_bar.png" alt="메뉴바"/> */}
       </div>
       <h1 className="Header-h1">
+        <Link to="/">
           <img src="/assets/header_title.png" alt="오다맨" />
+        </Link>
       </h1>
       <div className="Header-loginbtn">
         {
           isLoginForm
         }
       </div>
-      <ul className="Header-menu">
+      {/* <ul className="Header-menu">
         <li>
           <Link to="/">홈</Link>
         </li>
-        {/* <li>마이페이지</li>
-        <li>가계부</li> */}
-        {/* {
+        <li>마이페이지</li>
+        <li>가계부</li>
+        {
           loginStatus?
           (
             <li onClick={onLogout}>로그아웃</li>
           ): null
-        } */}
-      </ul>
+        }
+      </ul> */}
     </div>
   )
 }
