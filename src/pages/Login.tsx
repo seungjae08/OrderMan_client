@@ -17,7 +17,8 @@ type propsTypes = {
 // const {Kakao} = window;
 
 function Login(props : propsTypes) {
-  
+
+  const [isLogin,setIsLogin] = useState(false)
   const [inputs, setInputs] = useState({
     id: '',
     password: ''
@@ -27,10 +28,21 @@ function Login(props : propsTypes) {
   const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
-    // console.log(isLogin(props.cookies));
-    // if(isLogin(props.cookies)){
-    //   props.history.push('/');
-    // }
+    
+    fetch(serverPath+"/user/login",{
+      method:"GET",
+      mode:"cors",
+      credentials:"include",
+      headers:{
+        "Content-Type":"application/json"
+      }
+    }).then(login=>{
+      if(login.status===200){
+        setIsLogin(true);
+      }else if(login.status ===202){
+        setIsLogin(false);
+      }
+    })
   }, [])
 
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -79,7 +91,7 @@ function Login(props : propsTypes) {
   return (
     <div id="wrap" className="Login-wrap">
       <div className="mb-view verCenter">
-        <Header/>
+        <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
         <h2>로그인</h2>
         <div className="inputWrap">
           <input type="text" placeholder="아이디" value={inputs.id} onChange={onChange} name="id"/>

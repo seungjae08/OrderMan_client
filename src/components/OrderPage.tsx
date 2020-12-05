@@ -14,6 +14,8 @@ type OrderPageProps ={
     changeItemsQuantity :(item:Item)=>void
     clickOrderButton : ()=>void;
     setHopePrice : (num : number)=>void;
+    setisLogin : (bool : boolean)=>void;
+    isLogin : boolean;
     hopePrice: number
     itemList : Item[];
 }
@@ -26,6 +28,8 @@ export default function OrderPage({
     changeItemsQuantity,
     clickOrderButton,
     setHopePrice,
+    setisLogin,
+    isLogin,
     hopePrice,
     itemList} : OrderPageProps) {
     const changeHopePrice = (e:ChangeEvent<HTMLInputElement>)=>{
@@ -34,6 +38,17 @@ export default function OrderPage({
             setHopePrice(Number(e.target.value))
         }
       }
+    const orderBtnAtLogState = ()=>{
+        if(isLogin){
+            return<Link to="/order">
+                        <button className="order-btn" onClick={clickOrderButton}>주문하기</button>
+                    </Link>
+        }else{
+            return<Link to="/order/unsignin">
+                        <button className="order-btn" onClick={clickOrderButton}>주문하기</button>
+                    </Link>
+        }
+    }
     return (
         <div>
             <ItemsInput OrderCreateItem={createItem} />
@@ -41,9 +56,7 @@ export default function OrderPage({
             <div className="order">
                 예상금액 : 
                 <input type="number" value={hopePrice} onChange={changeHopePrice} />
-                <Link to="/Order">
-                    <button className="order-btn" onClick={clickOrderButton}>주문하기</button>
-                </Link>
+                {orderBtnAtLogState()}
             </div>
         </div>
     )

@@ -4,31 +4,33 @@ import { serverPath } from 'modules/serverPath';
 
 type propTypes = {
   noLoginBtn?:boolean;
+  isLogin : boolean,
+  setIsLogin : (e : boolean)=>void
 }
 
-export const Header = (props:propTypes) => {
+export const Header = ({noLoginBtn,isLogin,setIsLogin}:propTypes) => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
+  
 
-  useEffect(() => {
-    //로그인확인 
-    fetch( serverPath + "/user/login", {
-      method: 'GET', 
-      mode: 'cors', 
-      credentials: 'include', 
-      headers: {
-          'Content-Type': 'application/json',
-      }
-    }).then(res=>{
-      if(res.status === 200){
-        //회원
-        setIsLogin(true);
-      }else{
-        setIsLogin(false);
-      }
-    });
-  },[])
+  // useEffect(() => {
+  //   //로그인확인 
+  //   fetch( serverPath + "/user/login", {
+  //     method: 'GET', 
+  //     mode: 'cors', 
+  //     credentials: 'include', 
+  //     headers: {
+  //         'Content-Type': 'application/json',
+  //     }
+  //   }).then(res=>{
+  //     if(res.status === 200){
+  //       //회원
+  //       setIsLogin(true);
+  //     }else{
+  //       setIsLogin(false);
+  //     }
+  //   });
+  // },[])
 
   const toggleMenuOpen = function(){
     if(isMenuOpen){
@@ -44,7 +46,7 @@ export const Header = (props:propTypes) => {
       mode: 'cors', 
       credentials: 'include',
       headers: {'Content-Type': 'application/json'}
-    }).then(async (res)=>{
+    }).then((res)=>{
       console.log(res);
       if(res.status===200){
         alert('로그아웃되었습니다');
@@ -65,13 +67,10 @@ export const Header = (props:propTypes) => {
         <img src="/assets/menu_bar.png" alt="메뉴바"/>
       </div>
       <h1 className="Header-h1">
-          <img src="/assets/header_title.png" alt="오다맨"/>
-
+          <img src="/assets/header_title.png" alt="오다맨" />
       </h1>
       <div className="Header-loginbtn">
         {
-          props.noLoginBtn ? 
-          null:
           isLoginForm
         }
       </div>
