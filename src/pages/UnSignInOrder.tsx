@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useCallback, ChangeEvent} from 'react';
 import {serverPath} from 'modules/serverPath';
 import { History } from 'history';
-import axios from 'axios';
 import {Link} from 'react-router-dom';
 import InputBirth from 'components/InputBirth';
 import { Header } from 'components/Header'
@@ -59,10 +58,6 @@ export default function UnSigninOrder
       }else if(login.status ===202){
         setIsLogin(false);
       }
-    })
-
-    axios.get(serverPath + '/order/temp', { withCredentials: true }).then(res=>{
-      console.log(res);
     })
 
     let [yearList, monthList, dayList] = generateBirth();
