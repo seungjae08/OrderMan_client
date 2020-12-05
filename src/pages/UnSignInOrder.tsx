@@ -40,12 +40,27 @@ export default function UnSigninOrder
     month:"1",
     day:"1"
   });
-
+  const [isLogin,setIsLogin] = useState(false)
   //error Message
   const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
     //장바구니 임시저장 불러오기
+    fetch(serverPath+"/user/login",{
+      method:"GET",
+      mode:"cors",
+      credentials:"include",
+      headers:{
+        "Content-Type":"application/json"
+      }
+    }).then(login=>{
+      if(login.status===200){
+        setIsLogin(true);
+      }else if(login.status ===202){
+        setIsLogin(false);
+      }
+    })
+
     axios.get(serverPath + '/order/temp', { withCredentials: true }).then(res=>{
       console.log(res);
     })
@@ -128,8 +143,9 @@ export default function UnSigninOrder
   return (
     <div id="wrap" className="UnSignInOrder-wrap">
       <div className="mb-view verCenter">
-        <Header/>
+        <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
         <h2>비회원 로그인</h2>
+        
         {/* <h3>휴대폰인증</h3> */}
         <div className="inputWrap">
           <div className="flex">

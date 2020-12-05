@@ -16,7 +16,8 @@ function Main() {
   useEffect(()=>{
     dispatch(mainActions.startUser())
     try{
-      fetch("https://dhejaos.tk/totalinfo",{
+      console.log("fetch 안해?")
+      fetch(serverPath+"/totalinfo",{
         method:"GET",
         mode:"cors",
         credentials:"include",
@@ -26,7 +27,7 @@ function Main() {
       })
       .then(data=>data.json())
       .then(data=>{
-        fetch("https://ordermanserver.online/order/temp",{
+        fetch(serverPath+"/order/temp",{
           method:"GET",
           mode:"cors",
           credentials:"include",
@@ -52,15 +53,17 @@ function Main() {
         }).then(login=>{
           if(login.status===200){
             setIsLogin(true);
-          }else{
+          }else if(login.status ===202){
             setIsLogin(false);
           }
         })
       })
     }catch(err){
+      console.log(err)
       dispatch(mainActions.errorGet());
     }
-  },[])
+  },[]);
+
   const {orderList,isLoading,hasError} = useSelector((state:RootState) => state.MainReducer);
   const {itemList} = useSelector((state:RootState)=> state.OrderReducer);
   
@@ -83,6 +86,8 @@ function Main() {
     changeItemsQuantity={changeItemsQuantity}
     clickOrderButton={clickOrderButton}
     setHopePrice={setHopePrice}
+    setisLogin={setIsLogin}
+    isLogin={isLogin}
     hopePrice={hopePrice}
     itemList={itemList}
   />:<PastOrders 
@@ -125,7 +130,7 @@ function Main() {
   return (  
     <div id="wrap" className="Main-wrap">
       <div className="mb-view">
-      <Header />
+      <Header isLogin={isLogin} setIsLogin={setIsLogin} />
       <Date 
         dates={dates} 
         nowdate={selectDate}

@@ -9,6 +9,7 @@ import { renderHour } from 'modules/calcurateDayOption';
 import { resultType, validateOrderDate} from 'modules/calcurateDayOption';
 import { RootState } from 'reducers';
 import { changeMarketMobile, changePayment, changeDeliveryTime } from 'reducers/order';
+import { Link } from 'react-router-dom';
 
 type propsTypes = {
   history : History
@@ -31,6 +32,7 @@ export default function Order(props:propsTypes) {
 
   const [hList, setHList] = useState(hourList);
   const [mList, setMList] = useState(minList);
+  const [isLogin,setIsLogin] = useState(false)
 
   const marketMobile = useSelector((state:RootState)=>state.OrderReducer.market.mobile);
   const OrderOption = useSelector((state:RootState)=>state.OrderReducer.option);
@@ -62,6 +64,20 @@ export default function Order(props:propsTypes) {
   }, [marketMobile]);
 
   useEffect(() => {
+    fetch(serverPath+"/user/login",{
+      method:"GET",
+      mode:"cors",
+      credentials:"include",
+      headers:{
+        "Content-Type":"application/json"
+      }
+    }).then(login=>{
+      if(login.status===200){
+        setIsLogin(true);
+      }else if(login.status ===202){
+        setIsLogin(false);
+      }
+    })
     onValidateDate();
   }, []);
 
@@ -195,7 +211,7 @@ export default function Order(props:propsTypes) {
   return (
     <div id="wrap" className="Order-wrap">
       <div className="mb-view verCenter">
-        <Header/>
+        <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
         <h2>주문 옵션 설정</h2>
         <h3>선호하는 거래처(연락처)가 있으신가요?</h3>
         <ul className="flex Order-selList1" onBlur={dispatchChangeMarket}>
@@ -252,7 +268,10 @@ export default function Order(props:propsTypes) {
           </li>
         </ul>
         <div onClick={onSubmitOrderOption}>
-          <Button>주문완료</Button>
+          <Link to="/">
+            <Button>주문완료</Button>
+          </Link>
+          
         </div>
       </div>
     </div>
