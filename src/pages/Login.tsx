@@ -8,6 +8,7 @@ import { Header } from 'components/Header';
 type propsTypes = {
   history : History
 }
+
 // declare global {
 //   interface Window {
 //     Kakao: any;
