@@ -122,11 +122,14 @@ function Main() {
       mode: 'cors', 
       credentials: 'include',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({itemList})
+      body: JSON.stringify({
+        itemList,
+        hopePrice
+      })
     })
   }
   
- 
+
   return (  
     <div id="wrap" className="Main-wrap">
       <div className="mb-view">
