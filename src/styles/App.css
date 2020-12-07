@@ -248,11 +248,36 @@
   margin-top: 20px;
 }
 
-
 .Order-wrap input[type="text"], 
 .Order-wrap select{
   height:40px;
   border:1px solid black;
+}
+
+.Order-hopePrice{
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+}
+.Order-hopePrice h3{
+  min-width: 80px;
+  margin-top: 0;
+}
+
+.Order-hopePrice .flexWrap {
+  display:flex;
+  align-items: center;
+  width:auto;
+  margin-bottom: 10px;
+}
+.Order-hopePrice .flexWrap p{
+  color:#F87946;
+  font-size: 1.2rem;
+}
+
+.Order-hopePrice .flexWrap span {
+  margin-left: 10px;
+  margin-right: 6px;
 }
 
 .Order-selList1 li{

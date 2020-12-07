@@ -9,7 +9,6 @@ import { renderHour } from 'modules/calcurateDayOption';
 import { resultType, validateOrderDate} from 'modules/calcurateDayOption';
 import { RootState } from 'reducers';
 import { changeMarketMobile, changePayment, changeDeliveryTime } from 'reducers/order';
-import { Link } from 'react-router-dom';
 
 type propsTypes = {
   history : History
@@ -32,12 +31,14 @@ export default function Order(props:propsTypes) {
 
   const [hList, setHList] = useState(hourList);
   const [mList, setMList] = useState(minList);
-  const [isLogin,setIsLogin] = useState(false)
+  const [isLogin,setIsLogin] = useState(false);
+  const [itemList,setItemList] = useState([]);
+  const [hopePrice,setHopePrice] = useState("");
+  const [errorMsg,setErrorMsg] = useState("");
 
   const marketMobile = useSelector((state:RootState)=>state.OrderReducer.market.mobile);
   const OrderOption = useSelector((state:RootState)=>state.OrderReducer.option);
-  const itemList = useSelector((state:RootState)=>state.OrderReducer.itemList);
-
+  
   const marketRadio1 = useRef<HTMLInputElement>(null);
   const marketRadio2 = useRef<HTMLInputElement>(null);
   const marketPayment1 = useRef<HTMLInputElement>(null);
@@ -64,6 +65,8 @@ export default function Order(props:propsTypes) {
   }, [marketMobile]);
 
   useEffect(() => {
+
+    //로그인여부 반환
     fetch(serverPath+"/user/login",{
       method:"GET",
       mode:"cors",
@@ -77,9 +80,30 @@ export default function Order(props:propsTypes) {
       }else if(login.status ===202){
         setIsLogin(false);
       }
+    }).catch(err=>{
+      console.log(err);
+    });
+    //temp 확인
+    fetch(serverPath+"/order/temp",{
+      method:"GET",
+      mode:"cors",
+      credentials:"include",
+      headers:{
+        "Content-Type":"application/json"
+      }
+    }).then((res)=>{
+      return res.text();
+    }).then((data)=>{
+      //console.log('temp-data',JSON.parse(data));
+      setItemList(JSON.parse(data).itemList);
+      setHopePrice(String(JSON.parse(data).hopePrice));
+    }).catch(err=>{
+      console.log(err)
+      alert('주문데이터가 없습니다. 주문을 다시 진행해주세요');
+      props.history.push('/');
     })
     onValidateDate();
-  }, []);
+  }, [props.history]);
 
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -121,7 +145,6 @@ export default function Order(props:propsTypes) {
       }else{
         setMList(['00','30'])
       }
-      
     }
     setSelectOption((selectOption) => ({
     ...selectOption,
@@ -139,7 +162,6 @@ export default function Order(props:propsTypes) {
     }else {
       date = afterTomorrow;
     }
-
     let result = validateOrderDate(`${date} ${selectOption.hour}:${selectOption.min}`); 
     if(result){
       dispatch(changeDeliveryTime(`${date.slice(2)} ${selectOption.hour}:${selectOption.min}`))
@@ -153,66 +175,74 @@ export default function Order(props:propsTypes) {
   },[dispatch]);
 
   const onSubmitOrderOption = useCallback((event: MouseEvent<HTMLInputElement, globalThis.MouseEvent>)=>{
-    console.log('주문들어갑니다');
-    fetchBoth()
 
-    function fetchBoth(){
-      const fetchPostMarket = fetch( serverPath + "/order/market", {
-        method: 'POST', 
+    let dataSuccess:boolean[] = [false,false];
+    if(marketMobile !== null && marketMobile !== ""){
+      fetch( serverPath + "/order/market", {
+        method: 'POST',
         mode: 'cors', 
-        credentials: 'include', 
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        credentials: 'include',
+        headers: {'Content-Type': 'application/json'},
         body:JSON.stringify({
           mobile: marketMobile
         })
       }).then(res=>{
-        console.log(res.status);
+        if(res.status===200){
+          dataSuccess[0] = true;
+          if(dataSuccess[0] && dataSuccess[1]){
+            alert('주문완료됐습니다!');
+            props.history.push('/');
+          }
+        }
+        
       }).catch(e=>{
-        console.log(e)
+        setErrorMsg('주문에 실패했습니다. 재주문 부탁드립니다');
       })
-
-  
-      const fetchPostOption = fetch( serverPath + '/order/items', {
-        method: 'POST', 
-        mode: 'cors',
-        credentials: 'include', 
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body:JSON.stringify({
-          paymentMethod:OrderOption.payment,
-          deliveryTime: OrderOption.deliveryTime,
-          itemList,
-          hopePrice:"400000",
-          date: toDay.slice(2)
-        })
-      }).then(res=>{
-        console.log('items', res.status)
-      }).catch(e=>{
-        console.log(e)
-      });
-
-      
-
-      Promise.all([fetchPostMarket, fetchPostOption]).then(function(values) {
-        //둘다 전송완료 후 
-        console.log(fetchPostOption);
-        alert('주문이 완료되었습니다')
-        //props.history.push('/');
-      });
+    }else{
+      dataSuccess[0] = true;
     }
-    
 
-  },[ marketMobile, OrderOption, props.history, itemList]);
+    fetch(serverPath + '/order/items', {
+      method: 'POST',
+      mode: 'cors', 
+      credentials: 'include',
+      headers: {'Content-Type': 'application/json'},
+      body:JSON.stringify({
+        paymentMethod:OrderOption.payment,
+        deliveryTime: OrderOption.deliveryTime,
+        itemList,
+        hopePrice,
+        date: toDay.slice(2)
+      })
+    }).then(res=>{
+      if(res.status===200){
+        dataSuccess[1] = true;
+        if(dataSuccess[0] && dataSuccess[1]){
+          alert('주문완료됐습니다!');
+          props.history.push('/');
+        }
+      }
+    }).catch(e=>{
+      setErrorMsg('주문에 실패했습니다. 재주문 부탁드립니다');
+    });
+
+  },[ marketMobile, OrderOption, props.history, itemList, hopePrice]);
 
   
   return (
     <div id="wrap" className="Order-wrap">
       <div className="mb-view verCenter">
         <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
-        <h2>주문 옵션 설정</h2>
+        <h2>주문 옵션 설정</h2>   
+        { hopePrice && 
+          (<div className="flex Order-hopePrice">
+            <h3>희망가격</h3>
+            <div className="flexWrap">
+              <p>{hopePrice}</p>
+              <span>원</span>
+            </div>
+          </div>)
+        } 
         <h3>선호하는 거래처(연락처)가 있으신가요?</h3>
         <ul className="flex Order-selList1" onBlur={dispatchChangeMarket}>
           <li className="flex">
@@ -267,11 +297,12 @@ export default function Order(props:propsTypes) {
             <span>현금결제</span>
           </li>
         </ul>
+        {
+          errorMsg &&
+          <div className="warning_text">{errorMsg}</div>
+        }
         <div onClick={onSubmitOrderOption}>
-          <Link to="/">
             <Button>주문완료</Button>
-          </Link>
-          
         </div>
       </div>
     </div>
