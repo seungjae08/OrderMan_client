@@ -1,14 +1,10 @@
 import React, {useState, useEffect, useCallback, ChangeEvent} from 'react';
 import {serverPath} from 'modules/serverPath';
 import { History } from 'history';
-import axios from 'axios';
 import {Link} from 'react-router-dom';
 import InputBirth from 'components/InputBirth';
 import { Header } from 'components/Header'
-//import { useDispatch, useSelector } from 'react-redux';
-//import { RootState } from 'reducers';
 import Button from 'components/Button';
-// import { changeUnSignInfo } from 'reducers/order';
 
 type propsTypes = {
   history : History
@@ -61,10 +57,6 @@ export default function UnSigninOrder
       }
     })
 
-    axios.get(serverPath + '/order/temp', { withCredentials: true }).then(res=>{
-      console.log(res);
-    })
-
     let [yearList, monthList, dayList] = generateBirth();
     setInputs((inputs)=>({
       ...inputs,
@@ -90,7 +82,6 @@ export default function UnSigninOrder
     return [yearList, monthList, dayList];
   }
 
-
   const onChangeSelect = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setInputs((inputs) => ({
@@ -98,8 +89,6 @@ export default function UnSigninOrder
       [name]: value
     }));
   },[]);
-
-  
 
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -115,7 +104,6 @@ export default function UnSigninOrder
       setErrorMsg('모든 항목을 입력해주세요');
       return;
     }
-
 
     fetch(serverPath + '/unknown/info', {
       method: 'POST',
@@ -136,7 +124,6 @@ export default function UnSigninOrder
     .catch((e:Error)=>{
       console.log(e);
     })
-
 
   },[inputs, props.history]);
 

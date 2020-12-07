@@ -112,6 +112,7 @@ function Main() {
     return <div className="mb-view">
       <Header isLogin={isLogin} setIsLogin={setIsLogin} itemList={itemList} hopePrice={hopePrice}/>
       {(dates.length>0)?<Date 
+
         dates={dates} 
         nowdate={selectDate}
         setNowdate={setSelectDate} 
