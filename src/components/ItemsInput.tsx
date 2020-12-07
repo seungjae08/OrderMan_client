@@ -8,7 +8,7 @@ type ItemsInputProps = {
 export default function ItemsInput({OrderCreateItem}:ItemsInputProps) {
     const [itemname ,setItemname] = useState('');
     const [unit,setUnit] = useState('');
-    const [quantity,setQuantity] = useState(0);
+    const [quantity,setQuantity] = useState("0");
 
     const itemnameChange = (e:ChangeEvent<HTMLInputElement>)=>{
         setItemname(e.target.value)
@@ -18,14 +18,14 @@ export default function ItemsInput({OrderCreateItem}:ItemsInputProps) {
     }
     const onSubmit = ()=>{
         if(itemname!==""&&unit !==""){
-            OrderCreateItem({item:itemname,unit:unit,quantity:quantity})
+            OrderCreateItem({item:itemname,unit:unit,quantity:Number(quantity)})
             setItemname('')
             setUnit('')
-            setQuantity(0)
+            setQuantity('')
         }
     }
     const inputQuantityChange=(e:ChangeEvent<HTMLInputElement>)=>{
-        setQuantity(Number(e.target.value))
+        setQuantity(e.target.value)
     }
     return(
         <div className="Item-input-wrap">
@@ -49,9 +49,9 @@ export default function ItemsInput({OrderCreateItem}:ItemsInputProps) {
             <div className="item-input-btn">
                 <p id="quantity">수량</p>
                 <div className="item-input-unit">
-                    <button onClick={()=>{setQuantity(quantity+1)}}>+</button>
-                    <input type="number" value={quantity}  onChange={inputQuantityChange}/>
-                    <button onClick={()=>{setQuantity((quantity<=0)?0:quantity-1)}}>-</button>
+                    <button onClick={()=>{setQuantity(`${Number(quantity)+1}`)}}>+</button>
+                    <input type="tel" value={quantity}  onChange={inputQuantityChange}/>
+                    <button onClick={()=>{setQuantity((Number(quantity)<=0)?"0":`${Number(quantity)-1}`)}}>-</button>
                 </div>
                 <button onClick={onSubmit}>주문 올려놓기!</button>
             </div>

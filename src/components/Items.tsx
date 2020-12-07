@@ -16,7 +16,7 @@ export const Items = ({item,deleteItem,upItemsUnit,downItemsUnit,changeItemsQuan
     return(
         <div className="Items">
             <div className="item-unit">
-                <p>{item.item + "    "} {item.unit}
+                <p>{item.item + " "} {item.unit} </p>
                 <div className="quantity-delete">
                     <div className="delete">
                         <button onClick={()=>{deleteItem(item)}}>삭제</button>
@@ -29,7 +29,7 @@ export const Items = ({item,deleteItem,upItemsUnit,downItemsUnit,changeItemsQuan
                         </div>
                     </div>                    
                 </div>
-                 </p>
+                
                 
             </div>
             

@@ -1,14 +1,23 @@
 import React, {useState} from 'react';
+import {useDispatch} from "react-redux"
+
 import { Link } from 'react-router-dom';
 import { serverPath } from 'modules/serverPath';
+import {actionMainCreators as mainActions, Item } from 'reducers/main';
+import {actionOrderCreators as orderActions} from "../reducers/order"
+
 
 type propTypes = {
   noLoginBtn?:boolean;
+  itemList ?: Item[];
+  hopePrice ?:string
   isLogin : boolean,
   setIsLogin : (e : boolean)=>void
+  
 }
 
-export const Header = ({noLoginBtn,isLogin,setIsLogin}:propTypes) => {
+export const Header = ({noLoginBtn,itemList,hopePrice, isLogin,setIsLogin}:propTypes) => {
+  const dispatch= useDispatch();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -20,26 +29,38 @@ export const Header = ({noLoginBtn,isLogin,setIsLogin}:propTypes) => {
     }
   }
   const onLogout = function(){
-
     fetch(serverPath + '/user/logout', {
       method: 'GET',
       mode: 'cors', 
       credentials: 'include',
       headers: {'Content-Type': 'application/json'}
     }).then((res)=>{
-      console.log(res);
       if(res.status===200){
         alert('로그아웃되었습니다');
         setIsLogin(false);  
       }
+      dispatch(mainActions.loginUser({}));
+      dispatch(orderActions.orderLoginUser([],{mobile:""}));
+      dispatch(mainActions.endLoading());
     })
     .catch((e)=>{
       console.log(e)
     })
   }
+  const onLogin = function(){
+    if(itemList?.length!==0&& hopePrice?.length!==0 ){
+      fetch(serverPath+"/order/temp",{
+        method: 'POST',
+        mode: 'cors', 
+        credentials: 'include',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({itemList,hopePrice})
+      })
+    }
+  }
   const isLoginForm = isLogin ?
-          (<div onClick={onLogout}>로그아웃</div>):
-          (<Link to="/Login" >로그인</Link>);
+          (<Link to="/"><div onClick={onLogout}>로그아웃</div></Link>):
+          (<Link to="/Login" ><div onClick={onLogin}></div>로그인</Link>);
           
   return (
     <div className={isMenuOpen? "Header-wrap open" : "Header-wrap"}>
