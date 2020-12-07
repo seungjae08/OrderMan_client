@@ -1,7 +1,7 @@
 import React,{  useEffect, useState} from 'react';
 import {useSelector,useDispatch} from 'react-redux';
 import {RootState} from "../reducers/index";
-import {actionMainCreators as mainActions, Item} from "../reducers/main";
+import {actionMainCreators as mainActions, endLoading, Item} from "../reducers/main";
 import {actionOrderCreators as orderActions} from "../reducers/order"
 import PastOrders from 'components/PastOrders'
 import {Header}from 'components/Header'
@@ -13,10 +13,19 @@ function Main() {
   // Distpach 선언  
   const dispatch = useDispatch();
   
+  const {orderList,isLoading,hasError} = useSelector((state:RootState) => state.MainReducer);
+  const {itemList} = useSelector((state:RootState)=> state.OrderReducer);
+  
+  // useSate
+  const [todayOrder,setTodayOrder] = useState(true)
+  const [selectDate, setSelectDate] = useState("");
+  const [dates, setDates] = useState([""])
+  const [hopePrice,setHopePrice] = useState("")
+  const [isLogin,setIsLogin] = useState(false)
+
   useEffect(()=>{
     dispatch(mainActions.startUser())
     try{
-      console.log("fetch 안해?")
       fetch(serverPath+"/totalinfo",{
         method:"GET",
         mode:"cors",
@@ -35,13 +44,13 @@ function Main() {
             'Content-Type' : 'application/json'
           }
         })
-        .then(temp=>{console.log(temp); return temp.json()})
+        .then(temp=> temp.json())
         .then(temp=>{
-          console.log(temp)
           dispatch(mainActions.loginUser(data.orderList));
           dispatch(orderActions.orderLoginUser(temp.itemList,data.market));
-          let dates_ = Object.keys(data.orderList); 
-          setDates(dates_)
+          
+          setDates( Object.keys(data.orderList))
+          dispatch(mainActions.endLoading())
         })
         fetch(serverPath+"/user/login",{
           method:"GET",
@@ -64,38 +73,8 @@ function Main() {
     }
   },[]);
 
-  const {orderList,isLoading,hasError} = useSelector((state:RootState) => state.MainReducer);
-  const {itemList} = useSelector((state:RootState)=> state.OrderReducer);
-  
-  // useSate
-  const [todayOrder,setTodayOrder] = useState(true)
-  const [selectDate, setSelectDate] = useState("");
-  const [dates, setDates] = useState([""])
-  const [hopePrice,setHopePrice] = useState(0)
-  const [isLogin,setIsLogin] = useState(false)
-
   // 컴포넌트들이 쓸 함수들 모음
-  const rendering =() =>{
-    if(isLoading) return <p>Loading~~</p>
-    if(hasError) return <p>has Error</p>
-    return (todayOrder) ? <OrderPage 
-    createItem={createItem} 
-    deleteItem={deleteItem}
-    upItemsUnit={upItemsUnit}
-    downItemsUnit={downItemsUnit}
-    changeItemsQuantity={changeItemsQuantity}
-    clickOrderButton={clickOrderButton}
-    setHopePrice={setHopePrice}
-    setisLogin={setIsLogin}
-    isLogin={isLogin}
-    hopePrice={hopePrice}
-    itemList={itemList}
-  />:<PastOrders 
-    orderItemList={itemList}
-    itemList={(selectDate!=="")?orderList[selectDate]:[]}
-    createItem={createItem}
-  />
-  }
+  
   const createItem=(item:Item)=>{
     dispatch(orderActions.orderCreateNowOrder(item));
   }
@@ -117,29 +96,53 @@ function Main() {
   }
 
   const clickOrderButton = ()=>{
-    fetch(serverPath+"/order/temp",{
-      method: 'POST',
-      mode: 'cors', 
-      credentials: 'include',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({itemList})
-    })
+      fetch(serverPath+"/order/temp",{
+        method: 'POST',
+        mode: 'cors', 
+        credentials: 'include',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({itemList,hopePrice})
+      })
   }
-  
- 
-  return (  
-    <div id="wrap" className="Main-wrap">
-      <div className="mb-view">
-      <Header isLogin={isLogin} setIsLogin={setIsLogin} />
-      <Date 
+
+  // 렌더링에 관한 함수들
+  const rendering =() =>{
+    if(isLoading) return <p>Loading~~</p>
+    if(hasError) return <p>has Error</p>
+    return <div className="mb-view">
+      <Header isLogin={isLogin} setIsLogin={setIsLogin} itemList={itemList} hopePrice={hopePrice}/>
+      {(dates.length>0)?<Date 
         dates={dates} 
         nowdate={selectDate}
         setNowdate={setSelectDate} 
         todayOrder={todayOrder} 
-        setTodayOrder={setTodayOrder}/>
-      {rendering()}
+        setTodayOrder={setTodayOrder}/>:""}
       
-      </div>
+      {todayOderPick()}
+    </div>
+  }
+  const todayOderPick=()=>{
+    return (todayOrder) ? <OrderPage 
+    createItem={createItem} 
+    deleteItem={deleteItem}
+    upItemsUnit={upItemsUnit}
+    downItemsUnit={downItemsUnit}
+    changeItemsQuantity={changeItemsQuantity}
+    clickOrderButton={clickOrderButton}
+    setHopePrice={setHopePrice}
+    setisLogin={setIsLogin}
+    isLogin={isLogin}
+    hopePrice={hopePrice}
+    itemList={itemList}
+  />:<PastOrders 
+    orderItemList={itemList}
+    itemList={(selectDate!=="")?orderList[selectDate]:[]}
+    createItem={createItem}
+  />
+  }
+  return (  
+    <div id="wrap" className="Main-wrap">
+        {rendering()}
     </div>
   )
 }

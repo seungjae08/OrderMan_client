@@ -19,7 +19,8 @@ export interface OrderStates{
 export const LoginUser = 'ITMES/LOGIN';
 export const NonLoginUser = 'ITMES/NONLOGIN';
 export const StartUser = "ITEMS/START";
-export const ErrorGet = "ITEMS/ERROR"
+export const ErrorGet = "ITEMS/ERROR";
+export const EndLoading = 'ITEMS/ENDLOADING';
 
 // Actions 생성자
 interface LoginUserAction {
@@ -39,11 +40,16 @@ interface ErrorGetAction{
   type: typeof ErrorGet;
 }
 
+interface EndLoadingAction{
+  type :typeof EndLoading;
+}
+
 export type MainActionTypes = 
   | LoginUserAction
   | NonLoginUserAction
   | StartUserAction
   | ErrorGetAction
+  | EndLoadingAction
 
 export function loginUser(orderList: OrderListInterface){
   return{
@@ -70,11 +76,17 @@ export function errorGet(){
   }
 }
 
+export function endLoading(){
+  return{
+    type:EndLoading
+  }
+}
 export const actionMainCreators = {
   startUser,
   loginUser,
   nonLoginUser,
-  errorGet
+  errorGet,
+  endLoading
 }
 
 // initialState
@@ -99,19 +111,24 @@ export function MainReducer(
       return {
         ...state,
         orderList:action.payload.orderList,
-        isLoading:false
+        isLoading:true
       }
     case NonLoginUser:
       return {
         ...state,
         orderList : {},
-        isLoading : false
+        isLoading : true
       }
     case ErrorGet:
       return {
         ...state,
         isLoading:false,
         hasError :true
+      }
+    case EndLoading:
+      return{
+        ...state,
+        isLoading:false
       }
     default:
       return state;

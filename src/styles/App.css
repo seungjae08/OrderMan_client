@@ -12,6 +12,7 @@
   text-align: center;
 }
 .Main-wrap .btn.st1{
+  margin: 5px;
   height: 100%;
   width: 100%;
   text-align: center;
@@ -37,41 +38,22 @@
   overflow:hidden;
   position:relative;
 }
-#slide-wrap ul#slide{
-  height: 100%;
-  position: absolute;
-}
-.slide-btn{
-  margin-top: 20px;
-  margin-bottom: 10px;
-  width: 5px;
-  height: 70px;
-  cursor: pointer;
-}
+
 .Main-wrap .order-btn{
   border-color: #F87946;
   border-radius: 7px 7px 7px 7px;
   background-color: #F87946;
   color: #ffffff;
 }
-#next {
-  float: right;
+.Main-wrap #Date-wrap .Main-Date{
+  margin-top: 25px;
+}
+.Main-wrap #Date-wrap .Main-Date #slide-wrap button{
   border-color: #F87946;
+  width: 100%;
   border-radius: 7px 7px 7px 7px;
   background-color: #F87946;
   color: #ffffff;
-}
-
-#previous {
-  float: left;
-  border-color: #F87946;
-  border-radius: 7px 7px 7px 7px;
-  background-color: #F87946;
-  color: #ffffff;
-}
-
-#slide-wrap ul{
-  transition: all 0.3s cubic-bezier(1, .01, .32, 1);
 }
 #Date-wrap{
   text-align: center;
@@ -82,7 +64,7 @@
   display : flex;
   align-items: center;
   justify-content: space-between;
-
+  margin-top: 30px;
 }
 
 .Item-input-wrap #item-textarea {

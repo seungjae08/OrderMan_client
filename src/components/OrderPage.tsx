@@ -3,7 +3,7 @@ import { Item } from 'reducers/main';
 import { Items } from 'components/Items'
 import Button from 'components/Button';
 import { Link } from 'react-router-dom';
-import {ChangeEvent} from 'react'
+import {ChangeEvent, useState} from 'react'
 
 
 type OrderPageProps ={
@@ -13,10 +13,10 @@ type OrderPageProps ={
     downItemsUnit : (item:Item)=>void
     changeItemsQuantity :(item:Item)=>void
     clickOrderButton : ()=>void;
-    setHopePrice : (num : number)=>void;
+    setHopePrice : (str :string)=>void;
     setisLogin : (bool : boolean)=>void;
     isLogin : boolean;
-    hopePrice: number
+    hopePrice: string
     itemList : Item[];
 }
 
@@ -32,30 +32,46 @@ export default function OrderPage({
     isLogin,
     hopePrice,
     itemList} : OrderPageProps) {
+    const [inputValue , setInputValue] = useState("")
     const changeHopePrice = (e:ChangeEvent<HTMLInputElement>)=>{
-        console.log(typeof Number(e.target.value))
         if(typeof Number(e.target.value)==="number"){
-            setHopePrice(Number(e.target.value))
+            const comma=(str:string)=>{
+                return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+              }
+              
+              // 콤마 풀기
+            const uncomma=(str:string)=> {
+                return str.replace(/[^\d]+/g, '');
+              }
+            setInputValue(comma(uncomma(e.target.value)))
+            setHopePrice(uncomma(e.target.value))
+        }else{
+            alert("숫자를 입력해주세요!")
         }
       }
     const orderBtnAtLogState = ()=>{
-        if(isLogin){
-            return<Link to="/order">
-                        <button className="order-btn" onClick={clickOrderButton}>주문하기</button>
-                    </Link>
+        if(itemList.length ===0){
+            return <button className="order-btn"onClick={()=>{alert("품목을 추가해주세요")}}>주문하기</button>
         }else{
-            return<Link to="/order/unsignin">
-                        <button className="order-btn" onClick={clickOrderButton}>주문하기</button>
-                    </Link>
+            if(isLogin){
+                return <Link to="/order">
+                            <button className="order-btn" onClick={clickOrderButton}>주문하기</button>
+                        </Link>
+            }else{
+                return <Link to="/order/unsignin">
+                            <button className="order-btn" onClick={clickOrderButton}>주문하기</button>
+                        </Link>
+            }
         }
+        
     }
     return (
         <div>
             <ItemsInput OrderCreateItem={createItem} />
             {itemList.map((item:Item)=><Items item ={item} deleteItem={deleteItem} upItemsUnit={upItemsUnit} downItemsUnit={downItemsUnit} changeItemsQuantity={changeItemsQuantity}/> )}
             <div className="order">
-                예상금액 : 
-                <input type="number" value={hopePrice} onChange={changeHopePrice} />
+                희망가격 : 
+                <input type="tel" value={inputValue} onChange={changeHopePrice} />
                 {orderBtnAtLogState()}
             </div>
         </div>
