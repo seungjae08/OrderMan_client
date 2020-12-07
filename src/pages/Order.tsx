@@ -233,7 +233,14 @@ export default function Order(props:propsTypes) {
     <div id="wrap" className="Order-wrap">
       <div className="mb-view verCenter">
         <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
-        <h2>주문 옵션 설정</h2>
+        <h2>주문 옵션 설정</h2>    
+        <div className="flex Order-hopePrice">
+          <h3>희망가격</h3>
+          <div className="flexWrap">
+            <p>{hopePrice}</p>
+            <span>원</span>
+          </div>
+        </div>
         <h3>선호하는 거래처(연락처)가 있으신가요?</h3>
         <ul className="flex Order-selList1" onBlur={dispatchChangeMarket}>
           <li className="flex">
