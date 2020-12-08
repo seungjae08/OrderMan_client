@@ -28,33 +28,38 @@ export default function ItemsInput({OrderCreateItem}:ItemsInputProps) {
         setQuantity(e.target.value)
     }
     return(
-        <div className="Item-input-wrap">
-            <div id="item-textarea">
-                <p>주문하실 품목을 적어주세요!</p>
-                <input 
-                className="item-input"
-                placeholder="주문하실 물건을 입력해주세요"
-                value = {itemname}
-                onChange={itemnameChange}
-                />
-                <p>단위를 적어주세요! </p>
-                <p>ex)1kg,1망,1단,1개</p>
-                <input 
-                className="item-input"
-                placeholder="주문 하실 물건의 단위를 입력해주세요"
-                value = {unit}
-                onChange={unitChange}
-                />
-            </div>
-            <div className="item-input-btn">
-                <p id="quantity">수량</p>
-                <div className="item-input-unit">
-                    <button onClick={()=>{setQuantity(`${Number(quantity)+1}`)}}>+</button>
-                    <input type="tel" value={quantity}  onChange={inputQuantityChange}/>
-                    <button onClick={()=>{setQuantity((Number(quantity)<=0)?"0":`${Number(quantity)-1}`)}}>-</button>
+        <div >
+            <div >
+                <div>
+                    <p>주문하실 품목을 적어주세요!</p>
+                    <input 
+                    className="item-input"
+                    placeholder="주문하실 물건을 입력해주세요"
+                    value = {itemname}
+                    onChange={itemnameChange}
+                    />
                 </div>
-                <button onClick={onSubmit}>주문 올려놓기!</button>
+                <div>
+                    <p>단위를 적어주세요! </p>
+                    <p>ex)1kg,1망,1단,1개</p>
+                    <input 
+                    className="item-input"
+                    placeholder="주문 하실 물건의 단위를 입력해주세요"
+                    value = {unit}
+                    onChange={unitChange}
+                    />
+                </div>
+                <div className="item-input-btn">
+                    <p id="quantity">수량</p>
+                    <div className="item-input-unit">
+                        <button onClick={()=>{setQuantity(`${Number(quantity)+1}`)}}>+</button>
+                        <input type="tel" value={quantity}  onChange={inputQuantityChange}/>
+                        <button onClick={()=>{setQuantity((Number(quantity)<=0)?"0":`${Number(quantity)-1}`)}}>-</button>
+                    </div>
+                    <button onClick={onSubmit}>주문 올려놓기!</button>
+                </div>
             </div>
+            
             
         </div>
     )

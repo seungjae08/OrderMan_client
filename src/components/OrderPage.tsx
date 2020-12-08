@@ -58,7 +58,7 @@ export default function OrderPage({
         
     }
     return (
-        <div>
+        <div className="input-area">
             <ItemsInput OrderCreateItem={createItem} />
             {itemList.map((item:Item)=><Items item ={item} deleteItem={deleteItem} upItemsUnit={upItemsUnit} downItemsUnit={downItemsUnit} changeItemsQuantity={changeItemsQuantity}/> )}
             <div className="order">
