@@ -1,8 +1,3 @@
-import { useEffect} from "react";
-import {Swiper,SwiperSlide} from "swiper/react"
-import SwiperSlider from "./SwiperSlider"
-import 'swiper/swiper.scss';
-
 type DateProps = {
     dates : string[]
     todayOrder : boolean
@@ -12,22 +7,37 @@ type DateProps = {
 }
 
 export const Date = ({dates,nowdate,setNowdate,todayOrder,setTodayOrder}:DateProps)=>{
-    useEffect(()=>{
-        return console.log(dates)
-    },[dates])
     return(
-        <div id="Date-wrap">{(dates.length>0)?"구매 내역 선택":""}
-        <div className="Main-Date">
-            <div id="slide-wrap">
-                <SwiperSlider dates={dates} nowdate={nowdate} setNowdate={setNowdate}
-                    setTodayOrder={setTodayOrder}
-                />
-            </div>
-        </div>
-            <div>
-                {(todayOrder)? "":<button className="btn st1 today" onClick={()=>{setNowdate("");setTodayOrder(true)}}>
+        <div id="Date-wrap">
+            <p className="order-listSelect-text">{(dates.length>0)?"구매 목록 선택":""}</p>
+           
+            {(todayOrder)? "":<button className="today" onClick={()=>{setNowdate("");setTodayOrder(true)}}>
                 오늘의주문</button>}
+           
+            
+            <p className="orderlist">주문 목록</p>
+            <div className="Main-Date">
+                <div id="slide-wrap">
+                    <div className="scroll-container">
+                    {dates.map((ele)=>{return ((ele === nowdate)?
+                        <div>
+                            <button >
+                                <p>{ele.slice(3,5)+"-"+ele.slice(6)}</p> 
+                            </button>
+                        </div>:
+                        <div>
+                            <button onClick={()=>{
+                                setNowdate(ele); 
+                                setTodayOrder(false); 
+                            }}>
+                                <p>{ele.slice(3,5)+"-"+ele.slice(6)}</p>
+                            </button>
+                        </div>
+                    )})}
+                    </div>
+                </div>
             </div>
+            
         </div>
     )
 }

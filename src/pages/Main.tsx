@@ -160,6 +160,7 @@ function Main(props : propsTypes) {
     orderItemList={itemList}
     itemList={(selectDate!=="")?orderList[selectDate]:[]}
     createItem={createItem}
+    selectDate={selectDate}
   />
   }
   return (  

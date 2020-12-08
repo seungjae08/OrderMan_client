@@ -18,12 +18,9 @@ export default function PastOrderItems({itemList,item,createItem}:PastOrderItems
 
     return(
         <div className="PastOrderItems-wrap">
-            <div className="items">
-                <ul>
-                    <li>품명 : {item.item}</li>
-                    <li>단위 : {item.unit}</li>
-                    <li>갯수 : {item.quantity}</li>
-                </ul>
+            <div className="items">               
+                    {item.item+"  "+item.unit+"  x"+item.quantity}
+                
                 <button onClick={()=>{
                 const find = itemList.find(ele=>ele.item===item.item)
                 if(find===undefined){
