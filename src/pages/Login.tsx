@@ -29,7 +29,6 @@ function Login(props : propsTypes) {
   const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
-    
     fetch(serverPath+"/user/login",{
       method:"GET",
       mode:"cors",
@@ -93,27 +92,33 @@ function Login(props : propsTypes) {
     <div id="wrap" className="Login-wrap">
       <div className="mb-view verCenter">
         <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
-        <h2>로그인</h2>
-        <div className="inputWrap">
-          <input type="text" placeholder="아이디" value={inputs.id} onChange={onChange} name="id"/>
-          <input type="password" placeholder="비밀번호" value={inputs.password} onChange={onChange} name="password"/>
-        </div>
-        {
-          errorMsg && 
-          <div className="warning_text">{errorMsg}</div>
-        }
-        <div onClick={onSubmitLogin}>
-          <Button>로그인</Button>
-        </div> 
-        {/* <div className="socialBtnList">
-          <div onClick={onKakaoLoginHandler}>
-            <Button color="#3B1D1D" bgColor="#FFEB00">카카오톡으로 로그인</Button>
+        <div className="content_inner">
+          <h2>로그인</h2>
+          <div className="inputWrap">
+            <input type="text" placeholder="아이디" value={inputs.id} onChange={onChange} name="id"/>
+            <input type="password" placeholder="비밀번호" value={inputs.password} onChange={onChange} name="password"/>
           </div>
-        </div> */}
-        <Link to="/signup">
-          <Button>회원가입</Button>
-        </Link>
-        
+          {
+            errorMsg && 
+            <div className="warning_text">{errorMsg}</div>
+          }
+          <div onClick={onSubmitLogin}>
+            <Button>로그인</Button>
+          </div> 
+          {/* <div className="socialBtnList">
+            <div onClick={onKakaoLoginHandler}>
+              <Button color="#3B1D1D" bgColor="#FFEB00">카카오톡으로 로그인</Button>
+            </div>
+          </div> */}
+          <Link to="/signup" className="fullBtn">
+            <Button color="#F87946" bgColor="white" borderColor="#D6D6D6">
+              <div>
+                회원가입
+                <img src="/assets/button_arrow.png" alt="이동"/>
+              </div>
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   )

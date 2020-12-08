@@ -62,7 +62,7 @@ export default function Order(props:propsTypes) {
       }
       marketRadio2.current.checked = true; 
     }
-  }, [marketMobile]);
+  }, [marketMobile, marketRadio1, marketRadio2]);
 
   useEffect(() => {
 
@@ -117,20 +117,37 @@ export default function Order(props:propsTypes) {
     }));
   },[])
 
-  const dispatchChangeMarket = function(){
+  const dispatchChangeMarket = useCallback(() => {
+    console.log('onblur');
     if (!marketRadio1.current) {
       return;
     }
     if(marketRadio1.current.checked===true && inputs.marketMobile !== ""){
       dispatch(changeMarketMobile(inputs.marketMobile))
     }else{
-      dispatch(changeMarketMobile(null))
+      dispatch(changeMarketMobile(""))
       if (!marketRadio2.current) {
         return;
       }
       marketRadio2.current.checked = true; 
     }
-  }
+  },[inputs.marketMobile, dispatch])
+
+  const dispatchChangeMarketClick = useCallback(() => {
+    console.log('onClick');
+    if (!marketRadio1.current) {
+      return;
+    }
+    if(marketRadio1.current.checked===false && inputs.marketMobile !== ""){
+      dispatch(changeMarketMobile(inputs.marketMobile))
+    }else{
+      dispatch(changeMarketMobile(""))
+      if (!marketRadio2.current) {
+        return;
+      }
+      marketRadio2.current.checked = true; 
+    }
+  },[inputs.marketMobile, dispatch])
 
   const onHandleChangeSelect = useCallback((e:ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -230,76 +247,80 @@ export default function Order(props:propsTypes) {
     <div id="wrap" className="Order-wrap">
       <div className="mb-view verCenter">
         <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
-        <h2>주문 옵션 설정</h2>   
-        { hopePrice && 
-          (<div className="flex Order-hopePrice">
-            <h3>희망가격</h3>
-            <div className="flexWrap">
-              <p>{hopePrice}</p>
-              <span>원</span>
-            </div>
-          </div>)
-        } 
-        <h3>선호하는 거래처(연락처)가 있으신가요?</h3>
-        <ul className="flex Order-selList1" onBlur={dispatchChangeMarket}>
-          <li className="flex">
-            <div className="labelStyle">
-              <input type="radio" id="fav1" name="favoriteMarket" ref={marketRadio1}/>
-              <label htmlFor="fav1"></label>
-            </div>
-            <input type="text" value={inputs.marketMobile} onChange={onChange} name="marketMobile"  placeholder="01012341234"/>
-          </li>
-          <li>
-            <input type="radio" id="fav2" name="favoriteMarket"  ref={marketRadio2}/>
-            <label htmlFor="fav2"></label>
-            <span>아니오</span>
-          </li>
-        </ul>
+        <div className="content_inner">
+          <h2>주문 옵션 설정</h2>   
+          { hopePrice && 
+            (<div className="flex Order-hopePrice">
+              <h3>희망가격</h3>
+              <div className="flexWrap">
+                <p>{hopePrice}</p>
+                <span>원</span>
+              </div>
+            </div>)
+          } 
+          <h3>선호하는 거래처(연락처)가 있으신가요?</h3>
+          <ul className="flex Order-selList1" onBlur={dispatchChangeMarket} >
+            <li className="flex">
+              <div className="labelStyle">
+                <input type="radio" id="fav1" name="favoriteMarket" ref={marketRadio1}/>
+                <label htmlFor="fav1" onClick={dispatchChangeMarketClick}></label>
+              </div>
+              <input type="text" value={inputs.marketMobile} onChange={onChange} name="marketMobile"  placeholder="01012341234" />
+            </li>
+            <li>
+              <input type="radio" id="fav2" name="favoriteMarket"  ref={marketRadio2} />
+              <label htmlFor="fav2" onClick={dispatchChangeMarketClick}></label>
+              <span>아니오</span>
+            </li>
+          </ul>
 
-        <h3>언제 받으시겠어요?</h3>
-        <div className="flex Order-selList2" onBlur={onValidateDate}>
-          <select style={{marginRight:'10px'}} value={selectOption.date} onChange={onHandleChangeSelect} name="date">
-            {
-              dayList.map(day=><option key={day} value={day}>{day}</option>)
-            }
-          </select>
-          <select value={selectOption.hour} onChange={onHandleChangeSelect} name="hour">
-            {hList && hList.map((hour:string)=>{
-              return <option key={`hour${hour}`} value={hour}>{hour}</option>
-            })}
-          </select>
-          <span>시</span>
-          <select value={selectOption.min} onChange={onHandleChangeSelect} name="min">
-            {mList && mList.map((min:string)=><option key={`min${min}`}>{min}</option>)}
-          </select>
-          <span>분</span>
-        </div>
-        <div className="warning_text" style={{marginTop:'10px', marginBottom:'0'}}>
-          배송 가능 시간:<br/> 
-          오전 11시 이전 주문 - 당일 오후부터 가능,<br/> 
-          오후 5시 이전 주문 - 익일 오전부터 가능,<br/> 
-          오후 5시 이후 주문 - 익일 오후부터 가능
-        </div>
-        <h3>어떻게 결제하시겠어요?</h3>
-        <div className="warning_text">오다맨 결제는 현장결제로 이뤄집니다</div>
-        <ul className="flex Order-selList3">
-          <li className="labelStyle">
-            <input type="radio" id="pay1" name="payment" ref={marketPayment1} defaultChecked value="card"  onClick={onChangePayment}/>
-            <label htmlFor="pay1"></label>
-            <span>카드결제</span>
-          </li>
-          <li className="labelStyle">
-            <input type="radio" id="pay2" name="payment" ref={marketPayment2} value="cash" onClick={onChangePayment}/>
-            <label htmlFor="pay2"></label>
-            <span>현금결제</span>
-          </li>
-        </ul>
-        {
-          errorMsg &&
-          <div className="warning_text">{errorMsg}</div>
-        }
-        <div onClick={onSubmitOrderOption}>
-            <Button>주문완료</Button>
+          <h3>언제 받으시겠어요?</h3>
+          <div className="flex Order-selList2" onBlur={onValidateDate}>
+            <select style={{marginRight:'10px'}} value={selectOption.date} onChange={onHandleChangeSelect} name="date">
+              {
+                dayList.map(day=><option key={day} value={day}>{day}</option>)
+              }
+            </select>
+            <select value={selectOption.hour} onChange={onHandleChangeSelect} name="hour">
+              {hList && hList.map((hour:string)=>{
+                return <option key={`hour${hour}`} value={hour}>{hour}</option>
+              })}
+            </select>
+            <span>시</span>
+            <select value={selectOption.min} onChange={onHandleChangeSelect} name="min">
+              {mList && mList.map((min:string)=><option key={`min${min}`}>{min}</option>)}
+            </select>
+            <span>분</span>
+          </div>
+          <div className="warning_text" style={{marginTop:'10px', marginBottom:'0'}}>
+            배송 가능 시간:<br/> 
+            오전 11시 이전 주문 - 당일 오후부터 가능,<br/> 
+            오후 5시 이전 주문 - 익일 오전부터 가능,<br/> 
+            오후 5시 이후 주문 - 익일 오후부터 가능
+          </div>
+          <h3>어떻게 결제하시겠어요?</h3>
+          <div className="warning_text">
+            오다맨 결제는 현장결제로 이뤄집니다
+          </div>
+          <ul className="flex Order-selList3">
+            <li className="labelStyle">
+              <input type="radio" id="pay1" name="payment" ref={marketPayment1} defaultChecked value="card"  onClick={onChangePayment}/>
+              <label htmlFor="pay1"></label>
+              <span>카드결제</span>
+            </li>
+            <li className="labelStyle">
+              <input type="radio" id="pay2" name="payment" ref={marketPayment2} value="cash" onClick={onChangePayment}/>
+              <label htmlFor="pay2"></label>
+              <span>현금결제</span>
+            </li>
+          </ul>
+          {
+            errorMsg &&
+            <div className="warning_text">{errorMsg}</div>
+          }
+          <div onClick={onSubmitOrderOption}>
+              <Button>주문완료</Button>
+          </div>
         </div>
       </div>
     </div>

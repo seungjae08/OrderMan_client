@@ -131,40 +131,51 @@ export default function UnSigninOrder
     <div id="wrap" className="UnSignInOrder-wrap">
       <div className="mb-view verCenter">
         <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
-        <h2>비회원 로그인</h2>
-        
-        {/* <h3>휴대폰인증</h3> */}
-        <div className="inputWrap">
-          <div className="flex">
-            {/* <input type="text" placeholder="핸드폰 인증" value={inputs.mobile} readOnly/> */}
-            <input type="text" placeholder="핸드폰" value={inputs.mobile} onChange={onChange} name="mobile"/>
-            {/* <div onClick={onCertificatePhone}>
-              <button className="btn st1">인증하기</button>
-            </div> */}
+        <div className="content_inner">
+          <h2>비회원 로그인</h2>
+          {/* <h3>휴대폰인증</h3> */}
+          <div className="inputWrap">
+            <div className="flex">
+              {/* <input type="text" placeholder="핸드폰 인증" value={inputs.mobile} readOnly/> */}
+              <input type="text" placeholder="핸드폰" value={inputs.mobile} onChange={onChange} name="mobile"/>
+              {/* <div onClick={onCertificatePhone}>
+                <button className="btn st1">인증하기</button>
+              </div> */}
+            </div>
+            <h3>생년월일</h3>
+            <InputBirth onChangeSelect={onChangeSelect} yearList={inputs.yearList} monthList={inputs.monthList} dayList={inputs.dayList} year={inputs.year} month={inputs.month} day={inputs.day}/>
+            <input type="text" placeholder="주소" value={inputs.address} onChange={onChange} name="address"/>
+            <input type="text" placeholder="상호명" value={inputs.brand} onChange={onChange} name="brand"/>
           </div>
-          <h3>생년월일</h3>
-          <InputBirth onChangeSelect={onChangeSelect} yearList={inputs.yearList} monthList={inputs.monthList} dayList={inputs.dayList} year={inputs.year} month={inputs.month} day={inputs.day}/>
-          <input type="text" placeholder="주소" value={inputs.address} onChange={onChange} name="address"/>
-          <input type="text" placeholder="상호명" value={inputs.brand} onChange={onChange} name="brand"/>
-        </div>
-        {
-          errorMsg &&
-          <div className="warning_text">{errorMsg}</div>
-        }
-        <div onClick={onDispatchUnSignOrder}>
-          <Button>비회원으로 주문하기</Button>
-        </div>
-        <div className="warning_text">비회원 주문 시 구매 내역 정보가 저장되지 않습니다</div>
+          {
+            errorMsg &&
+            <div className="warning_text">{errorMsg}</div>
+          }
+          <div onClick={onDispatchUnSignOrder}>
+            <Button>비회원으로 주문하기</Button>
+          </div>
+          <div className="warning_text">비회원 주문 시 구매 내역 정보가 저장되지 않습니다</div>
 
-        <div className="BtnList">
-          <Link to="/order">
-            <Button>로그인</Button>
-          </Link>
-          <Link to="/order">
-            <Button>회원가입</Button>
-          </Link>
-          <div>
-            <Button color="#3B1D1D" bgColor="#FFEB00">카카오톡으로 로그인</Button>
+          <div className="BtnList">
+            <Link to="/order">
+              <Button color="#F87946" bgColor="white" borderColor="#D6D6D6">
+                <div>
+                  로그인
+                  <img src="/assets/button_arrow.png" alt="이동"/>
+                </div>
+              </Button>
+            </Link>
+            <Link to="/order">
+              <Button color="#F87946" bgColor="white" borderColor="#D6D6D6">
+                <div>
+                  회원가입
+                  <img src="/assets/button_arrow.png" alt="이동"/>
+                </div>
+              </Button>
+            </Link>
+            <div>
+              <Button color="#3B1D1D" bgColor="#FFEB00">카카오톡으로 로그인</Button>
+            </div>
           </div>
         </div>
       </div>

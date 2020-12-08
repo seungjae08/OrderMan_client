@@ -74,7 +74,7 @@ function Main(props : propsTypes) {
       console.log(err)
       dispatch(mainActions.errorGet());
     }
-  },[isLogin]);
+  },[isLogin, dispatch]);
 
   // 컴포넌트들이 쓸 함수들 모음
   const createItem=(item:Item)=>{
@@ -124,19 +124,23 @@ function Main(props : propsTypes) {
   const rendering =() =>{
     if(isLoading) return <p>Loading~~</p>
     if(hasError) return <p>has Error</p>
-    return <div className="mb-view">
+    return (
+    <div className="mb-view">
       <Header isLogin={isLogin} setIsLogin={setIsLogin}
-      changeDatesClickLogout={changeDatesClickLogout}
-      itemList={itemList} hopePrice={hopePrice}/>
-      {(dates.length>0)?<Date 
-        dates={dates} 
-        nowdate={selectDate}
-        setNowdate={setSelectDate} 
-        todayOrder={todayOrder} 
-        setTodayOrder={setTodayOrder}/>:""}
-      
-      {todayOderPick()}
+        changeDatesClickLogout={changeDatesClickLogout}
+        itemList={itemList} hopePrice={hopePrice}/>
+      <div className="content_inner">
+        {(dates.length>0)?<Date 
+          dates={dates} 
+          nowdate={selectDate}
+          setNowdate={setSelectDate} 
+          todayOrder={todayOrder} 
+          setTodayOrder={setTodayOrder}/>:""}
+        
+        {todayOderPick()}
+      </div>
     </div>
+    )
   }
 
   const todayOderPick=()=>{
