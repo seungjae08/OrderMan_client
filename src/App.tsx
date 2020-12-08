@@ -5,6 +5,7 @@ import Login from 'pages/Login'
 import SignUp  from 'pages/SignUp';
 import UnSignInOrder from 'pages/UnSignInOrder';
 import Order from 'pages/Order';
+import OauthSignup from 'pages/OauthSignup';
 import 'styles/reset.css';
 import 'styles/layout.css';
 import 'styles/common.css';
@@ -15,7 +16,7 @@ function App() {
     <div className="App">
       <Route path="/" exact component={Main}/>
       <Route path="/login" component={Login}/>
-      {/* <Route path="/signup/social" component={OauthSignup}/> */}
+      <Route path="/signup/social" component={OauthSignup}/>
       <Route path="/signup" exact component={SignUp}/>
       <Route path="/order/unsignin" component={UnSignInOrder}/>
       <Route path="/order" exact component={Order}/>

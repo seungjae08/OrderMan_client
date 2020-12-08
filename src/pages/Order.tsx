@@ -225,7 +225,7 @@ export default function Order(props:propsTypes) {
         paymentMethod:OrderOption.payment,
         deliveryTime: OrderOption.deliveryTime,
         itemList,
-        hopePrice,
+        hopePrice:Number(hopePrice),
         date: toDay.slice(2)
       })
     }).then(res=>{

@@ -127,7 +127,6 @@ export const validateOrderDate = function(date:string){
 
 export const renderHour = function(date:string){
   const thisHour = checkThisHour();
-  console.log(thisHour);
   let hours = [];
   let range:number[] = [];
   if(Number(thisHour)<11){

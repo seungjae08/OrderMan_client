@@ -2,8 +2,8 @@ import React, {useState, useCallback, useEffect, ChangeEvent} from 'react';
 import { History, Location } from 'history';
 import Button from 'components/Button';
 import { Header } from 'components/Header';
-import {serverPath} from 'modules/serverPath';
-// import {KAKAO_REST_API_KEY} from 'modules/config'
+import {serverPath, clientPath} from 'modules/serverPath';
+import {KAKAO_REST_API_KEY} from 'modules/config'
 
 type propsTypes = {
   history : History;
@@ -17,6 +17,9 @@ export default function SignUpSocial(props: propsTypes) {
     brand:"",
     mobile:""
   });
+  const [isRender, setIsRender] = useState(true);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [accessToken, setAccessToken] = useState('');
 
   useEffect(() => {
     fetch(serverPath+"/user/login",{
@@ -35,28 +38,46 @@ export default function SignUpSocial(props: propsTypes) {
     })
   }, [])
 
-  // const [errorMsg, setErrorMsg] = useState('');
-  // const [accessToken, setAccessToken] = useState('');
+  
 
-  // window.Kakao = window.Kakao || "SomeValue";
-  // const {Kakao} = window;
+  window.Kakao = window.Kakao || "SomeValue";
+  const {Kakao} = window;
 
-  // const code = props.location.search.split("=")[1];
+  const code = props.location.search.split("=")[1];
 
-  // useEffect(() => {
-  //   //토큰없으면 리다이렉트
-  //   console.log(code);
-  //   axios.post('https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id='+KAKAO_REST_API_KEY+'&redirect_uri='+clientPath+'/signup/social&code='+code,{},{
-  //     headers:{
-  //       'Content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-  //     }
-  //   }).then(res=>{
-  //     console.log(res);
-  //     setAccessToken(res.data.access_token);
-  //   }).catch((e)=>{
-  //     console.log(e)
-  //   })
-  // }, []);
+  useEffect(() => {
+    //토큰없으면 리다이렉트
+    fetch('https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id='+KAKAO_REST_API_KEY+'&redirect_uri='+clientPath+'/signup/social&code='+code, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'}
+    }).then(res=>{
+      return res.json();
+    }).then(data=>{
+      console.log(data);
+      var bearer = 'Bearer ' + data.access_token;
+      fetch(serverPath+'/user/oauthup', {
+        method: 'GET',
+        mode: 'cors', 
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': bearer,
+        }
+      }).then(res=>{
+        //기존 이용자라면 (상태코드 200)
+        //사이트의토큰을 받고, 메인으로 처리
+        //props.history.push('/');
+
+        //처음소셜로그인이용자//기존 이용자라면 (상태코드 202)
+        //가입화면 render
+      }).catch(error=>{
+        console.log(error);
+      })
+    }).catch(e=>{
+      alert('카카오 로그인이 정상 작동하지 않습니다');
+    });
+
+  }, []);
 
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -111,29 +132,43 @@ export default function SignUpSocial(props: propsTypes) {
   //   // });
   // }
 
-  return (
-    <div id="wrap">
-      <div className="mb-view verCenter">
-        <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
-        <div className="content_inner">
-          <h2>회원가입(카카오톡)</h2>
-          <div className="inputWrap">
-            <input type="text" placeholder="핸드폰" value={inputs.mobile} name="mobile" onChange={onChange}/>
-            <input type="text" placeholder="주소" value={inputs.address} name="address" onChange={onChange}/>
-            <input type="text" placeholder="상호명" value={inputs.brand} name="brand" onChange={onChange}/>
-          </div>
-          {/* {
-            errorMsg  &&
-            <div className="warning_text">{errorMsg}</div>
-          } */}
-          <div>
-            <Button>가입하기</Button>
-          </div>
-          <div style={{marginTop:'10px'}}>
-            <Button>로그아웃</Button>
+
+  if(isRender){
+    return (
+        <div id="wrap">
+          <div className="mb-view verCenter">
+            <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
+            <div className="content_inner">
+              <h2>회원가입(카카오톡)</h2>
+              <div className="inputWrap">
+                <input type="text" placeholder="핸드폰" value={inputs.mobile} name="mobile" onChange={onChange}/>
+                <input type="text" placeholder="주소" value={inputs.address} name="address" onChange={onChange}/>
+                <input type="text" placeholder="상호명" value={inputs.brand} name="brand" onChange={onChange}/>
+              </div>
+              {/* {
+                errorMsg  &&
+                <div className="warning_text">{errorMsg}</div>
+              } */}
+              <div>
+                <Button>가입하기</Button>
+              </div>
+              <div style={{marginTop:'10px'}}>
+                <Button>로그아웃</Button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  )
+      )
+  }else{
+    return (
+      <div id="wrap">
+          <div className="mb-view verCenter">
+            <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
+            <div className="content_inner">
+            </div>
+          </div>
+        </div>
+    )
+  }
+  
 }
