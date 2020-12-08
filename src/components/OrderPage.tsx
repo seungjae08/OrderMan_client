@@ -3,8 +3,8 @@ import { Item } from 'reducers/main';
 import { Items } from 'components/Items'
 import Button from 'components/Button';
 import { Link } from 'react-router-dom';
-import {ChangeEvent, useState} from 'react'
-
+import {ChangeEvent, useState} from 'react';
+import { History } from 'history';
 
 type OrderPageProps ={
     createItem : (item:Item) => void
@@ -12,7 +12,7 @@ type OrderPageProps ={
     upItemsUnit : (item:Item) => void
     downItemsUnit : (item:Item)=>void
     changeItemsQuantity :(item:Item)=>void
-    clickOrderButton : ()=>void;
+    clickOrderButton : (input:boolean)=>void;
     setHopePrice : (str :string)=>void;
     setisLogin : (bool : boolean)=>void;
     isLogin : boolean;
@@ -51,17 +51,9 @@ export default function OrderPage({
       }
     const orderBtnAtLogState = ()=>{
         if(itemList.length ===0){
-            return <button className="order-btn"onClick={()=>{alert("품목을 추가해주세요")}}>주문하기</button>
+            return  <button className="order-btn"onClick={()=>{alert("품목을 추가해주세요")}}>주문하기</button>
         }else{
-            if(isLogin){
-                return <Link to="/order">
-                            <button className="order-btn" onClick={clickOrderButton}>주문하기</button>
-                        </Link>
-            }else{
-                return <Link to="/order/unsignin">
-                            <button className="order-btn" onClick={clickOrderButton}>주문하기</button>
-                        </Link>
-            }
+            return  <button className="order-btn" onClick={()=>{clickOrderButton(isLogin)}}>주문하기</button>
         }
         
     }

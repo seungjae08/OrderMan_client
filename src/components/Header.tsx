@@ -10,12 +10,12 @@ type propTypes = {
   noLoginBtn?:boolean;
   itemList ?: Item[];
   hopePrice ?:string
-  isLogin : boolean,
+  isLogin : boolean
+  changeDatesClickLogout ?: ()=>void
   setIsLogin : (e : boolean)=>void
-  
 }
 
-export const Header = ({noLoginBtn,itemList,hopePrice, isLogin,setIsLogin}:propTypes) => {
+export const Header = ({noLoginBtn,itemList,hopePrice, isLogin,changeDatesClickLogout,setIsLogin}:propTypes) => {
   const dispatch= useDispatch();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,7 +27,10 @@ export const Header = ({noLoginBtn,itemList,hopePrice, isLogin,setIsLogin}:propT
       setIsMenuOpen(true);
     }
   }
+
   const onLogout = function(){
+    dispatch(mainActions.loginUser({}));
+    dispatch(orderActions.orderLoginUser([],{mobile:""}));
     fetch(serverPath + '/user/logout', {
       method: 'GET',
       mode: 'cors', 
@@ -38,8 +41,9 @@ export const Header = ({noLoginBtn,itemList,hopePrice, isLogin,setIsLogin}:propT
         alert('로그아웃되었습니다');
         setIsLogin(false);  
       }
-      dispatch(mainActions.loginUser({}));
-      dispatch(orderActions.orderLoginUser([],{mobile:""}));
+      if(changeDatesClickLogout){
+        changeDatesClickLogout()
+      }
       dispatch(mainActions.endLoading());
     })
     .catch((e)=>{
