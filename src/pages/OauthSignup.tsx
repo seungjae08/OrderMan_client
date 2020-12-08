@@ -1,6 +1,8 @@
-import React, {useState, useCallback, ChangeEvent} from 'react';
+import React, {useState, useCallback, useEffect, ChangeEvent} from 'react';
 import { History, Location } from 'history';
 import Button from 'components/Button';
+import { Header } from 'components/Header';
+import {serverPath} from 'modules/serverPath';
 // import {KAKAO_REST_API_KEY} from 'modules/config'
 
 type propsTypes = {
@@ -9,11 +11,29 @@ type propsTypes = {
 }
 
 export default function SignUpSocial(props: propsTypes) {
+  const [isLogin,setIsLogin] = useState(false)
   const [inputs, setInputs] = useState({
     address:"",
     brand:"",
     mobile:""
   });
+
+  useEffect(() => {
+    fetch(serverPath+"/user/login",{
+      method:"GET",
+      mode:"cors",
+      credentials:"include",
+      headers:{
+        "Content-Type":"application/json"
+      }
+    }).then(login=>{
+      if(login.status===200){
+        setIsLogin(true);
+      }else if(login.status ===202){
+        setIsLogin(false);
+      }
+    })
+  }, [])
 
   // const [errorMsg, setErrorMsg] = useState('');
   // const [accessToken, setAccessToken] = useState('');
@@ -94,21 +114,24 @@ export default function SignUpSocial(props: propsTypes) {
   return (
     <div id="wrap">
       <div className="mb-view verCenter">
-        <h2>회원가입(카카오톡)</h2>
-        <div className="inputWrap">
-          <input type="text" placeholder="핸드폰" value={inputs.mobile} name="mobile" onChange={onChange}/>
-          <input type="text" placeholder="주소" value={inputs.address} name="address" onChange={onChange}/>
-          <input type="text" placeholder="상호명" value={inputs.brand} name="brand" onChange={onChange}/>
-        </div>
-        {/* {
-          errorMsg  &&
-          <div className="warning_text">{errorMsg}</div>
-        } */}
-        <div>
-          <Button>가입하기</Button>
-        </div>
-        <div style={{marginTop:'10px'}}>
-          <Button>로그아웃</Button>
+        <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
+        <div className="content_inner">
+          <h2>회원가입(카카오톡)</h2>
+          <div className="inputWrap">
+            <input type="text" placeholder="핸드폰" value={inputs.mobile} name="mobile" onChange={onChange}/>
+            <input type="text" placeholder="주소" value={inputs.address} name="address" onChange={onChange}/>
+            <input type="text" placeholder="상호명" value={inputs.brand} name="brand" onChange={onChange}/>
+          </div>
+          {/* {
+            errorMsg  &&
+            <div className="warning_text">{errorMsg}</div>
+          } */}
+          <div>
+            <Button>가입하기</Button>
+          </div>
+          <div style={{marginTop:'10px'}}>
+            <Button>로그아웃</Button>
+          </div>
         </div>
       </div>
     </div>

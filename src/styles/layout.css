@@ -12,18 +12,24 @@
   position: absolute;
   width:100%;
   height: 100%;
-  overflow-y: auto;
-  max-width:450px;
-  max-height: 850px;
-  padding:20px;
-  padding-top: 55px;
+  overflow-y: hidden;
+  max-width:1025px;
+  max-height: 1366px;
   background-color: white;
   box-sizing: border-box;
   font-weight: bold;
 }
 
-.mb-view.verCenter{
+/* .mb-view.verCenter{
   display: flex;
   flex-direction: column;
   justify-content: center;
+} */
+.content_inner{
+  overflow-y: auto;
+  width:100%;
+  height:calc(100vh - 55px);
+  padding:20px;
+  padding-top: 55px;
+  box-sizing: border-box;
 }

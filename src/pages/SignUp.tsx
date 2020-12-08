@@ -3,6 +3,8 @@ import { History } from 'history';
 import Button from 'components/Button';
 import InputBirth from 'components/InputBirth';
 import { serverPath } from 'modules/serverPath';
+import { Header } from 'components/Header';
+
 
 type propsTypes = {
   history : History
@@ -40,9 +42,27 @@ export default function SignUp(props: propsTypes) {
   });
 
   //error Message
+  const [isLogin,setIsLogin] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
+    //로그인여부 반환
+    fetch( serverPath + "/user/login",{
+      method:"GET",
+      mode:"cors",
+      credentials:"include",
+      headers:{
+        "Content-Type":"application/json"
+      }
+    }).then(login=>{
+      if(login.status===200){
+        setIsLogin(true);
+      }else if(login.status ===202){
+        setIsLogin(false);
+      }
+    }).catch(err=>{
+      console.log(err);
+    });
     //mount
     let [yearList, monthList, dayList] = generateBirth();
     setInputs((inputs)=>({
@@ -126,26 +146,29 @@ export default function SignUp(props: propsTypes) {
   return (
     <div id="wrap" className="Signup-wrap">
       <div className="mb-view verCenter">
-        <h2>회원가입</h2>
-        <div className="inputWrap">
-          <input type="text" placeholder="아이디" value={inputs.id} name="id" onChange={onChange}/>
-          <input type="password" placeholder="비밀번호" value={inputs.password} name="password" onChange={onChange}/>
-          <input type="password" placeholder="비밀번호 확인" value={inputs.passwordCheck} name="passwordCheck" onChange={onChange}/>
-          <div className="flex">
-            <input type="text" placeholder="핸드폰 인증" value={inputs.mobile} name="mobile" onChange={onChange}/>
-            {/* <button className="btn st1">인증하기</button> */}
+        <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
+        <div className="content_inner">
+          <h2>회원가입</h2>
+          <div className="inputWrap">
+            <input type="text" placeholder="아이디" value={inputs.id} name="id" onChange={onChange}/>
+            <input type="password" placeholder="비밀번호" value={inputs.password} name="password" onChange={onChange}/>
+            <input type="password" placeholder="비밀번호 확인" value={inputs.passwordCheck} name="passwordCheck" onChange={onChange}/>
+            <div className="flex">
+              <input type="text" placeholder="핸드폰 인증" value={inputs.mobile} name="mobile" onChange={onChange}/>
+              {/* <button className="btn st1">인증하기</button> */}
+            </div>
+            <h3>생년월일</h3>
+            <InputBirth onChangeSelect={onChangeSelect} yearList={inputs.yearList} monthList={inputs.monthList} dayList={inputs.dayList} year={inputs.year} month={inputs.month} day={inputs.day}/>
+            <input type="text" placeholder="주소" value={inputs.address} name="address" onChange={onChange}/>
+            <input type="text" placeholder="상호명" value={inputs.brand} name="brand" onChange={onChange}/>
           </div>
-          <h3>생년월일</h3>
-          <InputBirth onChangeSelect={onChangeSelect} yearList={inputs.yearList} monthList={inputs.monthList} dayList={inputs.dayList} year={inputs.year} month={inputs.month} day={inputs.day}/>
-          <input type="text" placeholder="주소" value={inputs.address} name="address" onChange={onChange}/>
-          <input type="text" placeholder="상호명" value={inputs.brand} name="brand" onChange={onChange}/>
-        </div>
-        {
-          errorMsg &&
-          <div className="warning_text">{errorMsg}</div>
-        }
-        <div onClick={onSubmitSignUp}>
-          <Button>가입하기</Button>
+          {
+            errorMsg &&
+            <div className="warning_text">{errorMsg}</div>
+          }
+          <div onClick={onSubmitSignUp}>
+            <Button>가입하기</Button>
+          </div>
         </div>
       </div>
     </div>
