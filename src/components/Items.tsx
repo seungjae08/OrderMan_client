@@ -13,6 +13,8 @@ export const Items = ({item,deleteItem,upItemsUnit,downItemsUnit,changeItemsQuan
     const changeQuantity =(e:ChangeEvent<HTMLInputElement>)=>{
         changeItemsQuantity({item:item.item, unit:item.unit,quantity:Number(e.target.value)})
     }
+
+
     return(
         <div className="Items">
             <div className="item-unit">
@@ -29,12 +31,7 @@ export const Items = ({item,deleteItem,upItemsUnit,downItemsUnit,changeItemsQuan
                         </div>
                     </div>                    
                 </div>
-                
-                
             </div>
-            
-            
-            
         </div>
     )
 }

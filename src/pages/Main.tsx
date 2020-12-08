@@ -1,15 +1,19 @@
-import React,{  useEffect, useState} from 'react';
+import React,{ useEffect, useState } from 'react';
 import {useSelector,useDispatch} from 'react-redux';
 import {RootState} from "../reducers/index";
-import {actionMainCreators as mainActions, endLoading, Item} from "../reducers/main";
+import {actionMainCreators as mainActions, Item} from "../reducers/main";
 import {actionOrderCreators as orderActions} from "../reducers/order"
 import PastOrders from 'components/PastOrders'
 import {Header}from 'components/Header'
 import {Date} from 'components/Date'
 import OrderPage from 'components/OrderPage';
 import { serverPath } from 'modules/serverPath';
+import { History } from "history"
 
-function Main() {
+type propsTypes = {
+  history:History
+}
+function Main(props : propsTypes) {
   // Distpach 선언  
   const dispatch = useDispatch();
   
@@ -21,7 +25,7 @@ function Main() {
   const [selectDate, setSelectDate] = useState("");
   const [dates, setDates] = useState([""])
   const [hopePrice,setHopePrice] = useState("")
-  const [isLogin,setIsLogin] = useState(false)
+  const [isLogin,setIsLogin] = useState(false)// 리덕스로 변환
 
   useEffect(()=>{
     dispatch(mainActions.startUser())
@@ -48,7 +52,6 @@ function Main() {
         .then(temp=>{
           dispatch(mainActions.loginUser(data.orderList));
           dispatch(orderActions.orderLoginUser(temp.itemList,data.market));
-          
           setDates( Object.keys(data.orderList))
           dispatch(mainActions.endLoading())
         })
@@ -71,10 +74,9 @@ function Main() {
       console.log(err)
       dispatch(mainActions.errorGet());
     }
-  },[]);
+  },[isLogin]);
 
   // 컴포넌트들이 쓸 함수들 모음
-  
   const createItem=(item:Item)=>{
     dispatch(orderActions.orderCreateNowOrder(item));
   }
@@ -94,14 +96,27 @@ function Main() {
   const changeItemsQuantity = (item:Item)=>{
     dispatch(orderActions.orderQuantityChange(item))
   }
+  
+  const changeDatesClickLogout = ()=>{
+    setDates([""])
+  }
 
-  const clickOrderButton = ()=>{
+  const clickOrderButton = (isLogin:boolean)=>{
+      dispatch(mainActions.startUser());
       fetch(serverPath+"/order/temp",{
         method: 'POST',
         mode: 'cors', 
         credentials: 'include',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({itemList,hopePrice})
+      })
+      .then(res=>{
+        if(isLogin){
+          props.history.push("/order")
+        }else{
+          props.history.push("/order/unsignin")
+        }
+        dispatch(mainActions.endLoading())
       })
   }
 
@@ -110,9 +125,10 @@ function Main() {
     if(isLoading) return <p>Loading~~</p>
     if(hasError) return <p>has Error</p>
     return <div className="mb-view">
-      <Header isLogin={isLogin} setIsLogin={setIsLogin} itemList={itemList} hopePrice={hopePrice}/>
+      <Header isLogin={isLogin} setIsLogin={setIsLogin}
+      changeDatesClickLogout={changeDatesClickLogout}
+      itemList={itemList} hopePrice={hopePrice}/>
       {(dates.length>0)?<Date 
-
         dates={dates} 
         nowdate={selectDate}
         setNowdate={setSelectDate} 
@@ -122,6 +138,7 @@ function Main() {
       {todayOderPick()}
     </div>
   }
+
   const todayOderPick=()=>{
     return (todayOrder) ? <OrderPage 
     createItem={createItem} 

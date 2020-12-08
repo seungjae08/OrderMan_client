@@ -222,7 +222,7 @@ export const actionOrderCreators = {
 const initialState: NowOrder = {
   itemList: [],
   market: {
-    mobile: null,
+    mobile: '',
   },
   unSignInfo:{
     mobile:'',

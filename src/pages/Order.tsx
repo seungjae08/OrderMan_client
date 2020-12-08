@@ -91,12 +91,10 @@ export default function Order(props:propsTypes) {
       headers:{
         "Content-Type":"application/json"
       }
-    }).then((res)=>{
-      return res.text();
-    }).then((data)=>{
+    }).then((res)=>res.json()).then((data)=>{
       //console.log('temp-data',JSON.parse(data));
-      setItemList(JSON.parse(data).itemList);
-      setHopePrice(String(JSON.parse(data).hopePrice));
+      setItemList(data.itemList);
+      setHopePrice(data.hopePrice);
     }).catch(err=>{
       console.log(err)
       alert('주문데이터가 없습니다. 주문을 다시 진행해주세요');
@@ -175,7 +173,6 @@ export default function Order(props:propsTypes) {
   },[dispatch]);
 
   const onSubmitOrderOption = useCallback((event: MouseEvent<HTMLInputElement, globalThis.MouseEvent>)=>{
-
     let dataSuccess:boolean[] = [false,false];
     if(marketMobile !== null && marketMobile !== ""){
       fetch( serverPath + "/order/market", {
