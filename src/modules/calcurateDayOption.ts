@@ -127,19 +127,18 @@ export const validateOrderDate = function(date:string){
 
 export const renderHour = function(date:string){
   const thisHour = checkThisHour();
-  console.log(thisHour);
   let hours = [];
   let range:number[] = [];
   if(Number(thisHour)<11){
-    if(date==="당일"){
+    if(date==="당일" || date === toDay){
       range = [13,20];  
     }else{
       range = [10,20];
     }
-  }else if(Number(thisHour)<17){
+  }else if(Number(thisHour)<17 || date === nextDay){
     range = [10,20];
   }else{
-    if(date==="익일"){
+    if(date==="익일" || date === afterTomorrow){
       range = [13,20];
     }else{
       range = [10,20];
@@ -151,6 +150,8 @@ export const renderHour = function(date:string){
   }
   return hours;
 }
+
+
 
 let result : resultType = [dayList, hourList, minList, toDay, nextDay, afterTomorrow]
 export default result;
