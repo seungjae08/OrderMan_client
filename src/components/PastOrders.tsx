@@ -4,21 +4,29 @@ import { Item } from "reducers/main"
 type PastOrdersProps={
     orderItemList : Item[]
     itemList : Item[]
+    selectDate: string
     createItem : (item:Item) =>void
 }
 
-export default function PastOrders({orderItemList,itemList,createItem}:PastOrdersProps) {
+export default function PastOrders({orderItemList,itemList,selectDate,createItem}:PastOrdersProps) {
 
     return(
         <div id="PastOrders">
-            <button className="All-select" onClick={()=>{
-                itemList.forEach((ele)=>{
-                    const find =orderItemList.find(orderele=>orderele.item===ele.item)
-                    if(find ===undefined){
-                        createItem(ele)
-                    }
-                })
-            }}>전체담기</button>
+            <div id="date-orderlist">
+                <h1 >{selectDate.slice(3,5)+"-"+selectDate.slice(6)+"의 주문리스트"}
+                <button className="All-select" onClick={()=>{
+                    itemList.forEach((ele)=>{
+                        const find =orderItemList.find(orderele=>orderele.item===ele.item)
+                        if(find ===undefined){
+                            createItem(ele)
+                        }
+                    })
+                }}>전체담기</button>
+                </h1>
+               
+                
+            </div>
+            
             {itemList.map((ele)=>{return <PastOderItems 
                 itemList={orderItemList}
                 item={ele}
