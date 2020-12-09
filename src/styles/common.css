@@ -94,6 +94,8 @@ input[type="text"],
 input[type="password"],
 select {
   padding-left:10px;
+  font-family: arial;
+  font-size: 0.9rem;
 }
 
 /*inputWrap*/
@@ -259,3 +261,20 @@ select {
 }
 
 
+
+/*달력버튼*/
+.btnCalendar{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  height:25px;
+  padding:0 15px;
+  color:#F87946;
+  border:1px solid #E0E0E0;
+  border-radius: 5px;
+  font-size: 0.7rem;
+}
+
+.btnCalendar.on{
+  border:1px solid #F87946;
+}

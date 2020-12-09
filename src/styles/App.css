@@ -247,6 +247,10 @@
   height:40px;
   background-color: white;
   border:1px solid #E0E0E0;
+  box-sizing:border-box;
+}
+.Order-wrap select{
+  text-align-last: center;
 }
 
 .Order-wrap .warning_text{
@@ -349,4 +353,55 @@
   display:flex;
   justify-content: center;
   margin-bottom: 15px;
+}
+
+.Order-datePickTitle {
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.Order-datePickTitle img{
+  margin-right:5px;
+}
+
+
+/*datePicker*/
+
+.calendarView{
+  position: absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height: 100%;
+  background: rgba(0,0,0,.2);
+}
+.Calendar{
+  position: absolute;
+  top:50%;
+  margin-top: -180px;
+  left:50%;
+  margin-left: -16em;
+}
+
+.btnClosePopup{
+  position: absolute;
+  left: 50%;
+  margin-left: 8.5em;
+  top:50%;
+  margin-top: -215px;
+}
+
+.calendarInput {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  flex:1;
+  height:40px;
+  margin-right:10px;
+  border:1px solid #E0E0E0;
+  font-weight:normal;
+  box-sizing:border-box;
+  font-size: 0.9rem;
 }

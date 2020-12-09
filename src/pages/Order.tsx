@@ -8,18 +8,29 @@ import getDayOption from 'modules/calcurateDayOption';
 import { renderHour } from 'modules/calcurateDayOption';
 import { resultType, validateOrderDate} from 'modules/calcurateDayOption';
 import { RootState } from 'reducers';
+import { DayValue, DayRange, Calendar , utils } from "react-modern-calendar-datepicker";
 import { changeMarketMobile, changePayment, changeDeliveryTime } from 'reducers/order';
 
 type propsTypes = {
   history : History
 }
 
+
 export default function Order(props:propsTypes) {
 
   const dispatch = useDispatch();
 
+  //init
   let [dayList, hourList, minList, toDay, nextDay, afterTomorrow]:resultType = getDayOption;
 
+  let todayDate = toDay.split('-');
+  let defaultSelectedDay = {
+    year: Number(todayDate[0]),
+    month: Number(todayDate[1]),
+    day: Number(todayDate[2])
+  }
+
+  //state
   const [inputs, setInputs] = useState({
     marketMobile:"",
   });
@@ -27,25 +38,34 @@ export default function Order(props:propsTypes) {
     date:dayList[0],
     hour:hourList[0],
     min:"00"
-  })
+  });
 
+  
   const [hList, setHList] = useState(hourList);
   const [mList, setMList] = useState(minList);
   const [isLogin,setIsLogin] = useState(false);
   const [itemList,setItemList] = useState([]);
   const [hopePrice,setHopePrice] = useState("");
   const [errorMsg,setErrorMsg] = useState("");
+  //datepicker
+  const [isRenderCalendarInput,setIsRenderCalendarInput] = useState(false);
+  const [isRenderCalendar,setIsRenderCalendar] = useState(false);
+  const [selectedDay, setSelectedDay] = useState<DayValue>(null);
+  
 
+  //useSelector
   const marketMobile = useSelector((state:RootState)=>state.OrderReducer.market.mobile);
   const OrderOption = useSelector((state:RootState)=>state.OrderReducer.option);
   
+
+  //ref
   const marketRadio1 = useRef<HTMLInputElement>(null);
   const marketRadio2 = useRef<HTMLInputElement>(null);
   const marketPayment1 = useRef<HTMLInputElement>(null);
   const marketPayment2 = useRef<HTMLInputElement>(null);
-
+  const btnCalendar = useRef<HTMLInputElement>(null);
   
-  //marketMobile
+
   useEffect(() => {
     if(marketMobile!=="" && marketMobile!==null){
       setInputs(inputs=>({
@@ -65,7 +85,6 @@ export default function Order(props:propsTypes) {
   }, [marketMobile, marketRadio1, marketRadio2]);
 
   useEffect(() => {
-
     //로그인여부 반환
     fetch(serverPath+"/user/login",{
       method:"GET",
@@ -103,6 +122,7 @@ export default function Order(props:propsTypes) {
     onValidateDate();
   }, [props.history]);
 
+  //function
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if(name === "marketMobile"){
@@ -243,6 +263,37 @@ export default function Order(props:propsTypes) {
   },[ marketMobile, OrderOption, props.history, itemList, hopePrice]);
 
   
+  //특정날짜선택
+  const handleToggleDP = useCallback((e: MouseEvent<HTMLInputElement, globalThis.MouseEvent>)=>{
+    if(!btnCalendar.current){
+      return;
+    }
+    btnCalendar.current.classList.toggle('on');
+    if(btnCalendar.current.classList.contains('on')){
+      //켜졌을땐 
+      setIsRenderCalendarInput(true);
+    }else{
+      setIsRenderCalendarInput(false);
+      onValidateDate();
+    }
+  },[]);
+
+  const changeSelectedDay = useCallback((value) => {
+    setIsRenderCalendar(false);
+    setSelectedDay(value)
+  },[])
+
+  const openCalendar =  useCallback(() => {
+    setIsRenderCalendar(true);
+  },[])
+  const closeCalendar = useCallback(() => {
+    setIsRenderCalendar(false);
+  },[]);
+
+
+  //캘린더 인풋 표시 텍스 분기처리
+  const CalendarInputText = selectedDay !== null && selectedDay !== undefined ? `${String(selectedDay.year).slice(2)}-${selectedDay.month < 10 ? '0'+ selectedDay.month:selectedDay.month}-${selectedDay.day < 10 ? '0'+ selectedDay.day : selectedDay.day}` : `날짜를 선택해주세요`;
+  
   return (
     <div id="wrap" className="Order-wrap">
       <div className="mb-view verCenter">
@@ -274,13 +325,31 @@ export default function Order(props:propsTypes) {
             </li>
           </ul>
 
-          <h3>언제 받으시겠어요?</h3>
+          <h3 className="Order-datePickTitle">
+            언제 받으시겠어요?
+            <div className="btnCalendar" onClick={handleToggleDP} ref={btnCalendar}>
+              <img src="assets/ico_calendar.png" alt="달력"/>
+              특정날짜선택
+            </div>
+          </h3>
           <div className="flex Order-selList2" onBlur={onValidateDate}>
-            <select style={{marginRight:'10px'}} value={selectOption.date} onChange={onHandleChangeSelect} name="date">
-              {
-                dayList.map(day=><option key={day} value={day}>{day}</option>)
-              }
-            </select>
+
+            {
+              isRenderCalendarInput ? 
+              (
+                <div onClick={openCalendar} className="calendarInput">
+                  {CalendarInputText}
+                </div>
+              ):
+              (
+                <select style={{marginRight:'10px'}} value={selectOption.date} onChange={onHandleChangeSelect} name="date">
+                  {
+                    dayList.map(day=><option key={day} value={day}>{day}</option>)
+                  }
+                </select>
+              )
+            }
+            
             <select value={selectOption.hour} onChange={onHandleChangeSelect} name="hour">
               {hList && hList.map((hour:string)=>{
                 return <option key={`hour${hour}`} value={hour}>{hour}</option>
@@ -322,6 +391,22 @@ export default function Order(props:propsTypes) {
               <Button>주문완료</Button>
           </div>
         </div>
+        {
+          isRenderCalendar ?
+          (
+            <div className="calendarView">
+              <div className="btnClosePopup" onClick={closeCalendar}>
+                <img src="/assets/btn_close_popup.png" alt="달력 팝업 닫기"/>
+              </div>
+              <Calendar
+                minimumDate={defaultSelectedDay}
+                value={selectedDay}
+                onChange={changeSelectedDay}
+                shouldHighlightWeekends
+              />
+            </div>
+          ): null
+        }
       </div>
     </div>
   )
