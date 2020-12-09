@@ -5,15 +5,17 @@ import { History } from 'history';
 import Button from 'components/Button';
 import {Header} from 'components/Header';
 import getDayOption from 'modules/calcurateDayOption';
-import { renderHour } from 'modules/calcurateDayOption';
+import { renderHour, checkThisHour } from 'modules/calcurateDayOption';
 import { resultType, validateOrderDate} from 'modules/calcurateDayOption';
 import { RootState } from 'reducers';
-import { DayValue, DayRange, Calendar , utils } from "react-modern-calendar-datepicker";
+import { DayValue, Calendar , Day } from "react-modern-calendar-datepicker";
 import { changeMarketMobile, changePayment, changeDeliveryTime } from 'reducers/order';
 
 type propsTypes = {
   history : History
 }
+
+type disableDaysTypes = Day[] | [];
 
 
 export default function Order(props:propsTypes) {
@@ -51,6 +53,7 @@ export default function Order(props:propsTypes) {
   const [isRenderCalendarInput,setIsRenderCalendarInput] = useState(false);
   const [isRenderCalendar,setIsRenderCalendar] = useState(false);
   const [selectedDay, setSelectedDay] = useState<DayValue>(null);
+  const [disabledDays, setDisabledDays] = useState<disableDaysTypes>([]);
   
 
   //useSelector
@@ -119,8 +122,50 @@ export default function Order(props:propsTypes) {
       alert('주문데이터가 없습니다. 주문을 다시 진행해주세요');
       props.history.push('/');
     })
-    onValidateDate();
   }, [props.history]);
+
+  //캘린더 사용시 11tl 이후 당일 표시 안되도록
+  useEffect(() => {
+    let thisHour = checkThisHour();
+    if(Number(thisHour)>11){
+      setDisabledDays([defaultSelectedDay]);
+    }
+  }, []);
+
+  useEffect(() => {
+    
+    if(selectedDay===null || selectedDay === undefined){
+      return;
+    }
+    if(isRenderCalendarInput === true){
+      console.log('캘린더')
+      console.log('selectedDay',selectedDay);
+      let result = validateOrderDate(`${selectedDay.year}-${selectedDay.month}-${selectedDay.day} ${selectOption.hour}:${selectOption.min}`); 
+      console.log(result)
+      if(result){
+        console.log(`dispatch`,`${String(selectedDay.year).slice(2)}-${selectedDay.month}-${selectedDay.day} ${selectOption.hour}:${selectOption.min}`)
+        dispatch(changeDeliveryTime(`${String(selectedDay.year).slice(2)}-${selectedDay.month}-${selectedDay.day} ${selectOption.hour}:${selectOption.min}`))
+      }
+    }else{
+      console.log('캘린더아닐때')
+      let date = '';
+      console.log('selectOption',selectOption);
+      if(selectOption.date === "당일"){
+        date = toDay;
+      }else if(selectOption.date === "익일"){
+        date = nextDay;
+      }else {
+        date = afterTomorrow;
+      }
+      let result = validateOrderDate(`${date} ${selectOption.hour}:${selectOption.min}`); 
+      console.log(result)
+      if(result){
+        console.log('dispatch',`${date.slice(2)} ${selectOption.hour}:${selectOption.min}`);
+        dispatch(changeDeliveryTime(`${date.slice(2)} ${selectOption.hour}:${selectOption.min}`))
+      }
+    }
+  }, [selectedDay, selectOption, isRenderCalendarInput]);
+
 
   //function
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -188,21 +233,22 @@ export default function Order(props:propsTypes) {
   },[]);
   
 
-  const onValidateDate = function(){
-    let date = '';
-    if(selectOption.date === "당일"){
-      date = toDay;
-    }else if(selectOption.date === "익일"){
-      date = nextDay;
-    }else {
-      date = afterTomorrow;
-    }
-    let result = validateOrderDate(`${date} ${selectOption.hour}:${selectOption.min}`); 
-    if(result){
-      dispatch(changeDeliveryTime(`${date.slice(2)} ${selectOption.hour}:${selectOption.min}`))
-    }else{
-    }
-  }
+  // const onValidateDate = useCallback(()=>{
+  //   let date = '';
+  //   if(selectOption.date === "당일"){
+  //     date = toDay;
+  //   }else if(selectOption.date === "익일"){
+  //     date = nextDay;
+  //   }else {
+  //     date = afterTomorrow;
+  //   }
+  //   let result = validateOrderDate(`${date} ${selectOption.hour}:${selectOption.min}`); 
+  //   if(result){
+  //     dispatch(changeDeliveryTime(`${date.slice(2)} ${selectOption.hour}:${selectOption.min}`))
+  //   }
+  // },[]);
+
+
 
   const onChangePayment = useCallback((event: MouseEvent<HTMLInputElement, globalThis.MouseEvent>)=>{
     let value = (event.target as HTMLInputElement).value;
@@ -260,7 +306,7 @@ export default function Order(props:propsTypes) {
       setErrorMsg('주문에 실패했습니다. 재주문 부탁드립니다');
     });
 
-  },[ marketMobile, OrderOption, props.history, itemList, hopePrice]);
+  },[ marketMobile, OrderOption, props.history, itemList, hopePrice, toDay]);
 
   
   //특정날짜선택
@@ -274,13 +320,17 @@ export default function Order(props:propsTypes) {
       setIsRenderCalendarInput(true);
     }else{
       setIsRenderCalendarInput(false);
-      onValidateDate();
     }
-  },[]);
+  },[selectedDay]);
 
   const changeSelectedDay = useCallback((value) => {
     setIsRenderCalendar(false);
-    setSelectedDay(value)
+    setSelectedDay(value);
+    let result = renderHour(`${value.year}-${value.month<10?'0'+value.month: value.month}-${value.day<10?'0'+value.day:value.day}`);
+    if(result){
+      setHList(result);
+    }
+    
   },[])
 
   const openCalendar =  useCallback(() => {
@@ -290,9 +340,12 @@ export default function Order(props:propsTypes) {
     setIsRenderCalendar(false);
   },[]);
 
-
+  const handleDisabledSelect = (disabledDay:Day) => {
+    console.log('Tried selecting a disabled day', disabledDay);
+  };
+  
   //캘린더 인풋 표시 텍스 분기처리
-  const CalendarInputText = selectedDay !== null && selectedDay !== undefined ? `${String(selectedDay.year).slice(2)}-${selectedDay.month < 10 ? '0'+ selectedDay.month:selectedDay.month}-${selectedDay.day < 10 ? '0'+ selectedDay.day : selectedDay.day}` : `날짜를 선택해주세요`;
+  const CalendarInputText = selectedDay !== null && selectedDay !== undefined ? `${String(selectedDay.year).slice(2)}-${selectedDay.month < 10 ? '0'+ selectedDay.month:selectedDay.month}-${selectedDay.day < 10 ? '0'+ selectedDay.day : selectedDay.day}` : `날짜선택`;
   
   return (
     <div id="wrap" className="Order-wrap">
@@ -332,8 +385,7 @@ export default function Order(props:propsTypes) {
               특정날짜선택
             </div>
           </h3>
-          <div className="flex Order-selList2" onBlur={onValidateDate}>
-
+          <div className="flex Order-selList2" >
             {
               isRenderCalendarInput ? 
               (
@@ -403,6 +455,8 @@ export default function Order(props:propsTypes) {
                 value={selectedDay}
                 onChange={changeSelectedDay}
                 shouldHighlightWeekends
+                disabledDays={disabledDays}
+                onDisabledDayError={handleDisabledSelect}
               />
             </div>
           ): null

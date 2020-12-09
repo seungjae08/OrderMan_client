@@ -9,7 +9,7 @@ const checkThisTime = function(){
   const thisMonth:string = String(today.getMonth()+1);
   const thisDate:string = String(today.getDate());
 
-  return [today, thisYear, thisMonth, thisDate];
+  return [thisYear, thisMonth, thisDate];
 }
 
 export const checkThisHour = function(){
@@ -19,7 +19,7 @@ export const checkThisHour = function(){
   return thisHour;
 }
 
-const [today, thisYear, thisMonth, thisDate] = checkThisTime();
+const [thisYear, thisMonth, thisDate] = checkThisTime();
 const thisHour = checkThisHour();
 
 for (let i = 1; i <= 12; i++) {
@@ -129,16 +129,17 @@ export const renderHour = function(date:string){
   const thisHour = checkThisHour();
   let hours = [];
   let range:number[] = [];
+  //console.log(thisHour, date, toDay);
   if(Number(thisHour)<11){
     if(date==="당일" || date === toDay){
       range = [13,20];  
     }else{
       range = [10,20];
     }
-  }else if(Number(thisHour)<17 || date === nextDay){
+  }else if(Number(thisHour)<17){
     range = [10,20];
   }else{
-    if(date==="익일" || date === afterTomorrow){
+    if(date==="익일" || date === nextDay){
       range = [13,20];
     }else{
       range = [10,20];
