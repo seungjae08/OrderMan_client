@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect, useCallback, ChangeEvent, MouseEvent} from 'react';
+import React, {useRef, useState, useMemo, useEffect, useCallback, ChangeEvent, MouseEvent} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {serverPath} from 'modules/serverPath';
 import { History } from 'history';
@@ -26,11 +26,11 @@ export default function Order(props:propsTypes) {
   let [dayList, hourList, minList, toDay, nextDay, afterTomorrow]:resultType = getDayOption;
 
   let todayDate = toDay.split('-');
-  let defaultSelectedDay = {
+  let defaultSelectedDay = useMemo(()=>({
     year: Number(todayDate[0]),
     month: Number(todayDate[1]),
     day: Number(todayDate[2])
-  }
+  }),[]);
 
   //state
   const [inputs, setInputs] = useState({
@@ -60,7 +60,6 @@ export default function Order(props:propsTypes) {
   const marketMobile = useSelector((state:RootState)=>state.OrderReducer.market.mobile);
   const OrderOption = useSelector((state:RootState)=>state.OrderReducer.option);
   
-
   //ref
   const marketRadio1 = useRef<HTMLInputElement>(null);
   const marketRadio2 = useRef<HTMLInputElement>(null);
@@ -68,7 +67,6 @@ export default function Order(props:propsTypes) {
   const marketPayment2 = useRef<HTMLInputElement>(null);
   const btnCalendar = useRef<HTMLInputElement>(null);
   
-
   useEffect(() => {
     if(marketMobile!=="" && marketMobile!==null){
       setInputs(inputs=>({
@@ -120,7 +118,7 @@ export default function Order(props:propsTypes) {
     }).catch(err=>{
       console.log(err)
       alert('주문데이터가 없습니다. 주문을 다시 진행해주세요');
-      props.history.push('/');
+      //props.history.push('/');
     })
   }, [props.history]);
 
@@ -130,22 +128,31 @@ export default function Order(props:propsTypes) {
     if(Number(thisHour)>11){
       setDisabledDays([defaultSelectedDay]);
     }
-  }, []);
+  }, [defaultSelectedDay]);
 
+  //date 변경시 OrderReducer.option.deliveryTime 변경
   useEffect(() => {
-    
-    if(selectedDay===null || selectedDay === undefined){
-      return;
-    }
     if(isRenderCalendarInput === true){
       console.log('캘린더')
       console.log('selectedDay',selectedDay);
+      if(selectedDay===null || selectedDay === undefined){
+        return;
+      }
+      let hLists = renderHour(`${selectedDay.year}-${selectedDay.month}-${selectedDay.day}`);
+      console.log(hLists);
+      if(hList){
+        setHList(hLists);
+      }
       let result = validateOrderDate(`${selectedDay.year}-${selectedDay.month}-${selectedDay.day} ${selectOption.hour}:${selectOption.min}`); 
-      console.log(result)
+      console.log(result);
       if(result){
         console.log(`dispatch`,`${String(selectedDay.year).slice(2)}-${selectedDay.month}-${selectedDay.day} ${selectOption.hour}:${selectOption.min}`)
-        dispatch(changeDeliveryTime(`${String(selectedDay.year).slice(2)}-${selectedDay.month}-${selectedDay.day} ${selectOption.hour}:${selectOption.min}`))
+        dispatch(changeDeliveryTime(`${String(selectedDay.year).slice(2)}-${selectedDay.month<10?'0'+selectedDay.month:selectedDay.month}-${selectedDay.day<10?'0'+selectedDay.day:selectedDay.day} ${selectOption.hour}:${selectOption.min}`))
+      }else{
+        console.log(`dispatch`,`${String(selectedDay.year).slice(2)}-${selectedDay.month}-${selectedDay.day} ${hLists[0]}:${selectOption.min}`)
+        dispatch(changeDeliveryTime(`${String(selectedDay.year).slice(2)}-${selectedDay.month<10?'0'+selectedDay.month:selectedDay.month}-${selectedDay.day<10?'0'+selectedDay.day:selectedDay.day} ${hLists[0]}:${selectOption.min}`))
       }
+      
     }else{
       console.log('캘린더아닐때')
       let date = '';
@@ -157,14 +164,24 @@ export default function Order(props:propsTypes) {
       }else {
         date = afterTomorrow;
       }
+      let hLists = renderHour(`${date}`);
+      if(hLists){
+        setHList(hLists);
+      }
+
       let result = validateOrderDate(`${date} ${selectOption.hour}:${selectOption.min}`); 
       console.log(result)
       if(result){
         console.log('dispatch',`${date.slice(2)} ${selectOption.hour}:${selectOption.min}`);
         dispatch(changeDeliveryTime(`${date.slice(2)} ${selectOption.hour}:${selectOption.min}`))
+      }else{
+        console.log(`dispatch`,`${date.slice(2)} ${hLists[0]}:${selectOption.min}`)
+        dispatch(changeDeliveryTime(`${date.slice(2)} ${hLists[0]}:${selectOption.min}`))
       }
     }
-  }, [selectedDay, selectOption, isRenderCalendarInput]);
+  }, [selectedDay, selectOption, isRenderCalendarInput, mList]);
+
+
 
 
   //function
@@ -217,11 +234,16 @@ export default function Order(props:propsTypes) {
   const onHandleChangeSelect = useCallback((e:ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     if(name==="date"){
+      //value "당일","익일","모레"
       let result = renderHour(value);
       setHList(result);
     }else if(name==="hour"){
       if(value==="20"){
         setMList(['00']);
+        setSelectOption(selectOption=>({
+          ...selectOption,
+          min:"00"
+        }))
       }else{
         setMList(['00','30'])
       }
@@ -232,22 +254,6 @@ export default function Order(props:propsTypes) {
     }));
   },[]);
   
-
-  // const onValidateDate = useCallback(()=>{
-  //   let date = '';
-  //   if(selectOption.date === "당일"){
-  //     date = toDay;
-  //   }else if(selectOption.date === "익일"){
-  //     date = nextDay;
-  //   }else {
-  //     date = afterTomorrow;
-  //   }
-  //   let result = validateOrderDate(`${date} ${selectOption.hour}:${selectOption.min}`); 
-  //   if(result){
-  //     dispatch(changeDeliveryTime(`${date.slice(2)} ${selectOption.hour}:${selectOption.min}`))
-  //   }
-  // },[]);
-
 
 
   const onChangePayment = useCallback((event: MouseEvent<HTMLInputElement, globalThis.MouseEvent>)=>{
@@ -321,12 +327,12 @@ export default function Order(props:propsTypes) {
     }else{
       setIsRenderCalendarInput(false);
     }
-  },[selectedDay]);
+  },[]);
 
   const changeSelectedDay = useCallback((value) => {
     setIsRenderCalendar(false);
     setSelectedDay(value);
-    let result = renderHour(`${value.year}-${value.month<10?'0'+value.month: value.month}-${value.day<10?'0'+value.day:value.day}`);
+    let result = renderHour(`${value.year}-${value.month}-${value.day}`);
     if(result){
       setHList(result);
     }

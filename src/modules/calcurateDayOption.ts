@@ -13,9 +13,8 @@ const checkThisTime = function(){
 }
 
 export const checkThisHour = function(){
-  const today:Date = new Date();
+  const today:Date = new Date('2020/12/10 10:48:01');
   const thisHour:string = String(today.getHours());
-
   return thisHour;
 }
 
@@ -69,10 +68,8 @@ export const calculateLastDay = function(){
 //당일, 익일, 모레 날짜 산출
 const calculateDays = function(){
   let [year, month, date] = [Number(thisYear), Number(thisMonth), Number(thisDate)];
-
-  let today = `${year}-${month}-${date < 10 ? '0'+date : date}`;
+  let today = `${year}-${month}-${date}`;
   let lastDay = calculateLastDay();
-
   if(lastDay >= date + 1){
     date++;
   }else{
@@ -85,7 +82,7 @@ const calculateDays = function(){
       date=1;
     }
   }
-  let nextDay = `${year}-${month}-${date < 10 ? '0'+date : date}`;
+  let nextDay = `${year}-${month}-${date}`;
   if(lastDay >= date + 1){
     date++;
   }else{
@@ -98,11 +95,11 @@ const calculateDays = function(){
       date=1;
     }
   }
-
-  let afterTomorrow = `${year}-${month}-${date < 10 ? '0'+date : date}`;
+  let afterTomorrow = `${year}-${month}-${date}`;
   return [today, nextDay, afterTomorrow];
 }
 
+// yyyy-m-d
 let [toDay, nextDay, afterTomorrow] = calculateDays();
 
 export const validateOrderDate = function(date:string){
