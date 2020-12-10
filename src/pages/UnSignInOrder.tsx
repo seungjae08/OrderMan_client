@@ -3,14 +3,15 @@ import {serverPath} from 'modules/serverPath';
 import { History } from 'history';
 import {Link} from 'react-router-dom';
 import InputBirth from 'components/InputBirth';
-import { Header } from 'components/Header'
+import Cert from 'components/Cert';
+import { Header } from 'components/Header';
 import Button from 'components/Button';
 
 type propsTypes = {
   history : History
 }
 
-type InputTypes = {
+export type InputTypes = {
   mobile:string;
   address:string;
   brand:string;
@@ -42,8 +43,7 @@ export default function UnSigninOrder
 
   const [isLogin,setIsLogin] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
-  const [certErrorMsg, setCertErrorMsg] = useState('');
-  const [isRenderCertInput, setIsRenderCertInput] = useState(false);
+  
 
 
   useEffect(() => {
@@ -134,34 +134,6 @@ export default function UnSigninOrder
 
   },[inputs, props.history]);
 
-  const isCelluar = (asValue:string)=>{
-    var regExp = /^01(?:0|1|[6-9])-(?:\d{3}|\d{4})-\d{4}$/;
-    return regExp.test(asValue); // 형식에 맞는 경우 true 리턴
-  }
-
-
-  const handleSubmitMobile = useCallback(()=>{
-
-    fetch(serverPath + '/user/mobile', {
-      method: 'POST',
-      mode: 'cors', 
-      credentials: 'include',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        mobile: inputs.mobile  
-      })
-    }).then((res)=>{
-      if(res.status===200){
-        setIsRenderCertInput(true);
-      }else{
-        setCertErrorMsg('인증번호 발송이 완료되지 않았습니다. 다시 시도해주세요.')
-      }
-    })
-    .catch((e:Error)=>{
-      setCertErrorMsg('인증번호 발송이 완료되지 않았습니다. 다시 시도해주세요.')
-    })
-    
-  },[])
 
   return (
     <div id="wrap" className="UnSignInOrder-wrap">
@@ -171,26 +143,7 @@ export default function UnSigninOrder
           <h2>비회원 로그인</h2>
           <h3>휴대폰인증</h3>
           <div className="inputWrap">
-            <div className="flex">
-              <input type="text" placeholder="ex) 010-0000-0000" value={inputs.mobile} onChange={onChange} name="mobile"/> 
-              <div>
-                <button className="btn st2" onClick={handleSubmitMobile}>인증번호 발송</button>
-              </div>
-            </div>
-            { 
-              isRenderCertInput && 
-              <div className="flex">
-                <input type="text" placeholder="인증번호" value={inputs.verifyNumber} onChange={onChange} name="verifyNumber"/> 
-                <div>
-                  <button className="btn st2">인증번호 확인</button>
-                </div>
-              </div>
-            }
-
-            {
-              certErrorMsg &&
-              <div className="warning_text">{certErrorMsg}</div>
-            }
+            <Cert mobile={inputs.mobile} onChangeInput={onChange}/>
             <h3>생년월일</h3>
             <InputBirth onChangeSelect={onChangeSelect} yearList={inputs.yearList} monthList={inputs.monthList} dayList={inputs.dayList} year={inputs.year} month={inputs.month} day={inputs.day}/>
             <input type="text" placeholder="주소" value={inputs.address} onChange={onChange} name="address"/>
