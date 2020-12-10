@@ -176,7 +176,9 @@ export default function UnSigninOrder
               </Button>
             </Link>
             <div>
-              <Button color="#3B1D1D" bgColor="#FFEB00">카카오톡으로 로그인</Button>
+              <Button color="#000000" bgColor="#FEE500">
+                <img src="/assets/ico_kakao.png" alt="카카오 로그인"/>
+              </Button>
             </div>
           </div>
         </div>
