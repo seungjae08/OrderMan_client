@@ -131,6 +131,13 @@ select {
   padding: 0 20px;
 }
 
+.btn.st2 {
+  color: #F87946;
+  background-color: white;
+  border: 1px solid #F87946;
+  padding: 0 20px;
+}
+
 /*text style*/
 .warning_text{
   position: relative;

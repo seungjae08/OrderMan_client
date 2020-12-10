@@ -231,7 +231,7 @@
 
 
 /*unSignInOrder*/
-.UnSignInOrder-wrap .warning_text {
+.UnSignInOrder-wrap .warning_text.orange {
   margin-top: 15px;
   color:#F87946;
 }
