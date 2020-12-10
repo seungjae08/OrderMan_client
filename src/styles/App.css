@@ -288,41 +288,8 @@
   flex:1;
   align-items: center;
 }
-.Order-selList1 li input[type="radio"]{
-  display:none;
-}
 
-.Order-selList1 li label {
-  display:block;
-  width:16px;
-  height:16px;
-  border-radius: 50%;
-  border: 1px solid #E0E0E0;
-  margin-right: 5px;
-}
 
-.Order-selList1 li input[type="radio"]:checked+label {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  border: 1px solid #F87946;
-}
-
-.Order-selList1 li input[type="radio"]:checked+label:before{
-  content:'';
-  display: inline-block; 
-  /* position:absolute;
-  top:50%;  
-  left:50%;
-  margin-top: -5px;
-  margin-left: -5px; */
-  width:10px;
-  height:10px;
-  background-color: #F87946;
-  border-radius: 50%;
-  box-sizing: border-box;
-}
 
 .Order-selList1 li input[type="text"]{
   width:85%;
@@ -354,6 +321,9 @@
   justify-content: center;
   margin-bottom: 15px;
 }
+.Order-selList3 li:nth-child(1){
+  margin-right:10px;
+}
 
 .Order-datePickTitle {
   display:flex;
@@ -362,7 +332,8 @@
   margin-bottom: 20px;
 }
 
-.Order-datePickTitle img{
+.Order-datePickTitle im
+g{
   margin-right:5px;
 }
 
@@ -370,6 +341,9 @@
 /*datePicker*/
 
 .calendarView{
+  display:flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   top:0;
   left:0;
@@ -377,18 +351,15 @@
   height: 100%;
   background: rgba(0,0,0,.2);
 }
+
 .Calendar{
-  position: absolute;
-  top:50%;
-  margin-top: -180px;
-  left:50%;
-  margin-left: -16em;
+  max-width:350px;
 }
 
 .btnClosePopup{
   position: absolute;
   left: 50%;
-  margin-left: 8.5em;
+  margin-left: 145px;
   top:50%;
   margin-top: -215px;
 }
@@ -404,4 +375,14 @@
   font-weight:normal;
   box-sizing:border-box;
   font-size: 0.9rem;
+}
+
+
+
+
+@media (max-width:380px){
+  .btnClosePopup {
+    left: calc(90% - 18px);
+    margin-left: 0;
+  }
 }
