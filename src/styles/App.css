@@ -288,41 +288,8 @@
   flex:1;
   align-items: center;
 }
-.Order-selList1 li input[type="radio"]{
-  display:none;
-}
 
-.Order-selList1 li label {
-  display:block;
-  width:16px;
-  height:16px;
-  border-radius: 50%;
-  border: 1px solid #E0E0E0;
-  margin-right: 5px;
-}
 
-.Order-selList1 li input[type="radio"]:checked+label {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  border: 1px solid #F87946;
-}
-
-.Order-selList1 li input[type="radio"]:checked+label:before{
-  content:'';
-  display: inline-block; 
-  /* position:absolute;
-  top:50%;  
-  left:50%;
-  margin-top: -5px;
-  margin-left: -5px; */
-  width:10px;
-  height:10px;
-  background-color: #F87946;
-  border-radius: 50%;
-  box-sizing: border-box;
-}
 
 .Order-selList1 li input[type="text"]{
   width:85%;
@@ -353,6 +320,9 @@
   display:flex;
   justify-content: center;
   margin-bottom: 15px;
+}
+.Order-selList3 li:nth-child(1){
+  margin-right:10px;
 }
 
 .Order-datePickTitle {
@@ -406,6 +376,8 @@ g{
   box-sizing:border-box;
   font-size: 0.9rem;
 }
+
+
 
 
 @media (max-width:380px){

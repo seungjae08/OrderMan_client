@@ -278,3 +278,36 @@ select {
 .btnCalendar.on{
   border:1px solid #F87946;
 }
+
+
+
+.labelStyle input[type="radio"] {
+  display: none;
+}
+
+.labelStyle label {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid #E0E0E0;
+  margin-right: 5px;
+}
+
+.labelStyle input[type="radio"]:checked+label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border: 1px solid #F87946;
+}
+
+.labelStyle input[type="radio"]:checked+label:before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: #F87946;
+  border-radius: 50%;
+  box-sizing: border-box;
+}

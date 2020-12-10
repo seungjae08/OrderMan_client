@@ -30,7 +30,7 @@ export default function Order(props:propsTypes) {
     year: Number(todayDate[0]),
     month: Number(todayDate[1]),
     day: Number(todayDate[2])
-  }),[]);
+  }),[todayDate]);
 
   //state
   const [inputs, setInputs] = useState({
@@ -133,30 +133,24 @@ export default function Order(props:propsTypes) {
   //date 변경시 OrderReducer.option.deliveryTime 변경
   useEffect(() => {
     if(isRenderCalendarInput === true){
-      console.log('캘린더')
-      console.log('selectedDay',selectedDay);
       if(selectedDay===null || selectedDay === undefined){
         return;
       }
       let hLists = renderHour(`${selectedDay.year}-${selectedDay.month}-${selectedDay.day}`);
-      console.log(hLists);
       if(hList){
         setHList(hLists);
       }
       let result = validateOrderDate(`${selectedDay.year}-${selectedDay.month}-${selectedDay.day} ${selectOption.hour}:${selectOption.min}`); 
-      console.log(result);
       if(result){
-        console.log(`dispatch`,`${String(selectedDay.year).slice(2)}-${selectedDay.month}-${selectedDay.day} ${selectOption.hour}:${selectOption.min}`)
+        //console.log(`dispatch`,`${String(selectedDay.year).slice(2)}-${selectedDay.month}-${selectedDay.day} ${selectOption.hour}:${selectOption.min}`)
         dispatch(changeDeliveryTime(`${String(selectedDay.year).slice(2)}-${selectedDay.month<10?'0'+selectedDay.month:selectedDay.month}-${selectedDay.day<10?'0'+selectedDay.day:selectedDay.day} ${selectOption.hour}:${selectOption.min}`))
       }else{
-        console.log(`dispatch`,`${String(selectedDay.year).slice(2)}-${selectedDay.month}-${selectedDay.day} ${hLists[0]}:${selectOption.min}`)
+        //console.log(`dispatch`,`${String(selectedDay.year).slice(2)}-${selectedDay.month}-${selectedDay.day} ${hLists[0]}:${selectOption.min}`)
         dispatch(changeDeliveryTime(`${String(selectedDay.year).slice(2)}-${selectedDay.month<10?'0'+selectedDay.month:selectedDay.month}-${selectedDay.day<10?'0'+selectedDay.day:selectedDay.day} ${hLists[0]}:${selectOption.min}`))
       }
       
     }else{
-      console.log('캘린더아닐때')
       let date = '';
-      console.log('selectOption',selectOption);
       if(selectOption.date === "당일"){
         date = toDay;
       }else if(selectOption.date === "익일"){
@@ -170,12 +164,11 @@ export default function Order(props:propsTypes) {
       }
 
       let result = validateOrderDate(`${date} ${selectOption.hour}:${selectOption.min}`); 
-      console.log(result)
       if(result){
-        console.log('dispatch',`${date.slice(2)} ${selectOption.hour}:${selectOption.min}`);
+        //console.log('dispatch',`${date.slice(2)} ${selectOption.hour}:${selectOption.min}`);
         dispatch(changeDeliveryTime(`${date.slice(2)} ${selectOption.hour}:${selectOption.min}`))
       }else{
-        console.log(`dispatch`,`${date.slice(2)} ${hLists[0]}:${selectOption.min}`)
+        //console.log(`dispatch`,`${date.slice(2)} ${hLists[0]}:${selectOption.min}`)
         dispatch(changeDeliveryTime(`${date.slice(2)} ${hLists[0]}:${selectOption.min}`))
       }
     }
@@ -378,8 +371,10 @@ export default function Order(props:propsTypes) {
               <input type="text" value={inputs.marketMobile} onChange={onChange} name="marketMobile"  placeholder="01012341234" />
             </li>
             <li>
-              <input type="radio" id="fav2" name="favoriteMarket"  ref={marketRadio2} />
-              <label htmlFor="fav2" onClick={dispatchChangeMarketClick}></label>
+              <div className="labelStyle">
+                <input type="radio" id="fav2" name="favoriteMarket"  ref={marketRadio2} />
+                <label htmlFor="fav2" onClick={dispatchChangeMarketClick}></label>
+              </div>
               <span>아니오</span>
             </li>
           </ul>
