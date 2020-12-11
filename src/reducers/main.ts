@@ -6,7 +6,8 @@ export interface Item{
 }
 
 export interface OrderListInterface{
-  [key:string] : Item[]
+  [key:string] : Item[];
+  
 } 
 
 export interface OrderStates{
