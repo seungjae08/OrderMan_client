@@ -11,7 +11,7 @@ export const Date = ({ dates, nowdate, setNowdate, todayOrder, setTodayOrder }: 
     <div id="Date-wrap">
       <h2 className="order-listSelect-text">{(dates.length > 0) ? "구매 목록 선택" : ""}</h2>
       {(todayOrder) ? "" : <button className="today" onClick={() => { setNowdate(""); setTodayOrder(true) }}>
-        오늘의주문</button>}
+        오늘의주문<img src="/assets/button_arrow.png" alt="이동"></img></button>}
 
       <p className="orderlist">주문 목록</p>
       <div className="Main-Date">

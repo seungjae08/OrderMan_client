@@ -13,7 +13,7 @@ export default function PastOrders({orderItemList,itemList,selectDate,createItem
     return(
         <div id="PastOrders">
             <div id="date-orderlist">
-                <h1 >{selectDate.slice(3,5)+"-"+selectDate.slice(6)+"의 주문리스트"}
+                <h1 ><span>{selectDate.slice(3,5)+"."+selectDate.slice(6)+"의 주문리스트"}</span>
                 <button className="All-select" onClick={()=>{
                     itemList.forEach((ele)=>{
                         const find =orderItemList.find(orderele=>orderele.item===ele.item)
