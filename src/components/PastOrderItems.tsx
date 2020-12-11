@@ -19,7 +19,7 @@ export default function PastOrderItems({itemList,item,createItem}:PastOrderItems
     return(
         <div className="PastOrderItems-wrap">
             <div className="items">               
-                    {item.item+"  "+item.unit+"  x"+item.quantity}
+                    {item.item+"  "+item.unit}<img src="assets/ico_multiply.png"/>{item.quantity}
                 
                 <button onClick={()=>{
                 const find = itemList.find(ele=>ele.item===item.item)
