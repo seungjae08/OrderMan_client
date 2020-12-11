@@ -138,7 +138,7 @@ export default function ItemsInput({
                                 />
                             )
                         })}
-                        <div className="explanation">자동완성기능</div>
+                        {/* <div className="explanation">자동완성기능</div> */}
                     </div>
                        
                 </div>

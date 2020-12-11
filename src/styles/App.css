@@ -114,8 +114,9 @@
   height: 18px;
   width: calc(100% - 10px);
   height: 36px;
-  padding-left:10px;
-  font-size: 0.9rem;
+  padding-left:5px;
+  font-size: 0.85rem;
+  font-family:inherit;
   font-weight: bold;
   border-radius:3px;
   box-sizing: border-box;
@@ -125,7 +126,7 @@
   height:100%;
   padding: 0px;
   text-align: center;
-  font-size: 16px;
+  font-size: 0.85rem;
   font-weight: bold;
   border-width: 0px;
   box-sizing:border-box;
@@ -162,21 +163,27 @@
 }
 .Main-wrap .input-wrap .input-order-area .autoComplete-wrap.focus{
   position: absolute;
-  top:80px;
-  width: 90%;
+  top:78px;
+  width: calc(100% - 10px);
   background-color: #ffffff;
+  padding:5px;
+  font-size:0.85rem;
+  box-sizing:border-box;
+  border-radius:3px;
+  border-left:1px solid #d6d6d6;
+  border-right:1px solid #d6d6d6;
+  border-bottom:1px solid #d6d6d6;
 }
 .Main-wrap .input-wrap .input-order-area .autoComplete-wrap.none{
   display: none;
 }
 .Main-wrap .input-wrap .input-order-area .autoComplete-wrap .search-preview{
-  margin-top:20px;
+  padding: 5px 0;
 }
 .Main-wrap .input-wrap .input-order-area .autoComplete-wrap.focus .explanation{
   font-size: 5px;
   padding-top: 10px;
   padding-bottom: 10px;
-  margin-top :10px;
   background-color: #E0E0E0;
 }
 /*Items*/
