@@ -2,20 +2,20 @@ import React, {useState, useEffect, useCallback, ChangeEvent} from 'react';
 import { History } from 'history';
 import {Link} from 'react-router-dom';
 import Button from 'components/Button';
-import { serverPath } from 'modules/serverPath';
+import { serverPath, clientPath } from 'modules/serverPath';
 import { Header } from 'components/Header';
 
 type propsTypes = {
   history : History
 }
 
-// declare global {
-//   interface Window {
-//     Kakao: any;
-//   }
-// }
-// window.Kakao = window.Kakao || "SomeValue";
-// const {Kakao} = window;
+declare global {
+  interface Window {
+    Kakao: any;
+  }
+}
+window.Kakao = window.Kakao || "SomeValue";
+const {Kakao} = window;
 
 function Login(props : propsTypes) {
 
@@ -82,11 +82,11 @@ function Login(props : propsTypes) {
   
   },[inputs, props.history]);
 
-  // const onKakaoLoginHandler = function(){
-  //   Kakao.Auth.authorize({
-  //     redirectUri: clientPath+'/signup/social'
-  //   });
-  // }
+  const onKakaoLoginHandler = function(){
+    Kakao.Auth.authorize({
+      redirectUri: clientPath+'/signup/social'
+    });
+  }
 
   return (
     <div id="wrap" className="Login-wrap">
@@ -105,11 +105,11 @@ function Login(props : propsTypes) {
           <div onClick={onSubmitLogin}>
             <Button>로그인</Button>
           </div> 
-          {/* <div className="socialBtnList">
+          <div className="socialBtnList">
             <div onClick={onKakaoLoginHandler}>
               <Button color="#3B1D1D" bgColor="#FFEB00">카카오톡으로 로그인</Button>
             </div>
-          </div> */}
+          </div>
           <Link to="/signup" className="fullBtn">
             <Button color="#F87946" bgColor="white" borderColor="#D6D6D6">
               <div>
