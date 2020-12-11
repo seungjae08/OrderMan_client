@@ -5,6 +5,7 @@ import InputBirth from 'components/InputBirth';
 import Cert from 'components/Cert';
 import { serverPath } from 'modules/serverPath';
 import { Header } from 'components/Header';
+import { generateBirth } from 'modules/generateDate';
 
 
 type propsTypes = {
@@ -75,21 +76,7 @@ export default function SignUp(props: propsTypes) {
     }))
   }, []);
 
-  const generateBirth = function(){
-    let yearList = [];
-    let monthList = [];
-    let dayList = [];
-    for(let i=1940; i<2002; i++){
-      yearList.push(i);
-    }
-    for(let i=1; i<=12; i++){
-      monthList.push(i);
-    }
-    for(let i=1; i<=31; i++){
-      dayList.push(i);
-    }
-    return [yearList, monthList, dayList];
-  }
+  
 
 
   const onChangeSelect = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
@@ -116,6 +103,11 @@ export default function SignUp(props: propsTypes) {
       return;
     }else if(id === "" || password === "" || mobile === "" || brand === "" || address === ""){
       setErrorMsg('모든 항목을 입력해주세요');
+      return;
+    }
+
+    if(isSuccessCertMobile!==true){
+      setErrorMsg('핸드폰 인증을 완료해주세요');
       return;
     }
 

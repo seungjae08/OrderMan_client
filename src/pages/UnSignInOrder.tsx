@@ -113,6 +113,12 @@ export default function UnSigninOrder
       return;
     }
 
+    //핸드폰인증 필수
+    if(isSuccessCertMobile!==true){
+      setErrorMsg('핸드폰 인증을 진행해주세요');
+      return;
+    }
+
     fetch(serverPath + '/unknown/info', {
       method: 'POST',
       mode: 'cors', 
