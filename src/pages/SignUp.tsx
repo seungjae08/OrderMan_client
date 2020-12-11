@@ -2,8 +2,10 @@ import React, {useState,useEffect, useCallback, ChangeEvent} from 'react';
 import { History } from 'history';
 import Button from 'components/Button';
 import InputBirth from 'components/InputBirth';
+import Cert from 'components/Cert';
 import { serverPath } from 'modules/serverPath';
 import { Header } from 'components/Header';
+import { generateBirth } from 'modules/generateDate';
 
 
 type propsTypes = {
@@ -44,6 +46,7 @@ export default function SignUp(props: propsTypes) {
   //error Message
   const [isLogin,setIsLogin] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [isSuccessCertMobile, setIsSuccessCertMobile]=useState(false);
 
   useEffect(() => {
     //로그인여부 반환
@@ -73,21 +76,7 @@ export default function SignUp(props: propsTypes) {
     }))
   }, []);
 
-  const generateBirth = function(){
-    let yearList = [];
-    let monthList = [];
-    let dayList = [];
-    for(let i=1940; i<2002; i++){
-      yearList.push(i);
-    }
-    for(let i=1; i<=12; i++){
-      monthList.push(i);
-    }
-    for(let i=1; i<=31; i++){
-      dayList.push(i);
-    }
-    return [yearList, monthList, dayList];
-  }
+  
 
 
   const onChangeSelect = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
@@ -117,6 +106,11 @@ export default function SignUp(props: propsTypes) {
       return;
     }
 
+    if(isSuccessCertMobile!==true){
+      setErrorMsg('핸드폰 인증을 완료해주세요');
+      return;
+    }
+
     fetch(serverPath + "/user/signup", {
       method: 'POST',
       mode: 'cors', 
@@ -143,6 +137,10 @@ export default function SignUp(props: propsTypes) {
     })
   },[inputs, props.history]);
 
+  const changeSuccessCertMobile = useCallback(()=>{
+    setIsSuccessCertMobile(true);
+  },[])
+
   return (
     <div id="wrap" className="Signup-wrap">
       <div className="mb-view verCenter">
@@ -153,10 +151,8 @@ export default function SignUp(props: propsTypes) {
             <input type="text" placeholder="아이디" value={inputs.id} name="id" onChange={onChange}/>
             <input type="password" placeholder="비밀번호" value={inputs.password} name="password" onChange={onChange}/>
             <input type="password" placeholder="비밀번호 확인" value={inputs.passwordCheck} name="passwordCheck" onChange={onChange}/>
-            <div className="flex">
-              <input type="text" placeholder="핸드폰 인증" value={inputs.mobile} name="mobile" onChange={onChange}/>
-              {/* <button className="btn st1">인증하기</button> */}
-            </div>
+            <h3>휴대폰 인증</h3>
+            <Cert mobile={inputs.mobile} onChangeInput={onChange}isSuccessCertMobile={isSuccessCertMobile} changeSuccessCertMobile={changeSuccessCertMobile}/>
             <h3>생년월일</h3>
             <InputBirth onChangeSelect={onChangeSelect} yearList={inputs.yearList} monthList={inputs.monthList} dayList={inputs.dayList} year={inputs.year} month={inputs.month} day={inputs.day}/>
             <input type="text" placeholder="주소" value={inputs.address} name="address" onChange={onChange}/>

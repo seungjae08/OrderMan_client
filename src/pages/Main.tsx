@@ -141,6 +141,7 @@ function Main(props : propsTypes) {
         changeDatesClickLogout={changeDatesClickLogout}
         itemList={itemList} hopePrice={hopePrice}/>
       <div className="content_inner">
+        
         {(dates.length>0)?<Date 
           dates={dates} 
           nowdate={selectDate}

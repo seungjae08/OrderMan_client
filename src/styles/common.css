@@ -72,9 +72,15 @@ a.fullBtn{
   height:100%;
 }
 
-.Button-wrap>div>img{
+.Button-wrap>div>img:first-child {
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.Button-wrap>div>img:last-child {
   display: inline-block;
   margin-left: 5px;
+  margin-top:2px;
 }
 
 /*input*/
@@ -128,6 +134,13 @@ select {
 .btn.st1{
   color:white;
   background-color:#F87946;
+  padding: 0 20px;
+}
+
+.btn.st2 {
+  color: #F87946;
+  background-color: white;
+  border: 1px solid #F87946;
   padding: 0 20px;
 }
 
@@ -192,7 +205,7 @@ select {
 .Header-wrap h1{
   position: absolute;
   left:50%;
-  margin-left: -44px;
+  margin-left: -33px;
   height:35px;
 }
 

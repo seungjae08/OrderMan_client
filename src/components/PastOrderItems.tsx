@@ -10,7 +10,7 @@ export default function PastOrderItems({itemList,item,createItem}:PastOrderItems
     const addState =()=>{
         const find = itemList.find(ele=>ele.item===item.item)
         if(find===undefined){
-            return "담기"
+            return "주문담기"
         }else{
             return "담기완료"
         }
@@ -19,7 +19,7 @@ export default function PastOrderItems({itemList,item,createItem}:PastOrderItems
     return(
         <div className="PastOrderItems-wrap">
             <div className="items">               
-                    {item.item+"  "+item.unit}<img src="assets/ico_multiply.png"/>{item.quantity}
+                    <div>{item.item+"  "+item.unit}<img src="assets/ico_multiply.png" alt="곱하기"/>{item.quantity}</div>
                 
                 <button onClick={()=>{
                 const find = itemList.find(ele=>ele.item===item.item)

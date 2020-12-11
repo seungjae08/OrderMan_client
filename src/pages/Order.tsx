@@ -30,7 +30,7 @@ export default function Order(props:propsTypes) {
     year: Number(todayDate[0]),
     month: Number(todayDate[1]),
     day: Number(todayDate[2])
-  }),[todayDate]);
+  }),[]);
 
   //state
   const [inputs, setInputs] = useState({
@@ -142,7 +142,7 @@ export default function Order(props:propsTypes) {
       }
       let result = validateOrderDate(`${selectedDay.year}-${selectedDay.month}-${selectedDay.day} ${selectOption.hour}:${selectOption.min}`); 
       if(result){
-        //console.log(`dispatch`,`${String(selectedDay.year).slice(2)}-${selectedDay.month}-${selectedDay.day} ${selectOption.hour}:${selectOption.min}`)
+        console.log(`dispatch`,`${String(selectedDay.year).slice(2)}-${selectedDay.month}-${selectedDay.day} ${selectOption.hour}:${selectOption.min}`)
         dispatch(changeDeliveryTime(`${String(selectedDay.year).slice(2)}-${selectedDay.month<10?'0'+selectedDay.month:selectedDay.month}-${selectedDay.day<10?'0'+selectedDay.day:selectedDay.day} ${selectOption.hour}:${selectOption.min}`))
       }else{
         //console.log(`dispatch`,`${String(selectedDay.year).slice(2)}-${selectedDay.month}-${selectedDay.day} ${hLists[0]}:${selectOption.min}`)
@@ -172,9 +172,7 @@ export default function Order(props:propsTypes) {
         dispatch(changeDeliveryTime(`${date.slice(2)} ${hLists[0]}:${selectOption.min}`))
       }
     }
-  }, [selectedDay, selectOption, isRenderCalendarInput, mList]);
-
-
+  }, [selectedDay, selectOption, isRenderCalendarInput]);
 
 
   //function

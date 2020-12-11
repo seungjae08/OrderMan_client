@@ -13,7 +13,7 @@ const checkThisTime = function(){
 }
 
 export const checkThisHour = function(){
-  const today:Date = new Date('2020/12/10 10:48:01');
+  const today:Date = new Date();
   const thisHour:string = String(today.getHours());
   return thisHour;
 }
