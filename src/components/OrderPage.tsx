@@ -31,7 +31,7 @@ export default function OrderPage({
     setisLogin,
     isLogin,
     hopePrice,
-    itemList} : OrderPageProps) {
+    itemList,} : OrderPageProps) {
     const [inputValue , setInputValue] = useState("")
     const changeHopePrice = (e:ChangeEvent<HTMLInputElement>)=>{
         if(typeof Number(e.target.value)==="number"){
@@ -60,11 +60,23 @@ export default function OrderPage({
     return (
         <div className="input-area">
             <ItemsInput OrderCreateItem={createItem} />
-            {itemList.map((item:Item)=><Items item ={item} deleteItem={deleteItem} upItemsUnit={upItemsUnit} downItemsUnit={downItemsUnit} changeItemsQuantity={changeItemsQuantity}/> )}
+            {(itemList.length>0)?
+            itemList.map((item:Item)=>
+            <Items item ={item} 
+            deleteItem={deleteItem} 
+            upItemsUnit={upItemsUnit} 
+            downItemsUnit={downItemsUnit} 
+            changeItemsQuantity={changeItemsQuantity}/> ):
+            <div className="shoppingBasket"><img src="assets/shoppingBasket.jpg" /><p>장바구니가 비었습니다!</p></div>}
             <div className="order">
-                희망가격 : 
-                <input type="tel" value={inputValue} onChange={changeHopePrice} />
-                {orderBtnAtLogState()}
+                <p>희망가격 </p> 
+                <div className="order-input-btn">
+                    {orderBtnAtLogState()}
+                    <p>원</p>
+                    <input type="tel" value={inputValue} onChange={changeHopePrice} />
+                    
+                </div>
+                
             </div>
         </div>
     )

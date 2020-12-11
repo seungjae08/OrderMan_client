@@ -11,7 +11,7 @@
 .mb-view{
   position: absolute;
   width:100%;
-  height: 100%;
+  height: 100vh;
   overflow-y: hidden;
   max-width:1025px;
   max-height: 1366px;

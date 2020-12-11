@@ -9,6 +9,7 @@ import {Date} from 'components/Date'
 import OrderPage from 'components/OrderPage';
 import { serverPath } from 'modules/serverPath';
 import { History } from "history"
+import ReactGA from "react-ga";
 
 type propsTypes = {
   history:History
@@ -26,7 +27,16 @@ function Main(props : propsTypes) {
   const [dates, setDates] = useState([""])
   const [hopePrice,setHopePrice] = useState("")
   const [isLogin,setIsLogin] = useState(false)// 리덕스로 변환
-
+  useEffect(()=>{
+    getGA();
+  },[])
+  const getGA=()=>{
+    console.log("페이지 들어옴");
+    const pathName = window.location.pathname;
+    ReactGA.initialize("G-185261489");
+    ReactGA.set({page:pathName});
+    ReactGA.pageview(pathName);
+  }
   useEffect(()=>{
     dispatch(mainActions.startUser())
     try{
@@ -40,6 +50,7 @@ function Main(props : propsTypes) {
       })
       .then(data=>data.json())
       .then(data=>{
+        console.log("total info start")
         fetch(serverPath+"/order/temp",{
           method:"GET",
           mode:"cors",

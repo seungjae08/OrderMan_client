@@ -20,16 +20,13 @@ export const Items = ({item,deleteItem,upItemsUnit,downItemsUnit,changeItemsQuan
             <div className="item-unit">
                 <p>{item.item + " "} {item.unit} </p>
                 <div className="quantity-delete">
-                    <div className="delete">
-                        <button onClick={()=>{deleteItem(item)}}>삭제</button>
-                    </div>
-                    <div className="quantity">
-                        <div>
+                    <button className="delete" onClick={()=>{deleteItem(item)}}>삭제</button>
+                    <div className="item-input-unit">
                         <button onClick={()=>{upItemsUnit(item)}}>+</button>
                         <input  value={item.quantity} onChange={changeQuantity} />
                         <button onClick={()=>{downItemsUnit(item)}}>-</button>
-                        </div>
-                    </div>                    
+                    </div>
+                                   
                 </div>
             </div>
         </div>

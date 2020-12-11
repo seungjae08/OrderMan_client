@@ -10,26 +10,6 @@
   text-align: center;
   border-radius: 7px 7px 7px 7px;
 }
-.Main-wrap .mb-view{
-  position: absolute;
-  width:100%;
-  height: 100%;
-  overflow-y: auto;
-  max-width:450px;
-  max-height: 850px;
-  padding:0px;
-  padding-top: 55px;
-  background-color: white;
-  box-sizing: border-box;
-  font-weight: bold;
-}
-
-.Main-wrap .order{
-  float: right;
-  margin: 5px;
-  margin-top: 20px;
-}
-
 #slide-wrap{
   width: 100%;
   height:100%;
@@ -37,12 +17,8 @@
   position:relative;
 }
 
-.Main-wrap .order-btn{
-  border-color: #F87946;
-  border-radius: 7px 7px 7px 7px;
-  background-color: #F87946;
-  color: #ffffff;
-}
+
+/*Date*/
 .Main-wrap .Main-Date{
   width: 100%;
   height: auto;
@@ -53,8 +29,6 @@
 }
 .Main-wrap #Date-wrap{
   width: auto;
-  padding-left: 20px;
-  padding-right: 20px;
 }
 .Main-wrap #Date-wrap .Main-Date{
   margin-top: 25px;
@@ -95,17 +69,87 @@
 }
 .Main-wrap .mb-view .input-area{
   width: auto;
-  padding-left: 20px;
-  padding-right: 20px;
+  height: 100%;
+  padding-top: 20px;
 }
 #Date-wrap{
   text-align: center;
-  margin-top: 30px;
 }
 
+/*item Input*/
+.Main-wrap .input-wrap {
+  width: 100%;
+  height: auto;
+}
+.Main-wrap .input-wrap .input-order-area {
+  float: left;
+  width: 33.33%;
+  padding-bottom: 10px;
+  position: relative;
+}
+.Main-wrap .input-wrap .input-order-area p{
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+.Main-wrap .input-wrap .input-order-area .input-style{
+  height: 18px;
+  width: 90%;
+  font-size: 16px;
+  font-weight: bold;
+  height: 29px;
+}
+.Main-wrap .input-wrap .input-order-area .quantity{
+  width: 50%;
+  padding: 0px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  border-width: 0px;
+}
+.Main-wrap .input-wrap .input-order-area .item-input-unit button{
+  width: 25%;
+  height: 98%;
+  padding-top: 2%;
+  border-width: 0px;
+  background-color: #ffffff;
+}
+.Main-wrap .input-wrap .input-order-area .item-input-unit {
+  border: 1.5px solid #E0E0E0;
+  height: 31px;
+}
 
-
+.Main-wrap .input-wrap .orderBtn{
+  width: 100%;
+  height: 45px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: rgb(248, 121, 70);
+  border: none;
+}
+.Main-wrap .input-wrap .input-order-area .autoComplete-wrap.focus{
+  position: absolute;
+  top:80px;
+  width: 90%;
+  background-color: #ffffff;
+}
+.Main-wrap .input-wrap .input-order-area .autoComplete-wrap.none{
+  display: none;
+}
+.Main-wrap .input-wrap .input-order-area .autoComplete-wrap .search-preview{
+  margin-top:20px;
+}
+.Main-wrap .input-wrap .input-order-area .autoComplete-wrap.focus .explanation{
+  font-size: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top :10px;
+  background-color: #E0E0E0;
+}
+/*Items*/
 .Main-wrap .Items{
+  padding-top: 20px;
+  padding-bottom: 20px;
   width: 100%;
   height: auto;
   border-bottom-style: solid;
@@ -118,54 +162,107 @@
 }
 .Main-wrap .Items .item-unit p{
   margin: 5px;
+  float: left;
 }
-.Main-wrap .Items .quantity-delete{
+.Main-wrap .Items .item-unit .quantity-delete{
+  float: right;
+  width: 45%;
+}
+.Main-wrap .Items .item-unit .quantity-delete .delete{
+  float: right;
+  border: 1.5px solid #E0E0E0;
+  background-color: #ffffff;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.Main-wrap .Items .quantity-delete .item-input-unit{
+  border: 1.5px solid #E0E0E0;
   text-align: center;
   vertical-align: middle;
   float: right;
-  margin: 5px;
-  margin-top: 18px;
-  width: 100%;
+  margin-right: 10px;
+  width: 33%;
 }
-.Main-wrap .Items .quantity-delete .quantity{
+
+.Main-wrap .Items .quantity-delete .item-input-unit input{
+  width: 50%;
+  height: 18px;
+  padding: 0px;
   text-align: center;
-  width: 100%;
+  font-size: 16px;
+  font-weight: bold;
+  border-width: 0px;
 }
-.Main-wrap .Items .quantity-delete p{
-  float: right;
-  width: auto;
-  margin-right: 10px;
-  vertical-align: middle;
+.Main-wrap .Items .quantity-delete .item-input-unit button{
+  width: 25%;
+  height: 18px;
+  padding-right: 5px;
+  border-width: 0px;
+  background-color: #ffffff;
 }
-.Main-wrap .Items .quantity-delete input{
-  float: right;
-  width: 25px;
-  margin-right: 10px;
-  vertical-align: middle;
-  border:none;
-  border-bottom: solid 2px;
-  text-align: center;
-}
-.Main-wrap .Items .quantity-delete button{
-  vertical-align: middle;
-  float: right;
-  height: auto;
-  width: auto;
-  margin-right: 10px;
-  border-color: #F87946;
-  border-radius: 7px 7px 7px 7px;
-  background-color: #F87946;
-  color: #ffffff;
-}
+
+
+
 .Main-wrap .Items .quantity-delete .delete{
   float: right;
 }
+/*희망가격 버튼 */
+.Main-wrap .input-area .order{
+  position: absolute;
+  width: 90%;
+  margin-top: 20px;
+  height: 34px;
+  bottom: 10px;
+}
+.Main-wrap .input-area .order p{
+  padding-top: 9px;
+  float: left;
+  padding-bottom:9px;
+  width: 20%;
+  font-size: 13px;
+  font-weight: bold;
+}
+.Main-wrap .input-area .shoppingBasket{
+  padding-top:50px;
+  padding: auto;
+  width: 100%;
+  text-align: center;
+}
+.Main-wrap .input-area .order .order-input-btn{
+  width: 80%;
+  height: 100%;
+  float: right;
+}
+.Main-wrap .input-area .order .order-input-btn p{
+  float: right;
+  width: 10%;
+}
+.Main-wrap .input-area .order .order-input-btn button{
+  float: right;
+  width:35%;
+  height: 34px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: rgb(248, 121, 70);
+  border: none;
+}
+.Main-wrap .input-area .order .order-input-btn input{
+  margin-right: 10px;
+  height: 29px;
+  width: 45%;
+  font-size: 16px;
+  font-weight: bold;
+  float: right;
+}
+
 .Main-wrap .PastOrderItems-wrap{
   width: 100%;
   margin-top: 20px;
   height: 30px;
   border-bottom-style: solid;
-  border-width: 1px;
+  border-width: 0.2px;
 }
 .Main-wrap .PastOrderItems-wrap .items{
   width: auto;
@@ -178,10 +275,9 @@
   float: right;
   vertical-align: middle;
   bottom: 10px;
-  border-color: #F87946;
-  border-radius: 7px 7px 7px 7px;
-  background-color: #F87946;
-  color: #ffffff;
+  color: white;
+  background-color: rgb(248, 121, 70);
+  border: none;
 }
 .Main-wrap #PastOrders #date-orderlist{
   width: auto;
@@ -191,7 +287,7 @@
   margin-top: 10px;
   margin-bottom: 10px;
   text-align: center;
-  border-bottom: solid 1px;
+  border-bottom: solid 0.5px;
 }
 .Main-wrap #PastOrders #date-orderlist h1{
   width: auto;
@@ -200,14 +296,23 @@
   margin-bottom: 10px;
   align-items: center;
 }
-.Main-wrap #PastOrders button{
+.Main-wrap #PastOrders .All-select{
+  font-size: 16px;
   float: right;
   width: 5em;
   height: auto;
-  border: 1px solid #3f3f3f;
-  border-radius: 4px 4px 4px 4px;
-  background-color: #ffffff;
-  color: #F87946;
+  color: white;
+  background-color: rgb(248, 121, 70);
+  border: none;
+}
+.Main-wrap #PastOrders .PastOrderItems-wrap button{
+  font-size: 16px;
+  float: right;
+  width: 5em;
+  height: auto;
+  color: rgb(248, 121, 70);
+  background-color: white;
+  border: 1px solid rgb(214, 214, 214);
 }
 
 
