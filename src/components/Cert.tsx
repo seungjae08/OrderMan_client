@@ -24,12 +24,10 @@ export default function Cert(props: propTypes) {
   }
 
   const handleSubmitMobile = useCallback(()=>{
-
     if(isCelluar(props.mobile)===false){
       setCertErrorMsg('양식에 맞게 입력해주세요');
       return;
     }
-
     //전송
     fetch(serverPath + '/user/mobile', {
       method: 'POST',
@@ -51,9 +49,7 @@ export default function Cert(props: propTypes) {
     .catch((e:Error)=>{
       setCertErrorMsg('인증번호 발송이 완료되지 않았습니다. 다시 시도해주세요.')
     })
-
-
-  },[]);
+  },[props.mobile]);
 
   const handleSubmitVerifyNumber = useCallback(() => {
     fetch(serverPath + '/user/mobile', {
@@ -77,7 +73,7 @@ export default function Cert(props: propTypes) {
     .catch((e:Error)=>{
       setCertErrorMsg('인증번호 발송이 완료되지 않았습니다. 다시 시도해주세요.')
     })
-  },[]);
+  },[props.mobile, verifyNumber]);
 
   const handlePropChangeInput = useCallback((e:ChangeEvent<HTMLInputElement>) => {
     setCertErrorMsg('');
@@ -93,7 +89,7 @@ export default function Cert(props: propTypes) {
       e.target.value = result;
     }
     props.onChangeInput(e);
-  },[])
+  },[props])
 
   const changeVerifyNumber = useCallback((e:ChangeEvent<HTMLInputElement>) => {
     setCertErrorMsg('');
