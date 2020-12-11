@@ -105,11 +105,11 @@ function Login(props : propsTypes) {
           <div onClick={onSubmitLogin}>
             <Button>로그인</Button>
           </div> 
-          <div className="socialBtnList">
+          {/* <div className="socialBtnList">
             <div onClick={onKakaoLoginHandler}>
               <Button color="#3B1D1D" bgColor="#FFEB00">카카오톡으로 로그인</Button>
             </div>
-          </div>
+          </div> */}
           <Link to="/signup" className="fullBtn">
             <Button color="#F87946" bgColor="white" borderColor="#D6D6D6">
               <div>

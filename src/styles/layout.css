@@ -30,5 +30,6 @@
   height:calc(100vh - 55px);
   padding:20px;
   padding-top: 55px;
+  padding-bottom:80px;
   box-sizing: border-box;
 }
