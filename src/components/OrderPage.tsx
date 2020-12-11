@@ -67,13 +67,13 @@ export default function OrderPage({
             upItemsUnit={upItemsUnit} 
             downItemsUnit={downItemsUnit} 
             changeItemsQuantity={changeItemsQuantity}/> ):
-            <div className="shoppingBasket"><img src="assets/shoppingBasket.jpg" /><p>장바구니가 비었습니다!</p></div>}
+            <div className="shoppingBasket"><p>장바구니가 비었습니다!</p></div>}
             <div className="order">
                 <p>희망가격 </p> 
                 <div className="order-input-btn">
                     {orderBtnAtLogState()}
                     <p>원</p>
-                    <input type="tel" value={inputValue} onChange={changeHopePrice} />
+                    <input type="tel" value={inputValue} onChange={changeHopePrice}/>
                     
                 </div>
                 

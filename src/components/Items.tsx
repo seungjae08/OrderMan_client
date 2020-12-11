@@ -22,11 +22,11 @@ export const Items = ({item,deleteItem,upItemsUnit,downItemsUnit,changeItemsQuan
                 <div className="quantity-delete">
                     <button className="delete" onClick={()=>{deleteItem(item)}}>삭제</button>
                     <div className="item-input-unit">
-                        <button onClick={()=>{upItemsUnit(item)}}>+</button>
+                        <button onClick={()=>{downItemsUnit(item)}}><img src="/assets/ico_minus.png" alt="수량빼기"/></button>
                         <input  value={item.quantity} onChange={changeQuantity} />
-                        <button onClick={()=>{downItemsUnit(item)}}>-</button>
+                        <button onClick={()=>{upItemsUnit(item)}}><img src="/assets/ico_plus.png" alt="수량더하기"/></button>
                     </div>
-                                   
+
                 </div>
             </div>
         </div>

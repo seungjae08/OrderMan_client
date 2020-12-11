@@ -11,7 +11,7 @@ export default function ItemsInput({
     }:ItemsInputProps) {
     const [itemname ,setItemname] = useState('');
     const [unit,setUnit] = useState('');
-    const [quantity,setQuantity] = useState("0");
+    const [quantity,setQuantity] = useState("1");
     const [itemInputFocus,setItemInputFocus] = useState(false)
     const [unitInputFocus,setUnitInputFocus] = useState(false)
     const [itemautoState,setItemAutoState] = useState({
@@ -168,9 +168,13 @@ export default function ItemsInput({
                 <div className="input-order-area">
                     <p >수량</p>
                     <div className="item-input-unit">
-                        <button onClick={()=>{setQuantity(`${Number(quantity)+1}`)}}>+</button>
+                        <button onClick={()=>{setQuantity((Number(quantity)<=0)?"0":`${Number(quantity)-1}`)}}>
+                            <img src="/assets/ico_minus.png" alt="수량빼기"/>
+                        </button>
                         <input className="quantity" type="tel" value={quantity}  onChange={inputQuantityChange}/>
-                        <button onClick={()=>{setQuantity((Number(quantity)<=0)?"0":`${Number(quantity)-1}`)}}>-</button>
+                        <button onClick={()=>{setQuantity(`${Number(quantity)+1}`)}}>
+                            <img src="/assets/ico_plus.png" alt="수량더하기"/>
+                        </button>
                     </div>
                 </div>
                 <button className="orderBtn" onClick={onSubmit}>주문 추가하기</button>
