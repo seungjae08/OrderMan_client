@@ -4,6 +4,8 @@ import {serverPath} from 'modules/serverPath';
 type propTypes = {
   mobile: string;
   onChangeInput:(e: ChangeEvent<HTMLInputElement>)=>void;
+  isSuccessCertMobile: boolean;
+  changeSuccessCertMobile: ()=>void;
 }
 
 
@@ -12,10 +14,12 @@ export default function Cert(props: propTypes) {
   const [certErrorMsg, setCertErrorMsg] = useState('');
   const [isRenderCertInput, setIsRenderCertInput] = useState(false);
   const [verifyNumber, setVerifyNumber]=useState('');
-  const [isSuccessCertMobile, setIsSuccessCertMobile]=useState(false);
+
+  
 
   const isCelluar = (asValue:string)=>{
     var regExp = /^01(?:0|1|[6-9])-(?:\d{3}|\d{4})-\d{4}$/;
+    console.log(regExp.test(asValue));
     return regExp.test(asValue); // 형식에 맞는 경우 true 리턴
   }
 
@@ -77,6 +81,17 @@ export default function Cert(props: propTypes) {
 
   const handlePropChangeInput = useCallback((e:ChangeEvent<HTMLInputElement>) => {
     setCertErrorMsg('');
+    let result = '';
+    if(e.target.value.length ===10){
+      result = e.target.value.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+    }else if(e.target.value.length ===12){
+      result = e.target.value.replace(/-/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+    } else if(e.target.value.length ===13){
+      result = e.target.value.replace(/-/g, '').replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+    }
+    if(result!==""){
+      e.target.value = result;
+    }
     props.onChangeInput(e);
   },[])
 
@@ -87,7 +102,7 @@ export default function Cert(props: propTypes) {
 
 
 
-  if(isSuccessCertMobile){
+  if(props.isSuccessCertMobile){
     return (
       <div>
           <div className="flex">
@@ -100,7 +115,7 @@ export default function Cert(props: propTypes) {
     return(
       <div>
         <div className="flex">
-          <input type="text" placeholder="ex) 010-0000-0000" value={props.mobile} onChange={handlePropChangeInput} name="mobile"/> 
+          <input type="text" placeholder="ex) 01000000000" value={props.mobile} onChange={handlePropChangeInput} name="mobile"/> 
           <div>
             <button className="btn st2" onClick={handleSubmitMobile}>인증번호 발송</button>
           </div>
@@ -110,7 +125,7 @@ export default function Cert(props: propTypes) {
           <div className="flex">
             <input type="text" placeholder="인증번호" value={verifyNumber} onChange={changeVerifyNumber} name="verifyNumber"/> 
             <div>
-              <button className="btn st2" onClick={handleSubmitVerifyNumber}>인증번호 확인</button>
+              <button className="btn st2" onClick={handleSubmitVerifyNumber}>인증번호 인증</button>
             </div>
           </div>
         }

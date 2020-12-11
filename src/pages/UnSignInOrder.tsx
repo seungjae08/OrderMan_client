@@ -43,6 +43,7 @@ export default function UnSigninOrder
 
   const [isLogin,setIsLogin] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [isSuccessCertMobile, setIsSuccessCertMobile]=useState(false);
   
 
 
@@ -134,6 +135,9 @@ export default function UnSigninOrder
 
   },[inputs, props.history]);
 
+  const changeSuccessCertMobile = useCallback(()=>{
+    setIsSuccessCertMobile(true);
+  },[])
 
   return (
     <div id="wrap" className="UnSignInOrder-wrap">
@@ -143,7 +147,7 @@ export default function UnSigninOrder
           <h2>비회원 로그인</h2>
           <h3>휴대폰인증</h3>
           <div className="inputWrap">
-            <Cert mobile={inputs.mobile} onChangeInput={onChange}/>
+            <Cert mobile={inputs.mobile} onChangeInput={onChange}isSuccessCertMobile={isSuccessCertMobile} changeSuccessCertMobile={changeSuccessCertMobile}/>
             <h3>생년월일</h3>
             <InputBirth onChangeSelect={onChangeSelect} yearList={inputs.yearList} monthList={inputs.monthList} dayList={inputs.dayList} year={inputs.year} month={inputs.month} day={inputs.day}/>
             <input type="text" placeholder="주소" value={inputs.address} onChange={onChange} name="address"/>
