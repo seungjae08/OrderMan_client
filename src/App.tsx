@@ -6,6 +6,7 @@ import SignUp  from 'pages/SignUp';
 import UnSignInOrder from 'pages/UnSignInOrder';
 import Order from 'pages/Order';
 import OauthSignup from 'pages/OauthSignup';
+import MyPage from 'pages/MyPage';
 import 'styles/reset.css';
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import 'styles/layout.css';
@@ -21,6 +22,7 @@ function App() {
       <Route path="/signup" exact component={SignUp}/>
       <Route path="/order/unsignin" component={UnSignInOrder}/>
       <Route path="/order" exact component={Order}/>
+      <Route path="/mypage" exact component={MyPage}/>
     </div>
   );
 }

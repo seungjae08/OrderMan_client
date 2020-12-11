@@ -80,6 +80,7 @@ a.fullBtn{
 .Button-wrap>div>img:last-child {
   display: inline-block;
   margin-left: 5px;
+  margin-top:2px;
 }
 
 /*input*/

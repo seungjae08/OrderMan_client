@@ -377,12 +377,39 @@ g{
   font-size: 0.9rem;
 }
 
+/* Mypage */
+.MyPage-userInfo{
+  margin:30px 0 50px;
+}
 
+.MyPage-userInfo li{
+  display:flex;
+  align-items: flex-start;
+  padding: 10px 0;
+  font-size: 0.95rem;
+  font-weight: normal;
+}
 
+.MyPage-userInfo li h3{
+  width: 90px;
+  min-width: 90px;
+  height:auto;
+  font-weight: bold;
+}
 
+.MyPage-userInfo li p{
+  line-height: 1.4;
+}
+
+.MyPage-wrap .content_inner > a{
+  margin-bottom:10px;
+}
+
+/*****************************media query(max-width:380px)**************************/
 @media (max-width:380px){
   .btnClosePopup {
     left: calc(90% - 18px);
     margin-left: 0;
   }
 }
+/*****************************media query(max-width:380px)**************************/
