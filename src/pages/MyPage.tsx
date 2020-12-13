@@ -76,7 +76,7 @@ export default function MyPage(props:propsTypes) {
 
       setIsLoading(false);
     });
-  }, [])
+  }, [props.history])
 
   return (
     <div id="wrap" className="MyPage-wrap">
