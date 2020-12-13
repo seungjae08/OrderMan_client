@@ -32,7 +32,6 @@ export default function MyPage(props:propsTypes) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-
     //로그인 확인
     fetch(serverPath+"/user/login",{
       method:"GET",
@@ -50,7 +49,6 @@ export default function MyPage(props:propsTypes) {
         props.history.push('/login');
       }
     });
-
 
     //GET userinfo
     fetch(serverPath+"/mypage/user",{
@@ -78,7 +76,6 @@ export default function MyPage(props:propsTypes) {
 
       setIsLoading(false);
     });
-
   }, [])
 
   return (
