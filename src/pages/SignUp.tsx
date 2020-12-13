@@ -76,9 +76,6 @@ export default function SignUp(props: propsTypes) {
     }))
   }, []);
 
-  
-
-
   const onChangeSelect = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setInputs((inputs) => ({

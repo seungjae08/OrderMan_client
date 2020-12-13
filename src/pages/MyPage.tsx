@@ -1,16 +1,24 @@
 import React ,{ useState, useEffect }from 'react';
+import { History } from 'history';
+import { serverPath } from 'modules/serverPath';
 import {Link} from 'react-router-dom';
 import {Header} from 'components/Header';
 import Button from 'components/Button';
+import Loading from 'components/Loading';
+
+type propsTypes = {
+  history : History
+}
 
 type userInfoTypes = {
   id:string;
   mobile:string;
   birth:string;
   address:string;
-  brand:string;}
+  brand:string;
+}
 
-export default function MyPage() {
+export default function MyPage(props:propsTypes) {
 
   //state
   const [userInfo, setUserInfo] = useState<userInfoTypes>({
@@ -21,16 +29,56 @@ export default function MyPage() {
     brand:""
   })
   const [isLogin, setIsLogin] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    //데이터 받으면 삭제할 부분
-    setUserInfo({
-      id:"user123",
-      mobile:"010-4567-8080",
-      birth:"1980-01-01",
-      address:"서울특별시 종로구 종각로 123-123",
-      brand:"야채가게"
-    })
+
+    //로그인 확인
+    fetch(serverPath+"/user/login",{
+      method:"GET",
+      mode:"cors",
+      credentials:"include",
+      headers:{
+        "Content-Type":"application/json"
+      }
+    }).then(login=>{
+      if(login.status===200){
+        setIsLogin(true);
+      }else if(login.status ===202){
+        setIsLogin(false);
+        alert("로그인 정보가 존재하지 않습니다")
+        props.history.push('/login');
+      }
+    });
+
+
+    //GET userinfo
+    fetch(serverPath+"/mypage/user",{
+      method:"GET",
+      mode:"cors",
+      credentials:"include",
+      headers:{
+        "Content-Type":"application/json"
+      }
+    }).then(res=>{
+      return res.json();
+    }).then(data=>{
+      let {brand, address, birth, id, mobile} = data;
+
+      let birthArr = birth.split('-');
+      birth = `${Number(birthArr[0])<10?'20'+birthArr[0]:'19'+birthArr[0]}년 ${birthArr[1]}월 ${birthArr[2]}일`;
+      setUserInfo((inputs)=>({
+        ...inputs,
+        id,
+        mobile,
+        birth,
+        brand,
+        address
+      }));
+
+      setIsLoading(false);
+    });
+
   }, [])
 
   return (
@@ -85,6 +133,10 @@ export default function MyPage() {
               </div>
             </Button>
           </Link>
+          {
+            isLoading &&
+            <Loading/>
+          }
         </div>
       </div>
     </div>
