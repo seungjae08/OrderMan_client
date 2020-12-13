@@ -113,7 +113,7 @@ export default function Cert(props: propTypes) {
         <div className="flex">
           <input type="text" placeholder="ex) 01000000000" value={props.mobile} onChange={handlePropChangeInput} name="mobile"/> 
           <div>
-            <button className="btn st2" onClick={handleSubmitMobile}>인증번호 발송</button>
+            {/* <button className="btn st2" onClick={handleSubmitMobile}>인증번호 발송</button> */}
           </div>
         </div>
         { 

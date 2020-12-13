@@ -183,6 +183,7 @@ select {
   text-align-last: center;
   background-color: white;
   border: 1px solid #E0E0E0;
+  font-weight:bold;
 }
 
 .InputBirth-wrap span {

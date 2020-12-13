@@ -76,9 +76,6 @@ export default function SignUp(props: propsTypes) {
     }))
   }, []);
 
-  
-
-
   const onChangeSelect = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setInputs((inputs) => ({
@@ -106,10 +103,10 @@ export default function SignUp(props: propsTypes) {
       return;
     }
 
-    if(isSuccessCertMobile!==true){
-      setErrorMsg('핸드폰 인증을 완료해주세요');
-      return;
-    }
+    // if(isSuccessCertMobile!==true){
+    //   setErrorMsg('핸드폰 인증을 완료해주세요');
+    //   return;
+    // }
 
     fetch(serverPath + "/user/signup", {
       method: 'POST',
