@@ -28,6 +28,8 @@ type InputTypes = {
 }
 
 export default function SignUp(props: propsTypes) {
+
+  //useState
   const [inputs, setInputs] = useState<InputTypes>({
     id: "",
     password: "",
@@ -42,13 +44,12 @@ export default function SignUp(props: propsTypes) {
     month:"1",
     day:"1"
   });
-
-  //error Message
   const [isLogin,setIsLogin] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [isSuccessCertMobile, setIsSuccessCertMobile]=useState(false);
   const [isLoading, setIsLoading]=useState(false);
 
+  //useEffect
   useEffect(() => {
     //로그인여부 반환
     fetch( serverPath + "/user/login",{
@@ -77,6 +78,7 @@ export default function SignUp(props: propsTypes) {
     }))
   }, []);
 
+  //function
   const onChangeSelect = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setInputs((inputs) => ({

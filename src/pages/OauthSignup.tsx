@@ -28,8 +28,14 @@ type InputTypes = {
 
 
 export default function SignUpSocial(props: propsTypes) {
-  const [isLogin,setIsLogin] = useState(false)
+  
+  window.Kakao = window.Kakao || "SomeValue";
+  const {Kakao} = window;
+  const code = props.location.search.split("=")[1];
+  let bearer:string = '';
 
+  //useState
+  const [isLogin,setIsLogin] = useState(false)
   const [inputs, setInputs] = useState<InputTypes>({
     address:"",
     brand:"",
@@ -41,12 +47,13 @@ export default function SignUpSocial(props: propsTypes) {
     month:"1",
     day:"1"
   });
-
   const [isRender, setIsRender] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
   const [isSuccessCertMobile, setIsSuccessCertMobile] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  //useEffect
+  //mount, check login
   useEffect(() => {
     fetch(serverPath+"/user/login",{
       method:"GET",
@@ -61,17 +68,8 @@ export default function SignUpSocial(props: propsTypes) {
       }else if(login.status ===202){
         setIsLogin(false);
       }
-    })
-  }, [])
+    });
 
-  window.Kakao = window.Kakao || "SomeValue";
-
-  const {Kakao} = window;
-  const code = props.location.search.split("=")[1];
-  let bearer:string = '';
-
-  useEffect(() => {
-    //토큰없으면 리다이렉트
     fetch('https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id='+KAKAO_REST_API_KEY+'&redirect_uri='+clientPath+'/signup/social&code='+code, {
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'}
@@ -79,9 +77,7 @@ export default function SignUpSocial(props: propsTypes) {
       return res.json();
     }).then(data=>{
       console.log(data);
-
       bearer = 'Bearer ' + data.access_token;
-
       fetch(serverPath+'/user/oauthup', {
         method: 'GET',
         mode: 'cors', 
@@ -105,7 +101,6 @@ export default function SignUpSocial(props: propsTypes) {
       alert('카카오 로그인이 정상 작동하지 않습니다');
     });
 
-
     let [yearList, monthList, dayList] = generateBirth();
     setInputs((inputs)=>({
       ...inputs,
@@ -113,9 +108,9 @@ export default function SignUpSocial(props: propsTypes) {
       monthList,
       dayList
     }))
+  }, [])
 
-  }, []);
-
+  //function
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInputs((inputs) => ({
@@ -131,7 +126,6 @@ export default function SignUpSocial(props: propsTypes) {
       console.log('not code');
       return;
     }
-
     let {address, brand, mobile} = inputs;
     if(brand === "" || address === "" || isSuccessCertMobile === false){
       setErrorMsg('모든 항목을 입력해주세요');
@@ -163,10 +157,7 @@ export default function SignUpSocial(props: propsTypes) {
       setIsLoading(false);
       console.log(error);
     })
-    
-  },[inputs, props.history, code]);
-
-
+  },[inputs, code, isSuccessCertMobile]);
 
   const onChangeSelect = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -180,47 +171,45 @@ export default function SignUpSocial(props: propsTypes) {
     setIsSuccessCertMobile(true);
   },[])
 
-
-
   if(isRender){
     return (
-        <div id="wrap">
-          <div className="mb-view verCenter">
-            <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
-            <div className="content_inner">
-              <h2>회원가입(카카오톡)</h2>
-              <div className="inputWrap">
-                <h3>휴대폰 인증</h3>
-                <Cert mobile={inputs.mobile} onChangeInput={onChange}isSuccessCertMobile={isSuccessCertMobile} changeSuccessCertMobile={changeSuccessCertMobile}/>
-                <h3>생년월일</h3>
-                <InputBirth onChangeSelect={onChangeSelect} yearList={inputs.yearList} monthList={inputs.monthList} dayList={inputs.dayList} year={inputs.year} month={inputs.month} day={inputs.day}/>
-                <input type="text" placeholder="주소" value={inputs.address} name="address" onChange={onChange}/>
-                <input type="text" placeholder="상호명" value={inputs.brand} name="brand" onChange={onChange}/>
-              </div>
-              {/* {
-                errorMsg  &&
-                <div className="warning_text">{errorMsg}</div>
-              } */}
-              <div onClick={onSubmitSignUpSocial}>
-                <Button>가입하기</Button>
-              </div>
-              {
-                isLoading &&
-                <Loading/>
-              }
+      <div id="wrap">
+        <div className="mb-view verCenter">
+          <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
+          <div className="content_inner">
+            <h2>회원가입(카카오톡)</h2>
+            <div className="inputWrap">
+              <h3>휴대폰 인증</h3>
+              <Cert mobile={inputs.mobile} onChangeInput={onChange}isSuccessCertMobile={isSuccessCertMobile} changeSuccessCertMobile={changeSuccessCertMobile}/>
+              <h3>생년월일</h3>
+              <InputBirth onChangeSelect={onChangeSelect} yearList={inputs.yearList} monthList={inputs.monthList} dayList={inputs.dayList} year={inputs.year} month={inputs.month} day={inputs.day}/>
+              <input type="text" placeholder="주소" value={inputs.address} name="address" onChange={onChange}/>
+              <input type="text" placeholder="상호명" value={inputs.brand} name="brand" onChange={onChange}/>
             </div>
+            {/* {
+              errorMsg  &&
+              <div className="warning_text">{errorMsg}</div>
+            } */}
+            <div onClick={onSubmitSignUpSocial}>
+              <Button>가입하기</Button>
+            </div>
+            {
+              isLoading &&
+              <Loading/>
+            }
           </div>
         </div>
+      </div>
       )
   }else{
     return (
       <div id="wrap">
-          <div className="mb-view verCenter">
-            <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
-            <div className="content_inner">
-            </div>
+        <div className="mb-view verCenter">
+          <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
+          <div className="content_inner">
           </div>
         </div>
+      </div>
     )
   }
   

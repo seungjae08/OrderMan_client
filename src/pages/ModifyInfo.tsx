@@ -24,7 +24,7 @@ type InputTypes = {
 
 const ModifyInfo = (props:propsTypes) => {
 
-  //state
+  //useState
   const [isLogin, setIsLogin] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [inputs, setInputs] = useState<InputTypes>({
@@ -41,7 +41,6 @@ const ModifyInfo = (props:propsTypes) => {
 
   //useEffect
   useEffect(() => {
-
     //로그인 확인
     fetch(serverPath+"/user/login",{
       method:"GET",
@@ -97,6 +96,7 @@ const ModifyInfo = (props:propsTypes) => {
     }));
   }, [props.history])
 
+  //function
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setErrorMsg("");
     const { name, value } = e.target;
@@ -115,7 +115,6 @@ const ModifyInfo = (props:propsTypes) => {
   },[]);
 
   const postModifyUserInfo = useCallback(() => {
-    
     const {address, brand, year, month, day} = inputs;
     if(address === "" || brand === ""){
       setErrorMsg('항목을 모두 입력해주세요');

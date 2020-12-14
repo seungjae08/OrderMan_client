@@ -10,7 +10,7 @@ type propsTypes = {
 }
 
 const ModifyPassword = (props:propsTypes) => {
-  //state
+  //useState
   const [isLogin, setIsLogin] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [inputs, setInputs] = useState({
@@ -40,6 +40,7 @@ const ModifyPassword = (props:propsTypes) => {
     });
   }, [props.history]);
 
+  //function
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setErrorMsg("");
 
@@ -60,7 +61,6 @@ const ModifyPassword = (props:propsTypes) => {
       setErrorMsg('변경 비밀번호와 비밀번호 확인은 동일해야 합니다.')
       return;
     }
-
     if(newPassword === password){
       setErrorMsg('변경 비밀번호와 현재 비밀번호가 같습니다. 다시 확인해주세요.')
     }
