@@ -72,7 +72,7 @@ const ModifyMobile = () => {
       setErrorMsg('인증 휴대폰 변경이 실패했습니다. 다시 시도해주세요.');
     })
 
-  },[]);
+  },[inputs]);
 
   return (
     <div id="wrap" className="MyPage-wrap">

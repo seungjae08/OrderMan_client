@@ -4,6 +4,7 @@ import {serverPath} from 'modules/serverPath';
 import { History } from 'history';
 import Button from 'components/Button';
 import {Header} from 'components/Header';
+import Loading from 'components/Loading';
 import getDayOption from 'modules/calcurateDayOption';
 import { renderHour, checkThisHour } from 'modules/calcurateDayOption';
 import { resultType, validateOrderDate} from 'modules/calcurateDayOption';
@@ -43,12 +44,14 @@ export default function Order(props:propsTypes) {
   });
 
   
+  //state
   const [hList, setHList] = useState(hourList);
   const [mList, setMList] = useState(minList);
   const [isLogin,setIsLogin] = useState(false);
   const [itemList,setItemList] = useState([]);
   const [hopePrice,setHopePrice] = useState("");
   const [errorMsg,setErrorMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   //datepicker
   const [isRenderCalendarInput,setIsRenderCalendarInput] = useState(false);
   const [isRenderCalendar,setIsRenderCalendar] = useState(false);
@@ -115,10 +118,11 @@ export default function Order(props:propsTypes) {
       //console.log('temp-data',JSON.parse(data));
       setItemList(data.itemList);
       setHopePrice(data.hopePrice);
+      setIsLoading(false);
     }).catch(err=>{
-      console.log(err)
+      setIsLoading(false);
       alert('주문데이터가 없습니다. 주문을 다시 진행해주세요');
-      //props.history.push('/');
+      props.history.push('/');
     })
   }, [props.history]);
 
@@ -254,6 +258,7 @@ export default function Order(props:propsTypes) {
 
   const onSubmitOrderOption = useCallback((event: MouseEvent<HTMLInputElement, globalThis.MouseEvent>)=>{
     let dataSuccess:boolean[] = [false,false];
+    setIsLoading(true);
     if(marketMobile !== null && marketMobile !== ""){
       fetch( serverPath + "/order/market", {
         method: 'POST',
@@ -271,7 +276,6 @@ export default function Order(props:propsTypes) {
             props.history.push('/');
           }
         }
-        
       }).catch(e=>{
         setErrorMsg('주문에 실패했습니다. 재주문 부탁드립니다');
       })
@@ -295,6 +299,7 @@ export default function Order(props:propsTypes) {
       if(res.status===200){
         dataSuccess[1] = true;
         if(dataSuccess[0] && dataSuccess[1]){
+          setIsLoading(false);
           alert('주문완료됐습니다!');
           props.history.push('/');
         }
@@ -441,6 +446,10 @@ export default function Order(props:propsTypes) {
           <div onClick={onSubmitOrderOption}>
               <Button>주문완료</Button>
           </div>
+          {
+            isLoading &&
+            <Loading/>
+          }
         </div>
         {
           isRenderCalendar ?
