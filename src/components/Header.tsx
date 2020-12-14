@@ -90,7 +90,7 @@ export const Header = ({noLoginBtn,itemList,hopePrice, isLogin,changeDatesClickL
           ( 
             <>
               <li><Link to="/mypage">마이페이지</Link></li>
-              <li>가계부</li>
+              <li><Link to="/orderHistory">구매내역</Link></li>
               <li onClick={onLogout}>로그아웃</li>
             </>
           ): null
