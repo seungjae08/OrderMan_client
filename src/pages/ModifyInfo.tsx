@@ -94,7 +94,7 @@ const ModifyInfo = (props:propsTypes) => {
       monthList,
       dayList
     }));
-  }, [])
+  }, [props.history])
 
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setErrorMsg("");

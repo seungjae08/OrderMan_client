@@ -85,6 +85,7 @@ export default function SignUp(props: propsTypes) {
   },[]);
 
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setErrorMsg("");
     const { name, value } = e.target;
     setInputs((inputs) => ({
       ...inputs,
@@ -122,6 +123,7 @@ export default function SignUp(props: propsTypes) {
         birth:`${year.slice(2)}-${Number(month)<10?'0'+month:month}-${Number(day)<10?'0'+day:day}`
       })
     }).then((res)=>{
+      console.log(res);
       if(res.status===200){
         alert('회원가입이 완료되었습니다');
         props.history.push('/login');
