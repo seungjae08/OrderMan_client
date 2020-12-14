@@ -3,6 +3,7 @@ import { Header } from 'components/Header';
 import { serverPath } from 'modules/serverPath';
 import Cert from 'components/Cert';
 import Button from 'components/Button';
+import Loading from 'components/Loading';
 
 const ModifyMobile = () => {
   //state
@@ -12,7 +13,8 @@ const ModifyMobile = () => {
   });
   const [isSuccessCertMobile, setIsSuccessCertMobile]=useState(false);
   const [errorMsg, setErrorMsg]=useState("");
-  
+  const [isLoading, setIsLoading] = useState(true);
+
   //useEffect
   useEffect(() => {
     fetch(serverPath+"/user/login",{
@@ -29,6 +31,25 @@ const ModifyMobile = () => {
         setIsLogin(false);
       }
     })
+
+    //GET userinfo mobile
+    fetch(serverPath+"/mypage/user",{
+      method:"GET",
+      mode:"cors",
+      credentials:"include",
+      headers:{
+        "Content-Type":"application/json"
+      }
+    }).then(res=>{
+      return res.json();
+    }).then(data=>{
+      let { mobile } = data;
+      setInputs((inputs)=>({
+        ...inputs,
+        mobile
+      }));
+      setIsLoading(false);
+    });
   }, [])
 
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -90,6 +111,10 @@ const ModifyMobile = () => {
           <div onClick={postChangeMobile}>
             <Button>휴대폰 변경</Button>
           </div>
+          {
+            isLoading &&
+            <Loading/>
+          }
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import Button from 'components/Button';
 import { serverPath, clientPath } from 'modules/serverPath';
 import { Header } from 'components/Header';
+import Loading from 'components/Loading';
 
 type propsTypes = {
   history : History
@@ -24,9 +25,8 @@ function Login(props : propsTypes) {
     id: '',
     password: ''
   });
-
-  //error Message
   const [errorMsg, setErrorMsg] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     fetch(serverPath+"/user/login",{
@@ -59,6 +59,7 @@ function Login(props : propsTypes) {
     if(inputs.id === "" || inputs.password === ""){
       return;
     }
+    setIsLoading(true);
 
     fetch(serverPath + "/user/login", {
       method: 'POST',
@@ -70,6 +71,7 @@ function Login(props : propsTypes) {
         password: inputs.password
       })
     }).then((res)=>{
+      setIsLoading(false);
       if(res.status===200){
         props.history.push('/');
       }else if(res.status===204){
@@ -77,6 +79,7 @@ function Login(props : propsTypes) {
       }
     })
     .catch((e:Error)=>{
+      setIsLoading(false);
       setErrorMsg('로그인에 실패했습니다');
     })
   
@@ -118,6 +121,11 @@ function Login(props : propsTypes) {
               </div>
             </Button>
           </Link>
+
+          {
+            isLoading &&
+            <Loading/>
+          }
         </div>
       </div>
     </div>

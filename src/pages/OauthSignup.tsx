@@ -7,6 +7,7 @@ import { Header } from 'components/Header';
 import {serverPath, clientPath} from 'modules/serverPath';
 import {KAKAO_REST_API_KEY} from 'modules/config';
 import { generateBirth } from 'modules/generateDate';
+import Loading from 'components/Loading';
 
 type propsTypes = {
   history : History;
@@ -43,8 +44,8 @@ export default function SignUpSocial(props: propsTypes) {
 
   const [isRender, setIsRender] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
-  const [accessToken, setAccessToken] = useState('');
   const [isSuccessCertMobile, setIsSuccessCertMobile] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     fetch(serverPath+"/user/login",{
@@ -70,8 +71,6 @@ export default function SignUpSocial(props: propsTypes) {
   let bearer:string = '';
 
   useEffect(() => {
-
-
     //토큰없으면 리다이렉트
     fetch('https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id='+KAKAO_REST_API_KEY+'&redirect_uri='+clientPath+'/signup/social&code='+code, {
       method: 'POST',
@@ -139,6 +138,7 @@ export default function SignUpSocial(props: propsTypes) {
       return;
     }
 
+    setIsLoading(true);
     fetch(serverPath+'/user/oauthup', {
       method: 'POST',
       mode: 'cors', 
@@ -152,6 +152,7 @@ export default function SignUpSocial(props: propsTypes) {
         mobile
       })
     }).then(res=>{
+      setIsLoading(false);
       //기존 이용자라면 (상태코드 200)
       //사이트의토큰을 받고, 메인으로 처리
       //props.history.push('/');
@@ -159,6 +160,7 @@ export default function SignUpSocial(props: propsTypes) {
       //처음소셜로그인이용자//기존 이용자라면 (상태코드 202)
       //가입화면 render
     }).catch(error=>{
+      setIsLoading(false);
       console.log(error);
     })
     
@@ -202,6 +204,10 @@ export default function SignUpSocial(props: propsTypes) {
               <div onClick={onSubmitSignUpSocial}>
                 <Button>가입하기</Button>
               </div>
+              {
+                isLoading &&
+                <Loading/>
+              }
             </div>
           </div>
         </div>

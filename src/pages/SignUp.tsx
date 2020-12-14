@@ -5,8 +5,8 @@ import InputBirth from 'components/InputBirth';
 import Cert from 'components/Cert';
 import { serverPath } from 'modules/serverPath';
 import { Header } from 'components/Header';
+import Loading from 'components/Loading';
 import { generateBirth } from 'modules/generateDate';
-
 
 type propsTypes = {
   history : History
@@ -47,6 +47,7 @@ export default function SignUp(props: propsTypes) {
   const [isLogin,setIsLogin] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [isSuccessCertMobile, setIsSuccessCertMobile]=useState(false);
+  const [isLoading, setIsLoading]=useState(false);
 
   useEffect(() => {
     //로그인여부 반환
@@ -109,6 +110,8 @@ export default function SignUp(props: propsTypes) {
     //   return;
     // }
 
+    setIsLoading(true);
+
     fetch(serverPath + "/user/signup", {
       method: 'POST',
       mode: 'cors', 
@@ -123,7 +126,7 @@ export default function SignUp(props: propsTypes) {
         birth:`${year.slice(2)}-${Number(month)<10?'0'+month:month}-${Number(day)<10?'0'+day:day}`
       })
     }).then((res)=>{
-      console.log(res);
+      setIsLoading(false);
       if(res.status===200){
         alert('회원가입이 완료되었습니다');
         props.history.push('/login');
@@ -132,7 +135,7 @@ export default function SignUp(props: propsTypes) {
       }
     })
     .catch((e:Error)=>{
-      console.log(e);
+      setIsLoading(false);
     })
   },[inputs, props.history]);
 
@@ -164,6 +167,10 @@ export default function SignUp(props: propsTypes) {
           <div onClick={onSubmitSignUp}>
             <Button>가입하기</Button>
           </div>
+          {
+            isLoading &&
+            <Loading/>
+          }
         </div>
       </div>
     </div>
