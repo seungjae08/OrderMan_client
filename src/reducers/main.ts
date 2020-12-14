@@ -55,7 +55,7 @@ export type MainActionTypes =
 export function loginUser(orderList: OrderListInterface){
   return{
     type:LoginUser,
-    payload : {orderList}
+    payload : orderList
   }
 }
 

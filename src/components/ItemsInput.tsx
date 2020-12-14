@@ -130,13 +130,16 @@ export default function ItemsInput({
                     <div className={(itemInputFocus)?
                     "autoComplete-wrap focus":"autoComplete-wrap none"}>
                         {itemautoState.results.map((text,index)=>{
-                            return(
-                                <SearchPreview 
-                                    text={text}
-                                    index={index}
-                                    updateText={updateItemText}
-                                />
-                            )
+                            if(index<10){
+                                return(
+                                    <SearchPreview 
+                                        text={text}
+                                        index={index}
+                                        updateText={updateItemText}
+                                    />
+                                )
+                            }
+                            return "";
                         })}
                         {/* <div className="explanation">자동완성기능</div> */}
                     </div>
@@ -155,13 +158,16 @@ export default function ItemsInput({
                     <div className={(unitInputFocus)?
                     "autoComplete-wrap focus":"autoComplete-wrap none"}>
                         {unitAutoState.results.map((text,index)=>{
-                            return(
-                                <SearchPreview 
-                                    text={text}
-                                    index={index}
-                                    updateText={updateUnitText}
-                                />
-                            )
+                            if(index<10){
+                                return(
+                                    <SearchPreview 
+                                        text={text}
+                                        index={index}
+                                        updateText={updateUnitText}
+                                    />
+                                )
+                            }
+                            return "";
                         })}
                     </div>
                 </div>
