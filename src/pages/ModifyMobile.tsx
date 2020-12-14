@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useCallback, ChangeEvent } from 'react';
+import { History } from 'history';
 import { Header } from 'components/Header';
 import { serverPath } from 'modules/serverPath';
 import Cert from 'components/Cert';
 import Button from 'components/Button';
 import Loading from 'components/Loading';
 
-const ModifyMobile = () => {
+type propsTypes = {
+  history : History
+}
+
+const ModifyMobile = (props: propsTypes) => {
   //state
   const [isLogin, setIsLogin] = useState(false);
   const [inputs, setInputs] = useState({
@@ -29,27 +34,31 @@ const ModifyMobile = () => {
         setIsLogin(true);
       }else if(login.status ===202){
         setIsLogin(false);
+        alert("로그인 정보가 존재하지 않습니다")
+        props.history.push('/login');
       }
     })
 
-    //GET userinfo mobile
-    fetch(serverPath+"/mypage/user",{
-      method:"GET",
-      mode:"cors",
-      credentials:"include",
-      headers:{
-        "Content-Type":"application/json"
-      }
-    }).then(res=>{
-      return res.json();
-    }).then(data=>{
-      let { mobile } = data;
-      setInputs((inputs)=>({
-        ...inputs,
-        mobile
-      }));
-      setIsLoading(false);
-    });
+    if(isLogin){
+      //GET userinfo mobile
+      fetch(serverPath+"/mypage/user",{
+        method:"GET",
+        mode:"cors",
+        credentials:"include",
+        headers:{
+          "Content-Type":"application/json"
+        }
+      }).then(res=>{
+        return res.json();
+      }).then(data=>{
+        let { mobile } = data;
+        setInputs((inputs)=>({
+          ...inputs,
+          mobile
+        }));
+        setIsLoading(false);
+      });
+    }
   }, [])
 
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {

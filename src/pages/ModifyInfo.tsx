@@ -60,31 +60,32 @@ const ModifyInfo = (props:propsTypes) => {
       }
     });
 
-    //GET userinfo
-    fetch(serverPath+"/mypage/user",{
-      method:"GET",
-      mode:"cors",
-      credentials:"include",
-      headers:{
-        "Content-Type":"application/json"
-      }
-    }).then(res=>{
-      return res.json();
-    }).then(data=>{
-      let {brand, address} = data;
-      let [year,month,day] = data.birth.split("-");
+    if(isLogin){
+      //GET userinfo
+      fetch(serverPath+"/mypage/user",{
+        method:"GET",
+        mode:"cors",
+        credentials:"include",
+        headers:{
+          "Content-Type":"application/json"
+        }
+      }).then(res=>{
+        return res.json();
+      }).then(data=>{
+        let {brand, address} = data;
+        let [year,month,day] = data.birth.split("-");
 
-      setInputs((inputs)=>({
-        ...inputs,
-        year: year<10? '20'+year: '19' + year,
-        month,
-        day,
-        brand,
-        address
-      }));
-      setIsLoading(false);
-
-    });
+        setInputs((inputs)=>({
+          ...inputs,
+          year: year<10? '20'+year: '19' + year,
+          month,
+          day,
+          brand,
+          address
+        }));
+        setIsLoading(false);
+      });
+    }
 
     //set year,month,day Lists
     let [yearList, monthList, dayList] = generateBirth();
