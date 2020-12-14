@@ -6,6 +6,7 @@ import InputBirth from 'components/InputBirth';
 import Cert from 'components/Cert';
 import { Header } from 'components/Header';
 import Button from 'components/Button';
+import Loading from 'components/Loading';
 
 type propsTypes = {
   history : History
@@ -44,6 +45,7 @@ export default function UnSigninOrder
   const [isLogin,setIsLogin] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [isSuccessCertMobile, setIsSuccessCertMobile]=useState(false);
+  const [isLoading, setIsLoading]=useState(false);
   
 
 
@@ -119,6 +121,7 @@ export default function UnSigninOrder
     //   return;
     // }
 
+    setIsLoading(true);
     fetch(serverPath + '/unknown/info', {
       method: 'POST',
       mode: 'cors', 
@@ -131,12 +134,14 @@ export default function UnSigninOrder
         birth:`${year.slice(2)}-${Number(month)<10?'0'+month:month}-${Number(day)<10?'0'+day:day}`  
       })
     }).then((res)=>{
+      setIsLoading(false);
       if(res.status===200){
         props.history.push('/order');
       }
     })
     .catch((e:Error)=>{
       console.log(e);
+      setIsLoading(false);
     })
 
   },[inputs, props.history]);
@@ -190,6 +195,10 @@ export default function UnSigninOrder
                 <img src="/assets/ico_kakao.png" alt="카카오 로그인"/>
               </Button>
             </div>
+            {
+              isLoading &&
+              <Loading/>
+            }
           </div>
         </div>
       </div>

@@ -68,7 +68,7 @@ export const Header = ({noLoginBtn,itemList,hopePrice, isLogin,changeDatesClickL
   return (
     <div className={isMenuOpen? "Header-wrap open" : "Header-wrap"}>
       <div className="Header-menuBar" onClick={toggleMenuOpen}>
-        {/* <img src="/assets/menu_bar.png" alt="메뉴바"/> */}
+        <img src="/assets/menu_bar.png" alt="메뉴바"/>
       </div>
       <h1 className="Header-h1">
         <Link to="/">
@@ -80,19 +80,22 @@ export const Header = ({noLoginBtn,itemList,hopePrice, isLogin,changeDatesClickL
           isLoginForm
         }
       </div>
-      {/* <ul className="Header-menu">
+      <ul className="Header-menu">
         <li>
           <Link to="/">홈</Link>
         </li>
-        <li>마이페이지</li>
-        <li>가계부</li>
+        
         {
-          loginStatus?
-          (
-            <li onClick={onLogout}>로그아웃</li>
+          isLogin?
+          ( 
+            <>
+              <li><Link to="/mypage">마이페이지</Link></li>
+              <li>가계부</li>
+              <li onClick={onLogout}>로그아웃</li>
+            </>
           ): null
         }
-      </ul> */}
+      </ul>
     </div>
   )
 }

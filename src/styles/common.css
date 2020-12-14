@@ -262,7 +262,9 @@ select {
 
 .Header-wrap.open .Header-menu {
   display:flex;
+  position:absolute;
   top:0;
+  left:0;
   z-index: 10;
 }
 

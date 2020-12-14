@@ -50,32 +50,34 @@ export default function MyPage(props:propsTypes) {
       }
     });
 
-    //GET userinfo
-    fetch(serverPath+"/mypage/user",{
-      method:"GET",
-      mode:"cors",
-      credentials:"include",
-      headers:{
-        "Content-Type":"application/json"
-      }
-    }).then(res=>{
-      return res.json();
-    }).then(data=>{
-      let {brand, address, birth, id, mobile} = data;
+    if(isLogin){
+      //GET userinfo
+      fetch(serverPath+"/mypage/user",{
+        method:"GET",
+        mode:"cors",
+        credentials:"include",
+        headers:{
+          "Content-Type":"application/json"
+        }
+      }).then(res=>{
+        return res.json();
+      }).then(data=>{
+        let {brand, address, birth, id, mobile} = data;
 
-      let birthArr = birth.split('-');
-      birth = `${Number(birthArr[0])<10?'20'+birthArr[0]:'19'+birthArr[0]}년 ${birthArr[1]}월 ${birthArr[2]}일`;
-      setUserInfo((inputs)=>({
-        ...inputs,
-        id,
-        mobile,
-        birth,
-        brand,
-        address
-      }));
-
-      setIsLoading(false);
-    });
+        let birthArr = birth.split('-');
+        birth = `${Number(birthArr[0])<10?'20'+birthArr[0]:'19'+birthArr[0]}년 ${birthArr[1]}월 ${birthArr[2]}일`;
+        setUserInfo((inputs)=>({
+          ...inputs,
+          id,
+          mobile,
+          birth,
+          brand,
+          address
+        }));
+        setIsLoading(false);
+      });
+    }
+    
   }, [props.history])
 
   return (

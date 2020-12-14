@@ -13,7 +13,7 @@
 #slide-wrap{
   width: 100%;
   height:100%;
-  overflow:hidden;
+  overflow-x:auto;
   position:relative;
 }
 
@@ -21,6 +21,7 @@
 /*Date*/
 
 .Main-wrap .content_inner{
+  position:initial;
   padding-top:0;
 }
 
@@ -77,8 +78,10 @@
 }
 .Main-wrap #Date-wrap .Main-Date #slide-wrap button{
   border: 2px solid #F87946;
-  width: 6em;
+  width: 89px;
+  min-width: 89px;
   padding: 2px 20px;
+  margin-right:5px;
   border-radius: 15px;
   background-color: #ffffff;
   color: #F87946;
@@ -87,7 +90,7 @@
 }
 .Main-wrap .mb-view .input-area{
   width: auto;
-  height: 100%;
+  /* height: 100%; */
 }
 #Date-wrap{
   text-align: center;
