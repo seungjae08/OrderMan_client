@@ -10,6 +10,7 @@ import MyPage from 'pages/MyPage';
 import ModifyMobile from 'pages/ModifyMobile';
 import ModifyPassword from 'pages/ModifyPassword';
 import ModifyInfo from 'pages/ModifyInfo';
+import orderHistory from 'pages/OrderHistory'
 import 'styles/reset.css';
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import 'styles/layout.css';
@@ -29,6 +30,7 @@ function App() {
       <Route path="/modify/info" component={ModifyInfo}/>
       <Route path="/modify/password" component={ModifyPassword}/>
       <Route path="/modify/mobile" component={ModifyMobile}/>
+      <Route path="/orderHistory" component={orderHistory} />
     </div>
   );
 }

@@ -414,7 +414,68 @@
   font-size: 0.8rem;
 }
 
+/*OrderHistory*/
+.History-wrap{
+  width: 100%;
+  overflow: auto;
+}
+.History-wrap .content_inner{
+  padding-top:25px;
+}
+.History-wrap h2{
+  height: 50px;
+  padding-bottom: 25px;
+}
 
+.History-wrap .orderHistory .orderEle{
+  margin-bottom: 20px;
+}
+.History-wrap .orderEle .date-state{
+  padding: 7px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: white;
+  background-color: rgb(248, 121, 70);
+  height: 24px;
+}
+.History-wrap .orderEle .date-state .date{
+  float: left;
+  height: 100%;
+}
+.History-wrap .orderEle .date-state .state{
+  float: right;
+  height: 100%;
+}
+.History-wrap .orderEle .date-state button{
+  float: right;
+}
+.History-wrap .orderEle .items {
+  border: solid;
+  border-color: #E0E0E0;
+  border-width: 0px 1px 1px 1px;
+  padding : 5px;
+  height: 24px;
+}
+.History-wrap .orderEle .items .item-unit {
+  float: left;
+}
+.History-wrap .orderEle .items .quantity {
+  float: right;
+
+}
+.History-wrap .payment-delivery{
+  height: 24px;
+  color: #F87946;
+  padding:5px;
+  background-color:white;
+  border: 1px solid #D6D6D6;
+}
+.History-wrap .payment-delivery .payment{
+  float: left;
+}
+.History-wrap .payment-delivery .delivery{
+  float: right;
+}
 /* Login */
 .Login-wrap .Button-wrap {
   margin-bottom: 10px;
