@@ -21,6 +21,7 @@
 /*Date*/
 
 .Main-wrap .content_inner{
+  position:initial;
   padding-top:0;
 }
 
