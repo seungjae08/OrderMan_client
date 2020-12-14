@@ -9,7 +9,6 @@ import Loading from 'components/Loading';
 type propsTypes = {
   history : History
 }
-
 declare global {
   interface Window {
     Kakao: any;
@@ -20,6 +19,7 @@ const {Kakao} = window;
 
 function Login(props : propsTypes) {
 
+  //useState
   const [isLogin,setIsLogin] = useState(false)
   const [inputs, setInputs] = useState({
     id: '',
@@ -28,6 +28,7 @@ function Login(props : propsTypes) {
   const [errorMsg, setErrorMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  //useEffect
   useEffect(() => {
     fetch(serverPath+"/user/login",{
       method:"GET",
@@ -45,6 +46,8 @@ function Login(props : propsTypes) {
     })
   }, [])
 
+
+  //function
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInputs((inputs) => ({
@@ -54,7 +57,6 @@ function Login(props : propsTypes) {
   },[])
 
   const onSubmitLogin = useCallback(()=>{
-    
     console.log('onSubmitLogin 전송..')
     if(inputs.id === "" || inputs.password === ""){
       return;

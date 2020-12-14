@@ -15,15 +15,14 @@ import { changeMarketMobile, changePayment, changeDeliveryTime } from 'reducers/
 type propsTypes = {
   history : History
 }
-
 type disableDaysTypes = Day[] | [];
-
 
 export default function Order(props:propsTypes) {
 
+  //dispatch
   const dispatch = useDispatch();
 
-  //init
+  //init, load Data List from modules return values.
   let [dayList, hourList, minList, toDay, nextDay, afterTomorrow]:resultType = getDayOption;
 
   let todayDate = toDay.split('-');
@@ -43,7 +42,6 @@ export default function Order(props:propsTypes) {
     min:"00"
   });
 
-  
   //state
   const [hList, setHList] = useState(hourList);
   const [mList, setMList] = useState(minList);
@@ -58,7 +56,6 @@ export default function Order(props:propsTypes) {
   const [selectedDay, setSelectedDay] = useState<DayValue>(null);
   const [disabledDays, setDisabledDays] = useState<disableDaysTypes>([]);
   
-
   //useSelector
   const marketMobile = useSelector((state:RootState)=>state.OrderReducer.market.mobile);
   const OrderOption = useSelector((state:RootState)=>state.OrderReducer.option);
@@ -71,25 +68,7 @@ export default function Order(props:propsTypes) {
   const btnCalendar = useRef<HTMLInputElement>(null);
   
   useEffect(() => {
-    if(marketMobile!=="" && marketMobile!==null){
-      setInputs(inputs=>({
-        ...inputs,
-        marketMobile:marketMobile
-      }));
-      if (!marketRadio1.current) {
-        return;
-      }
-      marketRadio1.current.checked = true; 
-    }else{
-      if (!marketRadio2.current) {
-        return;
-      }
-      marketRadio2.current.checked = true; 
-    }
-  }, [marketMobile, marketRadio1, marketRadio2]);
-
-  useEffect(() => {
-    //로그인여부 반환
+    //mount, check login
     fetch(serverPath+"/user/login",{
       method:"GET",
       mode:"cors",
@@ -106,7 +85,7 @@ export default function Order(props:propsTypes) {
     }).catch(err=>{
       console.log(err);
     });
-    //temp 확인
+    //check temp
     fetch(serverPath+"/order/temp",{
       method:"GET",
       mode:"cors",
@@ -126,7 +105,22 @@ export default function Order(props:propsTypes) {
     })
   }, [props.history]);
 
-  //캘린더 사용시 11tl 이후 당일 표시 안되도록
+  //marketMobile mount, update
+  useEffect(() => {
+    if(marketMobile!=="" && marketMobile!==null){
+      setInputs(inputs=>({
+        ...inputs,
+        marketMobile:marketMobile
+      }));
+      if (!marketRadio1.current) {return;}
+      marketRadio1.current.checked = true; 
+    }else{
+      if (!marketRadio2.current) {return;}
+      marketRadio2.current.checked = true; 
+    }
+  }, [marketMobile, marketRadio1, marketRadio2]);
+
+  //set default SelectedDay mount, update
   useEffect(() => {
     let thisHour = checkThisHour();
     if(Number(thisHour)>11){
@@ -134,7 +128,8 @@ export default function Order(props:propsTypes) {
     }
   }, [defaultSelectedDay]);
 
-  //date 변경시 OrderReducer.option.deliveryTime 변경
+  //selectedDay, selectOption, isRenderCalendarInput mount, update.
+  //set deliveryTime
   useEffect(() => {
     if(isRenderCalendarInput === true){
       if(selectedDay===null || selectedDay === undefined){
@@ -144,15 +139,13 @@ export default function Order(props:propsTypes) {
       if(hList){
         setHList(hLists);
       }
+      //check valide date
       let result = validateOrderDate(`${selectedDay.year}-${selectedDay.month}-${selectedDay.day} ${selectOption.hour}:${selectOption.min}`); 
       if(result){
-        console.log(`dispatch`,`${String(selectedDay.year).slice(2)}-${selectedDay.month}-${selectedDay.day} ${selectOption.hour}:${selectOption.min}`)
         dispatch(changeDeliveryTime(`${String(selectedDay.year).slice(2)}-${selectedDay.month<10?'0'+selectedDay.month:selectedDay.month}-${selectedDay.day<10?'0'+selectedDay.day:selectedDay.day} ${selectOption.hour}:${selectOption.min}`))
       }else{
-        //console.log(`dispatch`,`${String(selectedDay.year).slice(2)}-${selectedDay.month}-${selectedDay.day} ${hLists[0]}:${selectOption.min}`)
         dispatch(changeDeliveryTime(`${String(selectedDay.year).slice(2)}-${selectedDay.month<10?'0'+selectedDay.month:selectedDay.month}-${selectedDay.day<10?'0'+selectedDay.day:selectedDay.day} ${hLists[0]}:${selectOption.min}`))
       }
-      
     }else{
       let date = '';
       if(selectOption.date === "당일"){
@@ -166,13 +159,11 @@ export default function Order(props:propsTypes) {
       if(hLists){
         setHList(hLists);
       }
-
+      //check valide date
       let result = validateOrderDate(`${date} ${selectOption.hour}:${selectOption.min}`); 
       if(result){
-        //console.log('dispatch',`${date.slice(2)} ${selectOption.hour}:${selectOption.min}`);
         dispatch(changeDeliveryTime(`${date.slice(2)} ${selectOption.hour}:${selectOption.min}`))
       }else{
-        //console.log(`dispatch`,`${date.slice(2)} ${hLists[0]}:${selectOption.min}`)
         dispatch(changeDeliveryTime(`${date.slice(2)} ${hLists[0]}:${selectOption.min}`))
       }
     }
@@ -181,12 +172,14 @@ export default function Order(props:propsTypes) {
 
   //function
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    let { name, value } = e.target;
     if(name === "marketMobile"){
       if (!marketRadio1.current) {
         return;
       }
-      marketRadio1.current.checked = true; 
+      marketRadio1.current.checked = true;
+      let regexp = /[^0-9]/g;
+      value = value.replace(regexp, '');
     }
     setInputs((inputs) => ({
       ...inputs,
@@ -194,34 +187,26 @@ export default function Order(props:propsTypes) {
     }));
   },[])
 
+  //set marketMobile in onBlur
   const dispatchChangeMarket = useCallback(() => {
-    console.log('onblur');
-    if (!marketRadio1.current) {
-      return;
-    }
+    if (!marketRadio1.current) {return;}
     if(marketRadio1.current.checked===true && inputs.marketMobile !== ""){
       dispatch(changeMarketMobile(inputs.marketMobile))
     }else{
       dispatch(changeMarketMobile(""))
-      if (!marketRadio2.current) {
-        return;
-      }
+      if (!marketRadio2.current) {return;}
       marketRadio2.current.checked = true; 
     }
   },[inputs.marketMobile, dispatch])
 
+  //set marketMobile in onClick
   const dispatchChangeMarketClick = useCallback(() => {
-    console.log('onClick');
-    if (!marketRadio1.current) {
-      return;
-    }
+    if (!marketRadio1.current) {return;}
     if(marketRadio1.current.checked===false && inputs.marketMobile !== ""){
       dispatch(changeMarketMobile(inputs.marketMobile))
     }else{
       dispatch(changeMarketMobile(""))
-      if (!marketRadio2.current) {
-        return;
-      }
+      if (!marketRadio2.current) {return;}
       marketRadio2.current.checked = true; 
     }
   },[inputs.marketMobile, dispatch])
@@ -229,7 +214,6 @@ export default function Order(props:propsTypes) {
   const onHandleChangeSelect = useCallback((e:ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     if(name==="date"){
-      //value "당일","익일","모레"
       let result = renderHour(value);
       setHList(result);
     }else if(name==="hour"){
@@ -249,12 +233,44 @@ export default function Order(props:propsTypes) {
     }));
   },[]);
   
-
-
   const onChangePayment = useCallback((event: MouseEvent<HTMLInputElement, globalThis.MouseEvent>)=>{
     let value = (event.target as HTMLInputElement).value;
     dispatch(changePayment(value))
   },[dispatch]);
+  
+  //render calendar input
+  const handleToggleDP = useCallback((e: MouseEvent<HTMLInputElement, globalThis.MouseEvent>)=>{
+    if(!btnCalendar.current){
+      return;
+    }
+    btnCalendar.current.classList.toggle('on');
+    if(btnCalendar.current.classList.contains('on')){
+      setIsRenderCalendarInput(true);
+    }else{
+      setIsRenderCalendarInput(false);
+    }
+  },[]);
+
+  //select date in Calendar
+  const changeSelectedDay = useCallback((value) => {
+    setIsRenderCalendar(false);
+    setSelectedDay(value);
+    let result = renderHour(`${value.year}-${value.month}-${value.day}`);
+    if(result){
+      setHList(result);
+    }
+  },[])
+
+  // toggle calendar view
+  const openCalendar =  useCallback(() => {
+    setIsRenderCalendar(true);
+  },[])
+  const closeCalendar = useCallback(() => {
+    setIsRenderCalendar(false);
+  },[]);
+  const handleDisabledSelect = (disabledDay:Day) => {
+    console.log('Tried selecting a disabled day', disabledDay);
+  };
 
   const onSubmitOrderOption = useCallback((event: MouseEvent<HTMLInputElement, globalThis.MouseEvent>)=>{
     let dataSuccess:boolean[] = [false,false];
@@ -305,48 +321,14 @@ export default function Order(props:propsTypes) {
         }
       }
     }).catch(e=>{
+      setIsLoading(false);
       setErrorMsg('주문에 실패했습니다. 재주문 부탁드립니다');
     });
 
   },[ marketMobile, OrderOption, props.history, itemList, hopePrice, toDay]);
 
   
-  //특정날짜선택
-  const handleToggleDP = useCallback((e: MouseEvent<HTMLInputElement, globalThis.MouseEvent>)=>{
-    if(!btnCalendar.current){
-      return;
-    }
-    btnCalendar.current.classList.toggle('on');
-    if(btnCalendar.current.classList.contains('on')){
-      //켜졌을땐 
-      setIsRenderCalendarInput(true);
-    }else{
-      setIsRenderCalendarInput(false);
-    }
-  },[]);
-
-  const changeSelectedDay = useCallback((value) => {
-    setIsRenderCalendar(false);
-    setSelectedDay(value);
-    let result = renderHour(`${value.year}-${value.month}-${value.day}`);
-    if(result){
-      setHList(result);
-    }
-    
-  },[])
-
-  const openCalendar =  useCallback(() => {
-    setIsRenderCalendar(true);
-  },[])
-  const closeCalendar = useCallback(() => {
-    setIsRenderCalendar(false);
-  },[]);
-
-  const handleDisabledSelect = (disabledDay:Day) => {
-    console.log('Tried selecting a disabled day', disabledDay);
-  };
-  
-  //캘린더 인풋 표시 텍스 분기처리
+  //render value text in calendar input. 
   const CalendarInputText = selectedDay !== null && selectedDay !== undefined ? `${String(selectedDay.year).slice(2)}-${selectedDay.month < 10 ? '0'+ selectedDay.month:selectedDay.month}-${selectedDay.day < 10 ? '0'+ selectedDay.day : selectedDay.day}` : `날짜선택`;
   
   return (
@@ -473,6 +455,3 @@ export default function Order(props:propsTypes) {
     </div>
   )
 }
-
-
-//

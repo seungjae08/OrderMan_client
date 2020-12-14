@@ -11,7 +11,7 @@ type propsTypes = {
 }
 
 const ModifyMobile = (props: propsTypes) => {
-  //state
+  //useState
   const [isLogin, setIsLogin] = useState(false);
   const [inputs, setInputs] = useState({
     mobile:""
