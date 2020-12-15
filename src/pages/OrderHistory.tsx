@@ -13,6 +13,7 @@ type dataTypes={
     orderList :Item[];
     paymentMethod : string;
     deliveryTime : string;
+    hopePrice : number;
 }
 
 export default function OrderHistory(props:propsTypes){
@@ -49,7 +50,7 @@ export default function OrderHistory(props:propsTypes){
             })
             .then(data=>data.json())
             .then(data=>{
-                setData(data.data)
+                setData(data.data.reverse())
                 setIsLoading(false)
             })
             
@@ -74,6 +75,7 @@ export default function OrderHistory(props:propsTypes){
                             orderList={ele.orderList} 
                             paymentMethod={ele.paymentMethod}
                             deliveryTime={ele.deliveryTime}
+                            hopePrice={ele.hopePrice}
                         />))
                     }
                 </div>

@@ -419,6 +419,11 @@
   width: 100%;
   overflow: auto;
 }
+.History-wrap h2{
+  border : solid ;
+  border-width: 0px 0px 1px 0px ;
+  border-color: #E0E0E0;
+}
 .History-wrap .content_inner{
   padding-top:25px;
 }
@@ -428,33 +433,57 @@
 }
 
 .History-wrap .orderHistory .orderEle{
-  margin-bottom: 20px;
+  border : solid ;
+  border-width: 0px 0px 1px 0px ;
+  border-color: #E0E0E0;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 .History-wrap .orderEle .date-state{
-  padding: 7px;
-  padding-left: 10px;
-  padding-right: 10px;
-  color: white;
-  background-color: rgb(248, 121, 70);
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-left: 5px;
+  padding-right: 5px;
   height: 24px;
 }
 .History-wrap .orderEle .date-state .date{
   float: left;
   height: 100%;
 }
-.History-wrap .orderEle .date-state .state{
+.History-wrap .orderEle .date-state .state-stay{
   float: right;
   height: 100%;
+  color:rgb(248, 121, 70);
+}
+.History-wrap .orderEle .date-state .state-success{
+  float: right;
+  height: 100%;
+  color:#D6D6D6;
 }
 .History-wrap .orderEle .date-state button{
   float: right;
+  padding-right : 0px;
+  background-color: #ffffff;
+  color: #ffffff;
+  border: 0px;
 }
+.History-wrap .orderEle .date-state img{
+  float: right;
+  background-color: #ffffff;
+  color: #ffffff;
+  padding-top: 5px;
+  width: 15px;
+  height: 10px;
+}
+.History-wrap .orderEle .date-state .up{
+  transform: rotate(180deg);
+}
+
 .History-wrap .orderEle .items {
-  border: solid;
-  border-color: #E0E0E0;
-  border-width: 0px 1px 1px 1px;
+  font-size: 12px;
+  font-weight: normal;
   padding : 5px;
-  height: 24px;
+  height: 12px;
 }
 .History-wrap .orderEle .items .item-unit {
   float: left;
@@ -464,17 +493,17 @@
 
 }
 .History-wrap .payment-delivery{
-  height: 24px;
-  color: #F87946;
+  height: 40px;
   padding:5px;
-  background-color:white;
-  border: 1px solid #D6D6D6;
+  font-weight: normal;
 }
 .History-wrap .payment-delivery .payment{
-  float: left;
+  font-size: 12px;
+  padding-bottom: 5px;
 }
 .History-wrap .payment-delivery .delivery{
-  float: right;
+  font-size: 12px;
+  padding-bottom: 5px;
 }
 /* Login */
 .Login-wrap .Button-wrap {
