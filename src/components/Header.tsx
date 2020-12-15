@@ -1,12 +1,15 @@
 import React, {useState} from 'react';
-import {useDispatch} from "react-redux"
+import { useDispatch } from "react-redux";
 import { Link } from 'react-router-dom';
+import {History} from 'history';
 import { serverPath } from 'modules/serverPath';
 import {actionMainCreators as mainActions, Item } from 'reducers/main';
-import {actionOrderCreators as orderActions} from "../reducers/order"
+import {actionOrderCreators as orderActions} from "reducers/order"
+import {resetData} from "reducers/order"
 
 
 type propTypes = {
+  history?:History,
   noLoginBtn?:boolean;
   itemList ?: Item[];
   hopePrice ?:string
@@ -15,9 +18,8 @@ type propTypes = {
   setIsLogin : (e : boolean)=>void
 }
 
-export const Header = ({noLoginBtn,itemList,hopePrice, isLogin,changeDatesClickLogout,setIsLogin}:propTypes) => {
+const Header = (props:propTypes) => {
   const dispatch= useDispatch();
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenuOpen = function(){
@@ -38,11 +40,13 @@ export const Header = ({noLoginBtn,itemList,hopePrice, isLogin,changeDatesClickL
       headers: {'Content-Type': 'application/json'}
     }).then((res)=>{
       if(res.status===200){
+        dispatch(resetData());
         alert('로그아웃되었습니다');
-        setIsLogin(false);  
+        props.setIsLogin(false);
+        //history.push('/');
       }
-      if(changeDatesClickLogout){
-        changeDatesClickLogout()
+      if(props.changeDatesClickLogout){
+        props.changeDatesClickLogout()
       }
       dispatch(mainActions.endLoading());
     })
@@ -51,19 +55,22 @@ export const Header = ({noLoginBtn,itemList,hopePrice, isLogin,changeDatesClickL
     })
   }
   const onLogin = function(){
-    if(itemList?.length!==0&& hopePrice?.length!==0 ){
+    if(props.itemList?.length!==0&& props.hopePrice?.length!==0 ){
       fetch(serverPath+"/order/temp",{
         method: 'POST',
         mode: 'cors', 
         credentials: 'include',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({itemList,hopePrice})
+        body: JSON.stringify({
+          itemList: props.itemList, 
+          hopePrice: props.hopePrice
+        })
       })
     }
   }
-  const isLoginForm = isLogin ?
-          (<Link to="/"><div onClick={onLogout}>로그아웃</div></Link>):
-          (<Link to="/Login" ><div onClick={onLogin}></div>로그인</Link>);
+  const isLoginForm = props.isLogin ?
+          (<div onClick={onLogout}>로그아웃</div>):
+          (<Link to="/Login" ><div onClick={onLogin}>로그인</div></Link>);
           
   return (
     <div className={isMenuOpen? "Header-wrap open" : "Header-wrap"}>
@@ -86,7 +93,7 @@ export const Header = ({noLoginBtn,itemList,hopePrice, isLogin,changeDatesClickL
         </li>
         
         {
-          isLogin?
+          props.isLogin?
           ( 
             <>
               <li><Link to="/mypage">마이페이지</Link></li>
@@ -98,4 +105,6 @@ export const Header = ({noLoginBtn,itemList,hopePrice, isLogin,changeDatesClickL
       </ul>
     </div>
   )
-}
+};
+
+export default Header;

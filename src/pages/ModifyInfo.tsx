@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, ChangeEvent } from 'react';
 import { History } from 'history';
 import { serverPath } from 'modules/serverPath';
-import { Header } from 'components/Header';
+import Header from 'components/Header';
 import InputBirth from 'components/InputBirth';
 import Button from 'components/Button';
 import Loading from 'components/Loading';
@@ -152,7 +152,7 @@ const ModifyInfo = (props:propsTypes) => {
   return (
     <div id="wrap" className="MyPage-wrap">
       <div className="mb-view verCenter">
-        <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
+        <Header isLogin={isLogin} setIsLogin={setIsLogin} history={props.history}/>
         <div className="content_inner">
           <h2>회원 정보 수정</h2>
           <div className="inputWrap">

@@ -4,7 +4,7 @@ import Button from 'components/Button';
 import InputBirth from 'components/InputBirth';
 import Cert from 'components/Cert';
 import { serverPath } from 'modules/serverPath';
-import { Header } from 'components/Header';
+import  Header from 'components/Header';
 import Loading from 'components/Loading';
 import { generateBirth } from 'modules/generateDate';
 
@@ -148,7 +148,7 @@ export default function SignUp(props: propsTypes) {
   return (
     <div id="wrap" className="Signup-wrap">
       <div className="mb-view verCenter">
-        <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
+        <Header isLogin={isLogin} setIsLogin={setIsLogin} history={props.history}/>
         <div className="content_inner">
           <h2>회원가입</h2>
           <div className="inputWrap">
