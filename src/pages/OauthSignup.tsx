@@ -29,8 +29,8 @@ type InputTypes = {
 
 export default function SignUpSocial(props: propsTypes) {
   
-  window.Kakao = window.Kakao || "SomeValue";
-  const {Kakao} = window;
+  // window.Kakao = window.Kakao || "SomeValue";
+  // const {Kakao} = window;
   const code = props.location.search.split("=")[1];
   let bearer:string = '';
 
@@ -47,10 +47,10 @@ export default function SignUpSocial(props: propsTypes) {
     month:"1",
     day:"1"
   });
-  const [isRender, setIsRender] = useState(true);
+  //const [isRender, setIsRender] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
   const [isSuccessCertMobile, setIsSuccessCertMobile] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   //useEffect
   //mount, check login
@@ -76,7 +76,7 @@ export default function SignUpSocial(props: propsTypes) {
     }).then(res=>{
       return res.json();
     }).then(data=>{
-      console.log(data);
+      //console.log(data);
       bearer = 'Bearer ' + data.access_token;
       fetch(serverPath+'/user/oauthup', {
         method: 'GET',
@@ -87,15 +87,25 @@ export default function SignUpSocial(props: propsTypes) {
           'Authorization': bearer,
         }
       }).then(res=>{
+        console.log(res);
         //기존 이용자라면 (상태코드 200)
         //사이트의토큰을 받고, 메인으로 처리
-        //props.history.push('/');
-
-        //처음소셜로그인이용자//기존 이용자라면 (상태코드 202)
-        //가입화면 render
+        setIsLoading(false);
+        if(res.status===200){
+          //토큰 심은채 메인으로 리다이렉트
+          props.history.push('/');
+        }else if(res.status===202){
+          //처음소셜로그인이용자//기존 이용자라면 (상태코드 202)
+          //가입화면 render
+        }else{
+          alert('소셜 로그인이 정상적으로 이뤄지지 않았습니다. 다시 로그인해주세요.');
+          props.history.push('/login');
+        }
       }).catch(error=>{
         console.log(error);
-        props.history.push('')
+        setIsLoading(false);
+        alert('소셜 로그인이 정상적으로 이뤄지지 않았습니다. 다시 로그인해주세요.');
+        props.history.push('/login');
       })
     }).catch(e=>{
       alert('카카오 로그인이 정상 작동하지 않습니다');
@@ -126,11 +136,13 @@ export default function SignUpSocial(props: propsTypes) {
       console.log('not code');
       return;
     }
-    let {address, brand, mobile} = inputs;
-    if(brand === "" || address === "" || isSuccessCertMobile === false){
+    let {address, brand, mobile, year, month, day} = inputs;
+    if(brand === "" || address === "" ){
       setErrorMsg('모든 항목을 입력해주세요');
       return;
     }
+    console.log(mobile);
+    console.log(`${year.slice(2)}-${Number(month)<10?'0'+month:month}-${Number(day)<10?'0'+day:day}`);
 
     setIsLoading(true);
     fetch(serverPath+'/user/oauthup', {
@@ -143,19 +155,23 @@ export default function SignUpSocial(props: propsTypes) {
       body:JSON.stringify({
         address, 
         brand, 
-        mobile
+        mobile,
+        birth: `${year.slice(2)}-${Number(month)<10?'0'+month:month}-${Number(day)<10?'0'+day:day}`
       })
     }).then(res=>{
+      console.log(res);
       setIsLoading(false);
       //기존 이용자라면 (상태코드 200)
       //사이트의토큰을 받고, 메인으로 처리
-      //props.history.push('/');
-
-      //처음소셜로그인이용자//기존 이용자라면 (상태코드 202)
-      //가입화면 render
+      if(res.status===200){
+        alert("회원가입이 완료됐습니다");
+        props.history.push('/');
+      }else{
+        setErrorMsg('소셜 회원가입이 정상적으로 이뤄지지 않습니다. 다시 시도해주세요.');
+      }
     }).catch(error=>{
       setIsLoading(false);
-      console.log(error);
+      setErrorMsg('소셜 회원가입이 정상적으로 이뤄지지 않습니다. 다시 시도해주세요.');
     })
   },[inputs, code, isSuccessCertMobile]);
 
@@ -171,46 +187,34 @@ export default function SignUpSocial(props: propsTypes) {
     setIsSuccessCertMobile(true);
   },[])
 
-  if(isRender){
-    return (
-      <div id="wrap">
-        <div className="mb-view verCenter">
-          <Header isLogin={isLogin} setIsLogin={setIsLogin} history={props.history}/>
-          <div className="content_inner">
-            <h2>회원가입(카카오톡)</h2>
-            <div className="inputWrap">
-              <h3>휴대폰 인증</h3>
-              <Cert mobile={inputs.mobile} onChangeInput={onChange}isSuccessCertMobile={isSuccessCertMobile} changeSuccessCertMobile={changeSuccessCertMobile}/>
-              <h3>생년월일</h3>
-              <InputBirth onChangeSelect={onChangeSelect} yearList={inputs.yearList} monthList={inputs.monthList} dayList={inputs.dayList} year={inputs.year} month={inputs.month} day={inputs.day}/>
-              <input type="text" placeholder="주소" value={inputs.address} name="address" onChange={onChange}/>
-              <input type="text" placeholder="상호명" value={inputs.brand} name="brand" onChange={onChange}/>
-            </div>
-            {/* {
-              errorMsg  &&
-              <div className="warning_text">{errorMsg}</div>
-            } */}
-            <div onClick={onSubmitSignUpSocial}>
-              <Button>가입하기</Button>
-            </div>
-            {
-              isLoading &&
-              <Loading/>
-            }
+  return (
+    <div id="wrap">
+      <div className="mb-view verCenter">
+        <Header isLogin={isLogin} setIsLogin={setIsLogin} history={props.history}/>
+        <div className="content_inner">
+          <h2>회원가입(카카오톡)</h2>
+          <div className="inputWrap">
+            <h3>휴대폰 인증</h3>
+            <Cert mobile={inputs.mobile} onChangeInput={onChange}isSuccessCertMobile={isSuccessCertMobile} changeSuccessCertMobile={changeSuccessCertMobile}/>
+            <h3>생년월일</h3>
+            <InputBirth onChangeSelect={onChangeSelect} yearList={inputs.yearList} monthList={inputs.monthList} dayList={inputs.dayList} year={inputs.year} month={inputs.month} day={inputs.day}/>
+            <input type="text" placeholder="주소" value={inputs.address} name="address" onChange={onChange}/>
+            <input type="text" placeholder="상호명" value={inputs.brand} name="brand" onChange={onChange}/>
           </div>
+          {
+            errorMsg  &&
+            <div className="warning_text">{errorMsg}</div>
+          }
+          <div onClick={onSubmitSignUpSocial}>
+            <Button>가입하기</Button>
+          </div>
+          {
+            isLoading &&
+            <Loading/>
+          }
         </div>
       </div>
-      )
-  }else{
-    return (
-      <div id="wrap">
-        <div className="mb-view verCenter">
-          <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
-          <div className="content_inner">
-          </div>
-        </div>
-      </div>
-    )
-  }
+    </div>
+  )
   
 }
