@@ -261,7 +261,7 @@ export function OrderReducer(
       return {
         ...state,
         itemList: state.itemList.map((ele) => {
-          if (action.payload.item === ele.item) {
+          if (action.payload.item === ele.item && action.payload.unit===ele.unit) {
             return {
               item: ele.item,
               unit: ele.unit,
@@ -275,7 +275,7 @@ export function OrderReducer(
       return {
         ...state,
         itemList: state.itemList.map((ele) => {
-          if (action.payload.item === ele.item) {
+          if (action.payload.item === ele.item && action.payload.unit===ele.unit) {
             return {
               item: ele.item,
               unit: ele.unit,
