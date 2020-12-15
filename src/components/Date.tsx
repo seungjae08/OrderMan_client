@@ -17,13 +17,15 @@ export const Date = ({ dates, nowdate, setNowdate, todayOrder, setTodayOrder }: 
       <div className="Main-Date">
         <div id="slide-wrap">
           <div className="scroll-container">
-            {dates.map((ele) => {
+            {dates.map((ele,index) => {
               return ((ele === nowdate) ?
-                <button>
+                <button key={index}>
                   <p>{ele.slice(3, 5) + "-" + ele.slice(6)}</p>
                 </button>
                 :
-                <button onClick={() => {
+                <button
+                  key={index} 
+                  onClick={() => {
                   setNowdate(ele);
                   setTodayOrder(false);
                 }}>
