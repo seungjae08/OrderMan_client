@@ -3,7 +3,7 @@ import { History } from 'history';
 import {Link} from 'react-router-dom';
 import Button from 'components/Button';
 import { serverPath, clientPath } from 'modules/serverPath';
-import { Header } from 'components/Header';
+import Header from 'components/Header';
 import Loading from 'components/Loading';
 
 type propsTypes = {
@@ -96,7 +96,7 @@ function Login(props : propsTypes) {
   return (
     <div id="wrap" className="Login-wrap">
       <div className="mb-view verCenter">
-        <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
+        <Header isLogin={isLogin} setIsLogin={setIsLogin} history={props.history}/>
         <div className="content_inner">
           <h2>로그인</h2>
           <div className="inputWrap">

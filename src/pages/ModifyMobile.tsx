@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, ChangeEvent } from 'react';
 import { History } from 'history';
-import { Header } from 'components/Header';
+import  Header  from 'components/Header';
 import { serverPath } from 'modules/serverPath';
 import Cert from 'components/Cert';
 import Button from 'components/Button';
@@ -107,7 +107,7 @@ const ModifyMobile = (props: propsTypes) => {
   return (
     <div id="wrap" className="MyPage-wrap">
       <div className="mb-view verCenter">
-        <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
+        <Header isLogin={isLogin} setIsLogin={setIsLogin} history={props.history}/>
         <div className="content_inner">
           <h2>인증 휴대폰 변경</h2>
           <div className="inputWrap">

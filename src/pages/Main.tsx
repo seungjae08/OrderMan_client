@@ -4,7 +4,7 @@ import {RootState} from "../reducers/index";
 import {actionMainCreators as mainActions, Item} from "../reducers/main";
 import {actionOrderCreators as orderActions} from "../reducers/order"
 import PastOrders from 'components/PastOrders'
-import {Header}from 'components/Header'
+import Header from 'components/Header'
 import {Date} from 'components/Date'
 import OrderPage from 'components/OrderPage';
 import { serverPath } from 'modules/serverPath';
@@ -128,7 +128,7 @@ function Main(props : propsTypes) {
     <div className="mb-view">
       <Header isLogin={isLogin} setIsLogin={setIsLogin}
         changeDatesClickLogout={changeDatesClickLogout}
-        itemList={itemList} hopePrice={hopePrice}/>
+        itemList={itemList} hopePrice={hopePrice} history={props.history}/>
       <div className="content_inner">
         {(dates.length===0||dates[0]==="")?
         "":<Date 

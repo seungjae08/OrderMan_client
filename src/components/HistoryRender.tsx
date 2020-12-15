@@ -19,20 +19,21 @@ export default function HistoryRender({date,state,orderList,paymentMethod,delive
         </div>
     )
     return(
-        <div className="orderEle">
+        <div className="orderEle" onClick={()=>{setShowState(!showState)}}>
+            {/* <button onClick={()=>{setShowState(!showState)}}>{(showState)?
+                <img src="/assets/orderHistory.png" className="up" alt="접기"/>:
+                <img src="/assets/orderHistory.png" className="down" alt="펼치기"/>}
+            </button> */}
             <div className="date-state">
                 <div className="date"> {date} 주문건</div>
-                <button onClick={()=>{setShowState(!showState)}}>{(showState)?
-                <img  src="/assets/orderHistory.png" className="up"/>:
-                <img  src="/assets/orderHistory.png" className="down"/>}</button>
                  {(state===0)? <div className="state-stay">주문대기</div> :
                   <div className="state-success">처리완료</div>
                 }
                 
             </div>
             <div className="payment-delivery">
-                <div className="delivery">희망 배달 시간 : {deliveryTime}</div>
-                <div className="payment">희망 가격 : {hopePrice}원 [{(paymentMethod==="cash")?"현금결제":"카드결제"}]</div>
+                <div className="delivery"><span>희망배달시간 :</span> {deliveryTime}</div>
+                <div className="payment"><span>희망가격 :</span> {hopePrice}원 [{(paymentMethod==="cash")?"현금결제":"카드결제"}]</div>
             </div>
             {(showState)?<div className="items-area">{orderList.map((ele,index)=>{return orderListRender(ele,index)})}</div>:""}            
             

@@ -1,7 +1,8 @@
 import { serverPath } from 'modules/serverPath';
+import {History} from 'history';
 import React,{useEffect, useState} from 'react';
 import { Item} from "../reducers/main";
-import {Header}from 'components/Header'
+import Header from 'components/Header'
 import HisotryRender from 'components/HistoryRender'
 import Loading from 'components/Loading';
 type propsTypes={
@@ -62,13 +63,13 @@ export default function OrderHistory(props:propsTypes){
     return (
         <div id="wrap" className="History-wrap">
             <div className="mb-view">
-                <Header isLogin={isLogin} setIsLogin={setIsLogin} />
+                <Header isLogin={isLogin} setIsLogin={setIsLogin} history={props.history}/>
                 <div className="content_inner">
                 <h2>주문 내역</h2>
                 <div className="orderHistory">
                     {
-                        (isLoading)? <Loading />:(data.length===0)?"주문 내역이 없습니다":
-                        data.map((ele,index)=>(<HisotryRender
+                        (isLoading)? <Loading />:(data && data.length===0)?"주문 내역이 없습니다":
+                        data && data.map((ele,index)=>(<HisotryRender
                             key={index} 
                             date={ele.date} 
                             state={ele.state} 

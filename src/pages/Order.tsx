@@ -3,7 +3,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {serverPath} from 'modules/serverPath';
 import { History } from 'history';
 import Button from 'components/Button';
-import {Header} from 'components/Header';
+import Header from 'components/Header';
 import Loading from 'components/Loading';
 import getDayOption from 'modules/calcurateDayOption';
 import { renderHour, checkThisHour } from 'modules/calcurateDayOption';
@@ -334,7 +334,7 @@ export default function Order(props:propsTypes) {
   return (
     <div id="wrap" className="Order-wrap">
       <div className="mb-view verCenter">
-        <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
+        <Header isLogin={isLogin} setIsLogin={setIsLogin} history={props.history}/>
         <div className="content_inner">
           <h2>주문 옵션 설정</h2>   
           { hopePrice && 
