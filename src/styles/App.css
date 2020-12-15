@@ -433,15 +433,42 @@
 }
 
 .History-wrap .orderHistory .orderEle{
+  position:relative;
   border : solid ;
   border-width: 0px 0px 1px 0px ;
   border-color: #E0E0E0;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 25px;
+  padding-bottom: 20px;
 }
+
+.History-wrap .orderEle button {
+  position:absolute;
+  top:0;
+  right:0;
+  display:flex;
+  justify-content: flex-end;
+  align-items: center;
+  width:40px;
+  height:20px;
+  background-color: transparent;
+  border: 0px;
+}
+
+.History-wrap .orderEle button img {
+  float: right;
+  background-color: transparent;
+  padding-top: 5px;
+  width: 15px;
+  height: 10px;
+}
+
+.History-wrap .orderEle button .up {
+  transform: rotate(180deg);
+}
+
+
 .History-wrap .orderEle .date-state{
-  padding-top: 7px;
-  padding-bottom: 7px;
+  padding-top: 0px;
   padding-left: 5px;
   padding-right: 5px;
   height: 24px;
@@ -449,6 +476,7 @@
 .History-wrap .orderEle .date-state .date{
   float: left;
   height: 100%;
+  font-size: 1rem;
 }
 .History-wrap .orderEle .date-state .state-stay{
   float: right;
@@ -460,30 +488,13 @@
   height: 100%;
   color:#D6D6D6;
 }
-.History-wrap .orderEle .date-state button{
-  float: right;
-  padding-right : 0px;
-  background-color: #ffffff;
-  color: #ffffff;
-  border: 0px;
-}
-.History-wrap .orderEle .date-state img{
-  float: right;
-  background-color: #ffffff;
-  color: #ffffff;
-  padding-top: 5px;
-  width: 15px;
-  height: 10px;
-}
-.History-wrap .orderEle .date-state .up{
-  transform: rotate(180deg);
-}
 
 .History-wrap .orderEle .items {
-  font-size: 12px;
-  font-weight: normal;
   padding : 5px;
   height: 12px;
+  font-size: 0.9rem;
+  font-weight:400;
+  margin-bottom:5px;
 }
 .History-wrap .orderEle .items .item-unit {
   float: left;
@@ -495,14 +506,23 @@
 .History-wrap .payment-delivery{
   height: 40px;
   padding:5px;
+  padding-top:0;
   font-weight: normal;
+  line-height:1.2;
+  margin-bottom: 0px;
+}
+
+.History-wrap .payment-delivery+.items-area{
+  margin-top: 20px;
 }
 .History-wrap .payment-delivery .payment{
-  font-size: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
   padding-bottom: 5px;
 }
 .History-wrap .payment-delivery .delivery{
-  font-size: 12px;
+  font-size: 0.9rem;
+  font-weight:500;
   padding-bottom: 5px;
 }
 /* Login */
