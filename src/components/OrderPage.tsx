@@ -1,10 +1,7 @@
 import ItemsInput from 'components/ItemsInput';
 import { Item } from 'reducers/main';
 import { Items } from 'components/Items'
-import Button from 'components/Button';
-import { Link } from 'react-router-dom';
 import { ChangeEvent, useState } from 'react';
-import { History } from 'history';
 
 type OrderPageProps = {
     createItem: (item: Item) => void
@@ -61,8 +58,9 @@ export default function OrderPage({
         <div className="input-area">
             <ItemsInput OrderCreateItem={createItem} />
             {(itemList.length > 0) ?
-                itemList.map((item: Item) =>
+                itemList.map((item: Item,index) =>
                     <Items item={item}
+                        key={index}
                         deleteItem={deleteItem}
                         upItemsUnit={upItemsUnit}
                         downItemsUnit={downItemsUnit}

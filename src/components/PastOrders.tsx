@@ -26,8 +26,9 @@ export default function PastOrders({orderItemList,itemList,selectDate,createItem
                 </h1>
             </div>
             <div>
-            {itemList.map((ele)=>{
-                return <PastOderItems 
+            {itemList.map((ele,index)=>{
+                return <PastOderItems
+                key={index} 
                 itemList={orderItemList}
                 item={ele}
                 createItem={createItem}

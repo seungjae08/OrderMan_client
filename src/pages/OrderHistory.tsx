@@ -3,6 +3,7 @@ import React,{useEffect, useState} from 'react';
 import { Item} from "../reducers/main";
 import {Header}from 'components/Header'
 import HisotryRender from 'components/HistoryRender'
+import Loading from 'components/Loading';
 type propsTypes={
     history:History
 }
@@ -20,6 +21,7 @@ export default function OrderHistory(props:propsTypes){
     const [isLogin,setIsLogin] = useState(false)// 리덕스로 변환
 
     useEffect(()=>{
+        setIsLoading(true);
         try{
             fetch(serverPath+"/user/login",{
                 method:"GET",
@@ -48,38 +50,13 @@ export default function OrderHistory(props:propsTypes){
             .then(data=>data.json())
             .then(data=>{
                 setData(data.data)
+                setIsLoading(false)
             })
-            setIsLoading(false)
+            
         }catch(err){
             setData([])
         }
     },[])
-
-    const orderListRender=({item,quantity,unit}:Item)=>(
-        <div className="items">
-            <p className="item-unit">{item}{unit}</p>
-            <p className="quantity">{quantity}개</p>
-        </div>
-    )
-    
-    const rendering = ({date,state,orderList,paymentMethod,deliveryTime}:dataTypes)=>{
-        return(
-            <div className="orderEle">
-                <div className="date-state">
-                    <div className="date"> {date}</div>
-                    <div className="state"> {(state===0)? "주문 대기중" : "주문 완료"
-                    }</div>
-                </div>
-                
-                <div className="items-area">{orderList.map(ele=>{return orderListRender(ele)})}</div>
-                <div className="payment-delivery">
-                    <div className="payment"> {paymentMethod}</div>
-                    <div className="delivery">time: {deliveryTime}</div>
-                </div>
-                
-            </div>
-        )
-    }
 
     return (
         <div id="wrap" className="History-wrap">
@@ -89,14 +66,15 @@ export default function OrderHistory(props:propsTypes){
                 <h2>주문 내역</h2>
                 <div className="orderHistory">
                     {
-                    (data.length===0)?"주문 내역이 없습니다":
-                    data.map(ele=>(<HisotryRender 
-                        date={ele.date} 
-                        state={ele.state} 
-                        orderList={ele.orderList} 
-                        paymentMethod={ele.paymentMethod}
-                        deliveryTime={ele.deliveryTime}
-                    />))
+                        (isLoading)? <Loading />:(data.length===0)?"주문 내역이 없습니다":
+                        data.map((ele,index)=>(<HisotryRender
+                            key={index} 
+                            date={ele.date} 
+                            state={ele.state} 
+                            orderList={ele.orderList} 
+                            paymentMethod={ele.paymentMethod}
+                            deliveryTime={ele.deliveryTime}
+                        />))
                     }
                 </div>
                 </div>
