@@ -4,7 +4,7 @@ import { History } from 'history';
 import {Link} from 'react-router-dom';
 import InputBirth from 'components/InputBirth';
 import Cert from 'components/Cert';
-import { Header } from 'components/Header';
+import Header from 'components/Header';
 import Button from 'components/Button';
 import Loading from 'components/Loading';
 
@@ -150,7 +150,7 @@ export default function UnSigninOrder
   return (
     <div id="wrap" className="UnSignInOrder-wrap">
       <div className="mb-view verCenter">
-        <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
+        <Header isLogin={isLogin} setIsLogin={setIsLogin} history={props.history}/>
         <div className="content_inner">
           <h2>비회원 로그인</h2>
           <h3>휴대폰인증</h3>

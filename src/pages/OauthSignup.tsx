@@ -3,7 +3,7 @@ import { History, Location } from 'history';
 import Button from 'components/Button';
 import Cert from 'components/Cert';
 import InputBirth from 'components/InputBirth';
-import { Header } from 'components/Header';
+import  Header from 'components/Header';
 import {serverPath, clientPath} from 'modules/serverPath';
 import {KAKAO_REST_API_KEY} from 'modules/config';
 import { generateBirth } from 'modules/generateDate';
@@ -175,7 +175,7 @@ export default function SignUpSocial(props: propsTypes) {
     return (
       <div id="wrap">
         <div className="mb-view verCenter">
-          <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
+          <Header isLogin={isLogin} setIsLogin={setIsLogin} history={props.history}/>
           <div className="content_inner">
             <h2>회원가입(카카오톡)</h2>
             <div className="inputWrap">

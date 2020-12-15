@@ -2,7 +2,7 @@ import React ,{ useState, useEffect }from 'react';
 import { History } from 'history';
 import { serverPath } from 'modules/serverPath';
 import {Link} from 'react-router-dom';
-import {Header} from 'components/Header';
+import Header from 'components/Header';
 import Button from 'components/Button';
 import Loading from 'components/Loading';
 
@@ -83,7 +83,7 @@ export default function MyPage(props:propsTypes) {
   return (
     <div id="wrap" className="MyPage-wrap">
       <div className="mb-view verCenter">
-        <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
+        <Header isLogin={isLogin} setIsLogin={setIsLogin} history={props.history}/>
         <div className="content_inner">
           <h2>마이페이지</h2>
           <ul className="MyPage-userInfo">

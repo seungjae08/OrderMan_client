@@ -27,8 +27,10 @@ export const OrderLoginUser = 'order/LOGIN' as const;
 export const OrderNonLoginUser = 'order/NON_LOGIN' as const;
 export const OrderCreateItem = 'order/CREATE_ITEM' as const;
 export const OrderDeleteItem = 'order/DELETE_ITEM' as const;
+
 export const OrderUnitUp = 'order/UNIT_UP' as const;
 export const OrderUnitDown = 'order/UNIT_DOWN' as const;
+
 export const OrderQuantityChange = 'order/QUANTITY_CHANGE' as const;
 export const OrderChangeDates = 'order/CHANGE_DATES' as const;
 
@@ -36,6 +38,8 @@ export const UnSignInfo = 'order/UNSIGN_INFO' as const;
 export const MarketActionType = 'order/MARKET_CHANGE' as const;
 export const PaymentChangeActionType = 'order/PAYMENT_CHANGE' as const;
 export const DeliveryTimeChangeActionType = 'order/DELIVERY_TIME_CHANGE' as const;
+
+export const ResetDataActionType = 'order/RESET_DATA' as const;
 
 // Actions 생성자
 type OrderLoginUserAction = {
@@ -82,6 +86,7 @@ type OrderChangeUnSignInfo = {
   payload: unSigninInfo;
 }
 
+
 type MarketChangeType = {
   type : typeof MarketActionType,
   payload: string | null
@@ -97,6 +102,10 @@ type DeliveryTimeChangeType = {
   payload: string
 }
 
+type ResetDataType = {
+  type: typeof  ResetDataActionType
+}
+
 export type OrderActionTypes =
   | OrderLoginUserAction
   | OrderNonLoginUserAction
@@ -109,7 +118,8 @@ export type OrderActionTypes =
   | OrderChangeUnSignInfo
   | MarketChangeType
   | PaymentChangeType
-  | DeliveryTimeChangeType;
+  | DeliveryTimeChangeType
+  | ResetDataType;
 
 export function orderLoginUser(itemList: Array<Item>, market: Market) {
   return {
@@ -193,6 +203,12 @@ export function changeDeliveryTime(deliveryTime:string){
   return {
     type: DeliveryTimeChangeActionType,
     payload: deliveryTime
+  }
+}
+
+export function resetData(){
+  return {
+    type: ResetDataActionType
   }
 }
 
@@ -333,6 +349,8 @@ export function OrderReducer(
           deliveryTime: action.payload
         }
       }
+    case ResetDataActionType:
+      return initialState;
     default:
       return state;
   }

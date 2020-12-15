@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, ChangeEvent } from 'react';
 import { History } from 'history';
-import { Header } from 'components/Header';
+import  Header  from 'components/Header';
 import { serverPath } from 'modules/serverPath';
 import Button from 'components/Button';
 import Loading from 'components/Loading';
@@ -97,7 +97,7 @@ const ModifyPassword = (props:propsTypes) => {
   return (
     <div id="wrap" className="MyPage-wrap">
       <div className="mb-view verCenter">
-        <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
+        <Header isLogin={isLogin} setIsLogin={setIsLogin} history={props.history}/>
         <div className="content_inner">
           <h2>비밀번호 수정</h2>
           <div className="inputWrap">
