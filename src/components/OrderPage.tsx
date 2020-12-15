@@ -47,7 +47,7 @@ export default function OrderPage({
         }
     }
     const orderBtnAtLogState = () => {
-        if (itemList.length === 0) {
+        if (itemList && itemList.length === 0) {
             return <button className="order-btn" onClick={() => { alert("품목을 추가해주세요") }}>주문하기</button>
         } else {
             return <button className="order-btn" onClick={() => { clickOrderButton(isLogin) }}>주문하기</button>
@@ -57,7 +57,7 @@ export default function OrderPage({
     return (
         <div className="input-area">
             <ItemsInput OrderCreateItem={createItem} />
-            {(itemList.length > 0) ?
+            {(itemList && itemList.length > 0) ?
                 itemList.map((item: Item,index) =>
                     <Items item={item}
                         key={index}
