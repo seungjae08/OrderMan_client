@@ -17,11 +17,11 @@ export interface OrderStates{
 }
 
 // Actions 
-export const LoginUser = 'ITMES/LOGIN';
-export const NonLoginUser = 'ITMES/NONLOGIN';
-export const StartUser = "ITEMS/START";
-export const ErrorGet = "ITEMS/ERROR";
-export const EndLoading = 'ITEMS/ENDLOADING';
+export const LoginUser = 'ITMES/LOGIN'as const;
+export const NonLoginUser = 'ITMES/NONLOGIN' as const;
+export const StartUser = "ITEMS/START" as const;
+export const ErrorGet = "ITEMS/ERROR" as const;
+export const EndLoading = 'ITEMS/ENDLOADING' as const;
 
 // Actions 생성자
 interface LoginUserAction {
