@@ -18,10 +18,11 @@ function Main(props : propsTypes) {
   // Distpach 선언  
   const dispatch = useDispatch();
   
-  const {orderList,isLoading} = useSelector((state:RootState) => state.MainReducer);
+  const {orderList} = useSelector((state:RootState) => state.MainReducer);
   const {itemList} = useSelector((state:RootState)=> state.OrderReducer);
   
   // useSate
+  const [isLoading,setIsLoading] = useState(true)
   const [todayOrder,setTodayOrder] = useState(true)
   const [selectDate, setSelectDate] = useState("");
   const [dates, setDates] = useState([""])
@@ -29,7 +30,6 @@ function Main(props : propsTypes) {
   const [isLogin,setIsLogin] = useState(false)// 리덕스로 변환
   
   useEffect(()=>{
-    dispatch(mainActions.startUser())
     try{
       fetch(serverPath+"/totalinfo",{
         method:"GET",
@@ -69,7 +69,7 @@ function Main(props : propsTypes) {
           }else if(login.status ===202){
             setIsLogin(false);
           }
-          dispatch(mainActions.endLoading());
+          setIsLoading(false)
         })
       })
     }catch(err){
