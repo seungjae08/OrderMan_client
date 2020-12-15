@@ -9,6 +9,7 @@ import {Date} from 'components/Date'
 import OrderPage from 'components/OrderPage';
 import { serverPath } from 'modules/serverPath';
 import { History } from "history"
+import Loading from 'components/Loading';
 
 type propsTypes = {
   history:History
@@ -17,7 +18,7 @@ function Main(props : propsTypes) {
   // Distpach 선언  
   const dispatch = useDispatch();
   
-  const {orderList,isLoading,hasError} = useSelector((state:RootState) => state.MainReducer);
+  const {orderList,isLoading} = useSelector((state:RootState) => state.MainReducer);
   const {itemList} = useSelector((state:RootState)=> state.OrderReducer);
   
   // useSate
@@ -53,8 +54,7 @@ function Main(props : propsTypes) {
           dispatch(mainActions.loginUser(data));
           dispatch(orderActions.orderLoginUser(temp.itemList,data.market));
           setDates( Object.keys(data.orderList))
-          dispatch(mainActions.endLoading())
-          console.log({itemList,orderList})
+          dispatch(mainActions.endLoading());
         })
         fetch(serverPath+"/user/login",{
           method:"GET",
@@ -69,10 +69,10 @@ function Main(props : propsTypes) {
           }else if(login.status ===202){
             setIsLogin(false);
           }
+          dispatch(mainActions.endLoading());
         })
       })
     }catch(err){
-      console.log(err)
       dispatch(mainActions.errorGet());
     }
   },[isLogin, dispatch]);
@@ -123,22 +123,20 @@ function Main(props : propsTypes) {
 
   // 렌더링에 관한 함수들
   const rendering =() =>{
-    if(isLoading) return <p>Loading~~</p>
-    if(hasError) return <p>has Error</p>
+    console.log(dates[0]==="")
     return (
     <div className="mb-view">
       <Header isLogin={isLogin} setIsLogin={setIsLogin}
         changeDatesClickLogout={changeDatesClickLogout}
         itemList={itemList} hopePrice={hopePrice}/>
       <div className="content_inner">
-        
-        {(dates.length>0)?<Date 
-          dates={dates} 
-          nowdate={selectDate}
-          setNowdate={setSelectDate} 
-          todayOrder={todayOrder} 
-          setTodayOrder={setTodayOrder}/>:""}
-        
+        {(dates.length===0||dates[0]==="")?
+        "":<Date 
+        dates={dates} 
+        nowdate={selectDate}
+        setNowdate={setSelectDate} 
+        todayOrder={todayOrder} 
+        setTodayOrder={setTodayOrder}/>}
         {todayOderPick()}
       </div>
     </div>
@@ -168,6 +166,10 @@ function Main(props : propsTypes) {
   return (  
     <div id="wrap" className="Main-wrap">
         {rendering()}
+        {
+          isLoading&&
+          <Loading />
+        }
     </div>
   )
 }

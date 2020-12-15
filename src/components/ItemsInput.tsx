@@ -133,6 +133,7 @@ export default function ItemsInput({
                             if(index<10){
                                 return(
                                     <SearchPreview 
+                                        key={index}
                                         text={text}
                                         index={index}
                                         updateText={updateItemText}
@@ -161,6 +162,7 @@ export default function ItemsInput({
                             if(index<10){
                                 return(
                                     <SearchPreview 
+                                        key={index}
                                         text={text}
                                         index={index}
                                         updateText={updateUnitText}
