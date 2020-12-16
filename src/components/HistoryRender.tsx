@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react';
+import {useState} from 'react';
 import { Item} from "../reducers/main";
 
 type HistoryRenderProps={
@@ -26,8 +26,8 @@ export default function HistoryRender({date,state,orderList,paymentMethod,delive
             </button> */}
             <div className="date-state">
                 <div className="date"> {date} 주문건</div>
-                 {(state===0)? <div className="state-stay">주문대기</div> :
-                  <div className="state-success">처리완료</div>
+                 {(state===0)? <div className="state-stay">주문처리중</div> :
+                  <div className="state-success">배송완료</div>
                 }
                 
             </div>
