@@ -172,7 +172,7 @@ export default function SignUpSocial(props: propsTypes) {
       setIsLoading(false);
       setErrorMsg('소셜 회원가입이 정상적으로 이뤄지지 않습니다. 다시 시도해주세요.');
     })
-  },[inputs, code, isSuccessCertMobile]);
+  },[inputs, code, props.history]);
 
   const onChangeSelect = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;

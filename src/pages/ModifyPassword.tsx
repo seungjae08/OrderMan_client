@@ -83,6 +83,7 @@ const ModifyPassword = (props:propsTypes) => {
       setIsLoading(false);
       if(res.status===200){
         alert("비밀번호 수정이 완료됐습니다");
+        props.history.push('/mypage');
       }else if(res.status===202){
         setErrorMsg("기존 비밀번호가 맞지 않습니다. 변경할 수 없습니다.")
       }else{
@@ -92,7 +93,7 @@ const ModifyPassword = (props:propsTypes) => {
       setIsLoading(false);
       setErrorMsg("비밀번호 수정을 완료할 수 없습니다. 다시 시도해주세요.")
     })
-  },[inputs])
+  },[inputs, props.history])
 
   return (
     <div id="wrap" className="MyPage-wrap">
