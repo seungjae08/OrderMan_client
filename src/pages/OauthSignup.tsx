@@ -87,7 +87,6 @@ export default function SignUpSocial(props: propsTypes) {
           'Authorization': bearer,
         }
       }).then(res=>{
-        console.log(res);
         //기존 이용자라면 (상태코드 200)
         //사이트의토큰을 받고, 메인으로 처리
         setIsLoading(false);

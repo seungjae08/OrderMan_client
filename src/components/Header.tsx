@@ -9,7 +9,7 @@ import {resetData} from "reducers/order"
 
 
 type propTypes = {
-  history?:History,
+  history:History,
   noLoginBtn?:boolean;
   itemList ?: Item[];
   hopePrice ?:string
@@ -43,7 +43,7 @@ const Header = (props:propTypes) => {
         dispatch(resetData());
         alert('로그아웃되었습니다');
         props.setIsLogin(false);
-        //history.push('/');
+        props.history.push('/');
       }
       if(props.changeDatesClickLogout){
         props.changeDatesClickLogout()
@@ -88,6 +88,9 @@ const Header = (props:propTypes) => {
         }
       </div>
       <ul className="Header-menu">
+        <li className="btnClosePopup" onClick={toggleMenuOpen}>
+          <img src="/assets/btn_close.png" alt="메뉴닫기"/>
+        </li>
         <li>
           <Link to="/">홈</Link>
         </li>

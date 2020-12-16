@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback, ChangeEvent} from 'react';
-import {serverPath} from 'modules/serverPath';
+import { serverPath, clientPath } from 'modules/serverPath';
 import { History } from 'history';
 import {Link} from 'react-router-dom';
 import InputBirth from 'components/InputBirth';
@@ -24,6 +24,9 @@ export type InputTypes = {
   day:string;
   verifyNumber:string;
 }
+
+window.Kakao = window.Kakao || "SomeValue";
+const {Kakao} = window;
 
 export default function UnSigninOrder
 (props: propsTypes) {
@@ -147,6 +150,12 @@ export default function UnSigninOrder
     setIsSuccessCertMobile(true);
   },[])
 
+  const onKakaoLoginHandler = function(){
+    Kakao.Auth.authorize({
+      redirectUri: clientPath+'/signup/social'
+    });
+  }
+
   return (
     <div id="wrap" className="UnSignInOrder-wrap">
       <div className="mb-view verCenter">
@@ -179,7 +188,7 @@ export default function UnSigninOrder
                 </div>
               </Button>
             </Link>
-            <Link to="/order">
+            <Link to="/signup">
               <Button color="#F87946" bgColor="white" borderColor="#D6D6D6">
                 <div>
                   회원가입
@@ -187,7 +196,7 @@ export default function UnSigninOrder
                 </div>
               </Button>
             </Link>
-            <div>
+            <div onClick={onKakaoLoginHandler}>
               <Button color="#000000" bgColor="#FEE500">
                 <img src="/assets/ico_kakao.png" alt="카카오 로그인"/>
               </Button>

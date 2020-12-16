@@ -63,9 +63,9 @@ export default function MyPage(props:propsTypes) {
         return res.json();
       }).then(data=>{
         let {brand, address, birth, id, mobile} = data;
-
         let birthArr = birth.split('-');
         birth = `${Number(birthArr[0])<10?'20'+birthArr[0]:'19'+birthArr[0]}년 ${birthArr[1]}월 ${birthArr[2]}일`;
+        setIsLoading(false);
         setUserInfo((inputs)=>({
           ...inputs,
           id,
@@ -74,11 +74,9 @@ export default function MyPage(props:propsTypes) {
           brand,
           address
         }));
-        setIsLoading(false);
       });
     }
-    
-  }, [props.history])
+  }, [props.history, isLogin])
 
   return (
     <div id="wrap" className="MyPage-wrap">
