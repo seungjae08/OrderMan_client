@@ -88,6 +88,9 @@ const Header = (props:propTypes) => {
         }
       </div>
       <ul className="Header-menu">
+        <li className="btnClosePopup" onClick={toggleMenuOpen}>
+          <img src="/assets/btn_close.png" alt="메뉴닫기"/>
+        </li>
         <li>
           <Link to="/">홈</Link>
         </li>
