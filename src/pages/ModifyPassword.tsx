@@ -19,6 +19,7 @@ const ModifyPassword = (props:propsTypes) => {
     newPassword:""
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [userType, setUserType] = useState("");
   
   //useEffect
   useEffect(() => {
@@ -32,11 +33,19 @@ const ModifyPassword = (props:propsTypes) => {
     }).then(login=>{
       if(login.status===200){
         setIsLogin(true);
+        setUserType('standard');
       }else if(login.status ===202){
         setIsLogin(false);
         alert('로그인 정보가 없습니다');
         props.history.push('/login');
+      }else if(login.status===203){
+        setUserType('oauth');
+        alert('소셜 회원은 비밀번호를 변경할 수 없습니다');
+        props.history.push('/mypage');
       }
+    }).catch(e=>{
+      alert('로그인 정보가 없습니다');
+      props.history.push('/login');
     });
   }, [props.history]);
 
