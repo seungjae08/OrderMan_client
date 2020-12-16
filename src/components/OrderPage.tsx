@@ -13,7 +13,6 @@ type OrderPageProps = {
     setHopePrice: (str: string) => void;
     setisLogin: (bool: boolean) => void;
     isLogin: boolean;
-    hopePrice: string
     itemList: Item[];
 }
 
@@ -25,9 +24,7 @@ export default function OrderPage({
     changeItemsQuantity,
     clickOrderButton,
     setHopePrice,
-    setisLogin,
     isLogin,
-    hopePrice,
     itemList, }: OrderPageProps) {
     const [inputValue, setInputValue] = useState("")
     const changeHopePrice = (e: ChangeEvent<HTMLInputElement>) => {

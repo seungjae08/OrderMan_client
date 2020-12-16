@@ -154,7 +154,6 @@ function Main(props : propsTypes) {
     setHopePrice={setHopePrice}
     setisLogin={setIsLogin}
     isLogin={isLogin}
-    hopePrice={hopePrice}
     itemList={itemList}
   />:<PastOrders 
     orderItemList={itemList}
