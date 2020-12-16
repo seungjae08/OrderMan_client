@@ -125,7 +125,6 @@ function Login(props : propsTypes) {
               </div>
             </Button>
           </Link>
-
           {
             isLoading &&
             <Loading/>

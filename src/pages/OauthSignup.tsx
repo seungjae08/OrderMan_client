@@ -28,9 +28,6 @@ type InputTypes = {
 
 
 export default function SignUpSocial(props: propsTypes) {
-  
-  // window.Kakao = window.Kakao || "SomeValue";
-  // const {Kakao} = window;
   const code = props.location.search.split("=")[1];
   let bearer:string = '';
 
@@ -89,6 +86,7 @@ export default function SignUpSocial(props: propsTypes) {
       }).then(res=>{
         //기존 이용자라면 (상태코드 200)
         //사이트의토큰을 받고, 메인으로 처리
+        console.log(res);
         setIsLoading(false);
         if(res.status===200){
           //토큰 심은채 메인으로 리다이렉트

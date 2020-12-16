@@ -30,6 +30,7 @@ export default function MyPage(props:propsTypes) {
   })
   const [isLogin, setIsLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [userType, setUserType] = useState("");
 
   useEffect(() => {
     //로그인 확인
@@ -41,13 +42,20 @@ export default function MyPage(props:propsTypes) {
         "Content-Type":"application/json"
       }
     }).then(login=>{
+      console.log(login);
       if(login.status===200){
         setIsLogin(true);
+        setUserType('standard');
       }else if(login.status ===202){
         setIsLogin(false);
         alert("로그인 정보가 존재하지 않습니다")
         props.history.push('/login');
+      }else if(login.status===203){
+        setUserType('oauth');
       }
+    }).catch(e=>{
+      alert("로그인 정보가 존재하지 않습니다")
+      props.history.push('/login');
     });
 
     if(isLogin){
@@ -89,10 +97,14 @@ export default function MyPage(props:propsTypes) {
               <h3>아이디</h3>
               <p>{userInfo.id}</p>
             </li>
-            <li>
-              <h3>비밀번호</h3>
-              <p>***</p>
-            </li>
+            {
+              userType !== "oauth" ? (
+                <li>
+                  <h3>비밀번호</h3>
+                  <p>***</p>
+                </li>
+              ): null
+            }
             <li>
               <h3>생년월일</h3>
               <p>{userInfo.birth}</p>
@@ -114,14 +126,16 @@ export default function MyPage(props:propsTypes) {
               </div>
             </Button>
           </Link>
-          <Link to="/modify/password" className="fullBtn">
-            <Button color="#F87946" bgColor="white" borderColor="#D6D6D6">
-              <div>
-                비밀번호 수정
-                <img src="/assets/button_arrow.png" alt="이동"/>
-              </div>
-            </Button>
-          </Link>
+          { userType !== "oauth" ? 
+            (<Link to="/modify/password" className="fullBtn">
+              <Button color="#F87946" bgColor="white" borderColor="#D6D6D6">
+                <div>
+                  비밀번호 수정
+                  <img src="/assets/button_arrow.png" alt="이동"/>
+                </div>
+              </Button>
+            </Link>) : null
+          }
           <Link to="/modify/mobile" className="fullBtn">
             <Button color="#F87946" bgColor="white" borderColor="#D6D6D6">
               <div>
