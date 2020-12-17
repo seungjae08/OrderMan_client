@@ -32,7 +32,8 @@ const Header = (props:propTypes) => {
 
   const onLogout = function(){
     dispatch(mainActions.loginUser({}));
-    dispatch(orderActions.orderLoginUser([],{mobile:""}));
+    //dispatch(orderActions.orderLoginUser([],{mobile:""}));
+    dispatch(resetData());
     fetch(serverPath + '/user/logout', {
       method: 'GET',
       mode: 'cors', 
@@ -40,7 +41,6 @@ const Header = (props:propTypes) => {
       headers: {'Content-Type': 'application/json'}
     }).then((res)=>{
       if(res.status===200){
-        dispatch(resetData());
         alert('로그아웃되었습니다');
         props.setIsLogin(false);
         props.history.push('/');

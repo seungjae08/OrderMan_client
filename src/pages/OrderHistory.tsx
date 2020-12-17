@@ -34,7 +34,7 @@ export default function OrderHistory(props:propsTypes){
                 }
             })
             .then(login=>{
-                if(login.status===200){
+                if(login.status===200 || login.status===203){
                   setIsLogin(true);
                 }else if(login.status ===202){
                   setIsLogin(false);

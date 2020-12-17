@@ -59,8 +59,10 @@ export default function UnSigninOrder
         "Content-Type":"application/json"
       }
     }).then(login=>{
-      if(login.status===200){
+      if(login.status===200 || login.status===203){
         setIsLogin(true);
+        alert('이미 로그인 중입니다.');
+        props.history.push('/');
       }else if(login.status ===202){
         setIsLogin(false);
       }

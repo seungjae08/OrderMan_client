@@ -48,9 +48,10 @@ const ModifyInfo = (props:propsTypes) => {
       credentials:"include",
       headers:{
         "Content-Type":"application/json"
-      }
+    }
     }).then(login=>{
-      if(login.status===200){
+      console.log(login);
+      if(login.status===200 || login.status===203){
         setIsLogin(true);
       }else if(login.status ===202){
         setIsLogin(false);
@@ -59,6 +60,17 @@ const ModifyInfo = (props:propsTypes) => {
       }
     });
 
+    //set year,month,day Lists
+    let [yearList, monthList, dayList] = generateBirth();
+    setInputs((inputs)=>({
+      ...inputs,
+      yearList,
+      monthList,
+      dayList
+    }));
+  }, [props.history])
+
+  useEffect(() => {
     if(isLogin){
       //GET userinfo
       fetch(serverPath+"/mypage/user",{
@@ -85,16 +97,7 @@ const ModifyInfo = (props:propsTypes) => {
         setIsLoading(false);
       });
     }
-
-    //set year,month,day Lists
-    let [yearList, monthList, dayList] = generateBirth();
-    setInputs((inputs)=>({
-      ...inputs,
-      yearList,
-      monthList,
-      dayList
-    }));
-  }, [props.history])
+  }, [isLogin])
 
   //function
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
