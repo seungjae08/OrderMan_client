@@ -51,13 +51,16 @@ export default function MyPage(props:propsTypes) {
         alert("로그인 정보가 존재하지 않습니다")
         props.history.push('/login');
       }else if(login.status===203){
+        setIsLogin(true);
         setUserType('oauth');
       }
     }).catch(e=>{
       alert("로그인 정보가 존재하지 않습니다")
       props.history.push('/login');
     });
+  }, [props.history, isLogin]);
 
+  useEffect(()=>{
     if(isLogin){
       //GET userinfo
       fetch(serverPath+"/mypage/user",{
@@ -84,7 +87,7 @@ export default function MyPage(props:propsTypes) {
         }));
       });
     }
-  }, [props.history, isLogin])
+  },[isLogin])
 
   return (
     <div id="wrap" className="MyPage-wrap">
