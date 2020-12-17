@@ -75,7 +75,7 @@ export default function UnSigninOrder
       monthList,
       dayList
     }))
-  }, []);
+  }, [props.history]);
 
   const generateBirth = function(){
     let yearList = [];
@@ -142,7 +142,6 @@ export default function UnSigninOrder
       }
     })
     .catch((e:Error)=>{
-      console.log(e);
       setIsLoading(false);
     })
 

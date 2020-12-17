@@ -157,7 +157,7 @@ export default function Order(props:propsTypes) {
       }
       let hLists = renderHour(`${date}`);
       if(hLists){
-        setHList(hLists);
+        setHList(hLists=>hList);
       }
       //check valide date
       let result = validateOrderDate(`${date} ${selectOption.hour}:${selectOption.min}`); 

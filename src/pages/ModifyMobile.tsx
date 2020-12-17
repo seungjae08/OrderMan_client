@@ -38,7 +38,7 @@ const ModifyMobile = (props: propsTypes) => {
         props.history.push('/login');
       }
     })
-  }, [])
+  }, [props.history])
 
   useEffect(()=>{
     if(isLogin){

@@ -66,7 +66,6 @@ export default function SignUp(props: propsTypes) {
         setIsLogin(false);
       }
     }).catch(err=>{
-      console.log(err);
     });
     //mount
     let [yearList, monthList, dayList] = generateBirth();
