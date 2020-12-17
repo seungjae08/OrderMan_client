@@ -57,7 +57,6 @@ function Login(props : propsTypes) {
   },[])
 
   const onSubmitLogin = useCallback(()=>{
-    console.log('onSubmitLogin 전송..')
     if(inputs.id === "" || inputs.password === ""){
       return;
     }

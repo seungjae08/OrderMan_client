@@ -123,7 +123,6 @@ function Main(props : propsTypes) {
 
   // 렌더링에 관한 함수들
   const rendering =() =>{
-    console.log(dates[0]==="")
     return (
     <div className="mb-view">
       <Header isLogin={isLogin} setIsLogin={setIsLogin}

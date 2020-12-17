@@ -42,7 +42,6 @@ export default function MyPage(props:propsTypes) {
         "Content-Type":"application/json"
       }
     }).then(login=>{
-      console.log(login);
       if(login.status===200){
         setIsLogin(true);
         setUserType('standard');

@@ -73,7 +73,6 @@ export default function SignUpSocial(props: propsTypes) {
     }).then(res=>{
       return res.json();
     }).then(data=>{
-      //console.log(data);
       bearer = 'Bearer ' + data.access_token;
       fetch(serverPath+'/user/oauthup', {
         method: 'GET',
@@ -86,7 +85,6 @@ export default function SignUpSocial(props: propsTypes) {
       }).then(res=>{
         //기존 이용자라면 (상태코드 200)
         //사이트의토큰을 받고, 메인으로 처리
-        console.log(res);
         setIsLoading(false);
         if(res.status===200){
           //토큰 심은채 메인으로 리다이렉트
@@ -99,7 +97,6 @@ export default function SignUpSocial(props: propsTypes) {
           props.history.push('/login');
         }
       }).catch(error=>{
-        console.log(error);
         setIsLoading(false);
         alert('소셜 로그인이 정상적으로 이뤄지지 않았습니다. 다시 로그인해주세요.');
         props.history.push('/login');
@@ -127,10 +124,8 @@ export default function SignUpSocial(props: propsTypes) {
   },[]);
 
   const onSubmitSignUpSocial = useCallback(()=>{
-    console.log('onSubmitSignUpSocial 소셜 회원가입 전송..');
 
     if(!code){
-      console.log('not code');
       return;
     }
     let {address, brand, mobile, year, month, day} = inputs;
@@ -138,8 +133,6 @@ export default function SignUpSocial(props: propsTypes) {
       setErrorMsg('모든 항목을 입력해주세요');
       return;
     }
-    console.log(mobile);
-    console.log(`${year.slice(2)}-${Number(month)<10?'0'+month:month}-${Number(day)<10?'0'+day:day}`);
 
     setIsLoading(true);
     fetch(serverPath+'/user/oauthup', {
@@ -156,7 +149,6 @@ export default function SignUpSocial(props: propsTypes) {
         birth: `${year.slice(2)}-${Number(month)<10?'0'+month:month}-${Number(day)<10?'0'+day:day}`
       })
     }).then(res=>{
-      console.log(res);
       setIsLoading(false);
       //기존 이용자라면 (상태코드 200)
       //사이트의토큰을 받고, 메인으로 처리

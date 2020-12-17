@@ -50,7 +50,6 @@ const ModifyInfo = (props:propsTypes) => {
         "Content-Type":"application/json"
     }
     }).then(login=>{
-      console.log(login);
       if(login.status===200 || login.status===203){
         setIsLogin(true);
       }else if(login.status ===202){
@@ -123,8 +122,7 @@ const ModifyInfo = (props:propsTypes) => {
       setErrorMsg('항목을 모두 입력해주세요');
       return;
     }
-    
-    console.log('회원 수정 전송...');
+
     setIsLoading(true);
     //POST userinfo
     fetch(serverPath+"/mypage/user",{
