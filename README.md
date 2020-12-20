@@ -16,6 +16,8 @@
 
 # 🔧기술 스택 소개
 
+![](https://images.velog.io/images/oh_ji_0/post/4a7aab14-f654-4387-97fd-cc8b76140017/%EA%B8%B0%EC%88%A0%EC%8A%A4%ED%83%9D.png)
+
 ## Front
 - React [ React Hooks ]
 - Redux
