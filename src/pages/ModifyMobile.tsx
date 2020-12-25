@@ -30,7 +30,7 @@ const ModifyMobile = (props: propsTypes) => {
         "Content-Type":"application/json"
       }
     }).then(login=>{
-      if(login.status===200){
+      if(login.status === 200 || login.status === 203){
         setIsLogin(true);
       }else if(login.status ===202){
         setIsLogin(false);
@@ -38,7 +38,9 @@ const ModifyMobile = (props: propsTypes) => {
         props.history.push('/login');
       }
     })
+  }, [props.history])
 
+  useEffect(()=>{
     if(isLogin){
       //GET userinfo mobile
       fetch(serverPath+"/mypage/user",{
@@ -59,7 +61,7 @@ const ModifyMobile = (props: propsTypes) => {
         setIsLoading(false);
       });
     }
-  }, [])
+  },[isLogin])
 
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setErrorMsg("");

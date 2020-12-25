@@ -4,9 +4,7 @@ import { Link } from 'react-router-dom';
 import {History} from 'history';
 import { serverPath } from 'modules/serverPath';
 import {actionMainCreators as mainActions, Item } from 'reducers/main';
-import {actionOrderCreators as orderActions} from "reducers/order"
 import {resetData} from "reducers/order"
-
 
 type propTypes = {
   history:History,
@@ -32,7 +30,7 @@ const Header = (props:propTypes) => {
 
   const onLogout = function(){
     dispatch(mainActions.loginUser({}));
-    dispatch(orderActions.orderLoginUser([],{mobile:""}));
+    dispatch(resetData());
     fetch(serverPath + '/user/logout', {
       method: 'GET',
       mode: 'cors', 
@@ -40,7 +38,6 @@ const Header = (props:propTypes) => {
       headers: {'Content-Type': 'application/json'}
     }).then((res)=>{
       if(res.status===200){
-        dispatch(resetData());
         alert('로그아웃되었습니다');
         props.setIsLogin(false);
         props.history.push('/');
@@ -51,7 +48,7 @@ const Header = (props:propTypes) => {
       dispatch(mainActions.endLoading());
     })
     .catch((e)=>{
-      console.log(e)
+      //console.log(e)
     })
   }
   const onLogin = function(){

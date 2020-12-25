@@ -77,7 +77,7 @@ export default function Order(props:propsTypes) {
         "Content-Type":"application/json"
       }
     }).then(login=>{
-      if(login.status===200){
+      if(login.status===200 || login.status===203){
         setIsLogin(true);
       }else if(login.status ===202){
         setIsLogin(false);
@@ -157,7 +157,7 @@ export default function Order(props:propsTypes) {
       }
       let hLists = renderHour(`${date}`);
       if(hLists){
-        setHList(hLists);
+        setHList(hLists=>hList);
       }
       //check valide date
       let result = validateOrderDate(`${date} ${selectOption.hour}:${selectOption.min}`); 
@@ -170,6 +170,7 @@ export default function Order(props:propsTypes) {
   }, [selectedDay, selectOption, isRenderCalendarInput]);
 
 
+  
   //function
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     let { name, value } = e.target;

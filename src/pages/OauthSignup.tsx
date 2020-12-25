@@ -28,9 +28,6 @@ type InputTypes = {
 
 
 export default function SignUpSocial(props: propsTypes) {
-  
-  // window.Kakao = window.Kakao || "SomeValue";
-  // const {Kakao} = window;
   const code = props.location.search.split("=")[1];
   let bearer:string = '';
 
@@ -63,7 +60,7 @@ export default function SignUpSocial(props: propsTypes) {
         "Content-Type":"application/json"
       }
     }).then(login=>{
-      if(login.status===200){
+      if(login.status===200 || login.status===203){
         setIsLogin(true);
       }else if(login.status ===202){
         setIsLogin(false);
@@ -76,7 +73,6 @@ export default function SignUpSocial(props: propsTypes) {
     }).then(res=>{
       return res.json();
     }).then(data=>{
-      //console.log(data);
       bearer = 'Bearer ' + data.access_token;
       fetch(serverPath+'/user/oauthup', {
         method: 'GET',
@@ -101,7 +97,6 @@ export default function SignUpSocial(props: propsTypes) {
           props.history.push('/login');
         }
       }).catch(error=>{
-        console.log(error);
         setIsLoading(false);
         alert('소셜 로그인이 정상적으로 이뤄지지 않았습니다. 다시 로그인해주세요.');
         props.history.push('/login');
@@ -129,10 +124,8 @@ export default function SignUpSocial(props: propsTypes) {
   },[]);
 
   const onSubmitSignUpSocial = useCallback(()=>{
-    console.log('onSubmitSignUpSocial 소셜 회원가입 전송..');
 
     if(!code){
-      console.log('not code');
       return;
     }
     let {address, brand, mobile, year, month, day} = inputs;
@@ -140,8 +133,6 @@ export default function SignUpSocial(props: propsTypes) {
       setErrorMsg('모든 항목을 입력해주세요');
       return;
     }
-    console.log(mobile);
-    console.log(`${year.slice(2)}-${Number(month)<10?'0'+month:month}-${Number(day)<10?'0'+day:day}`);
 
     setIsLoading(true);
     fetch(serverPath+'/user/oauthup', {
@@ -158,7 +149,6 @@ export default function SignUpSocial(props: propsTypes) {
         birth: `${year.slice(2)}-${Number(month)<10?'0'+month:month}-${Number(day)<10?'0'+day:day}`
       })
     }).then(res=>{
-      console.log(res);
       setIsLoading(false);
       //기존 이용자라면 (상태코드 200)
       //사이트의토큰을 받고, 메인으로 처리
@@ -172,7 +162,7 @@ export default function SignUpSocial(props: propsTypes) {
       setIsLoading(false);
       setErrorMsg('소셜 회원가입이 정상적으로 이뤄지지 않습니다. 다시 시도해주세요.');
     })
-  },[inputs, code, isSuccessCertMobile]);
+  },[inputs, code, props.history]);
 
   const onChangeSelect = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;

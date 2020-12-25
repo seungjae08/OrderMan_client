@@ -51,6 +51,12 @@
   box-sizing: border-box;
 }
 
+@media (max-width:1025px) {
+  #wrap::after {
+    display: none;
+  }
+}
+
 @media (min-width:1026px){
   .mb-view {
     width:500px;

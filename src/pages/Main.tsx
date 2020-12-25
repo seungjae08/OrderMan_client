@@ -64,7 +64,7 @@ function Main(props : propsTypes) {
             "Content-Type":"application/json"
           }
         }).then(login=>{
-          if(login.status===200){
+          if(login.status===200 || login.status===203){
             setIsLogin(true);
           }else if(login.status ===202){
             setIsLogin(false);
@@ -123,7 +123,6 @@ function Main(props : propsTypes) {
 
   // 렌더링에 관한 함수들
   const rendering =() =>{
-    console.log(dates[0]==="")
     return (
     <div className="mb-view">
       <Header isLogin={isLogin} setIsLogin={setIsLogin}

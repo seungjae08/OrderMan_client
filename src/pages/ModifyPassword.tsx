@@ -36,7 +36,13 @@ const ModifyPassword = (props:propsTypes) => {
         setIsLogin(false);
         alert('로그인 정보가 없습니다');
         props.history.push('/login');
+      }else if(login.status===203){
+        alert('소셜 회원은 비밀번호를 변경할 수 없습니다');
+        props.history.push('/mypage');
       }
+    }).catch(e=>{
+      alert('로그인 정보가 없습니다');
+      props.history.push('/login');
     });
   }, [props.history]);
 
@@ -65,7 +71,6 @@ const ModifyPassword = (props:propsTypes) => {
       setErrorMsg('변경 비밀번호와 현재 비밀번호가 같습니다. 다시 확인해주세요.')
     }
 
-    console.log('비밀번호 수정 전송...');
     setIsLoading(true);
     //POST userinfo
     fetch(serverPath+"/mypage/password",{
@@ -83,6 +88,7 @@ const ModifyPassword = (props:propsTypes) => {
       setIsLoading(false);
       if(res.status===200){
         alert("비밀번호 수정이 완료됐습니다");
+        props.history.push('/mypage');
       }else if(res.status===202){
         setErrorMsg("기존 비밀번호가 맞지 않습니다. 변경할 수 없습니다.")
       }else{
@@ -92,7 +98,7 @@ const ModifyPassword = (props:propsTypes) => {
       setIsLoading(false);
       setErrorMsg("비밀번호 수정을 완료할 수 없습니다. 다시 시도해주세요.")
     })
-  },[inputs])
+  },[inputs, props.history])
 
   return (
     <div id="wrap" className="MyPage-wrap">

@@ -48,9 +48,9 @@ const ModifyInfo = (props:propsTypes) => {
       credentials:"include",
       headers:{
         "Content-Type":"application/json"
-      }
+    }
     }).then(login=>{
-      if(login.status===200){
+      if(login.status===200 || login.status===203){
         setIsLogin(true);
       }else if(login.status ===202){
         setIsLogin(false);
@@ -59,6 +59,17 @@ const ModifyInfo = (props:propsTypes) => {
       }
     });
 
+    //set year,month,day Lists
+    let [yearList, monthList, dayList] = generateBirth();
+    setInputs((inputs)=>({
+      ...inputs,
+      yearList,
+      monthList,
+      dayList
+    }));
+  }, [props.history])
+
+  useEffect(() => {
     if(isLogin){
       //GET userinfo
       fetch(serverPath+"/mypage/user",{
@@ -85,16 +96,7 @@ const ModifyInfo = (props:propsTypes) => {
         setIsLoading(false);
       });
     }
-
-    //set year,month,day Lists
-    let [yearList, monthList, dayList] = generateBirth();
-    setInputs((inputs)=>({
-      ...inputs,
-      yearList,
-      monthList,
-      dayList
-    }));
-  }, [props.history])
+  }, [isLogin])
 
   //function
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -120,8 +122,7 @@ const ModifyInfo = (props:propsTypes) => {
       setErrorMsg('항목을 모두 입력해주세요');
       return;
     }
-    
-    console.log('회원 수정 전송...');
+
     setIsLoading(true);
     //POST userinfo
     fetch(serverPath+"/mypage/user",{

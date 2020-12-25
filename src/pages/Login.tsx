@@ -38,7 +38,7 @@ function Login(props : propsTypes) {
         "Content-Type":"application/json"
       }
     }).then(login=>{
-      if(login.status===200){
+      if(login.status===200 || login.status===203){
         setIsLogin(true);
       }else if(login.status ===202){
         setIsLogin(false);
@@ -57,7 +57,6 @@ function Login(props : propsTypes) {
   },[])
 
   const onSubmitLogin = useCallback(()=>{
-    console.log('onSubmitLogin 전송..')
     if(inputs.id === "" || inputs.password === ""){
       return;
     }
@@ -125,7 +124,6 @@ function Login(props : propsTypes) {
               </div>
             </Button>
           </Link>
-
           {
             isLoading &&
             <Loading/>

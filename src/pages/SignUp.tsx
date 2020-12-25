@@ -60,13 +60,12 @@ export default function SignUp(props: propsTypes) {
         "Content-Type":"application/json"
       }
     }).then(login=>{
-      if(login.status===200){
+      if(login.status===200 || login.status===203 ){
         setIsLogin(true);
       }else if(login.status ===202){
         setIsLogin(false);
       }
     }).catch(err=>{
-      console.log(err);
     });
     //mount
     let [yearList, monthList, dayList] = generateBirth();
