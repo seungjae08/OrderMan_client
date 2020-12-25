@@ -1,0 +1,58 @@
+
+/*각 페이지 공통, layout*/
+#wrap{
+  position:relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width:100%;
+  height:100vh;
+  background: rgb(247, 146, 86);
+  background: linear-gradient(180deg, rgba(247, 146, 86, 1) 0%, rgba(253, 112, 20, 1) 100%);
+}
+#wrap::after{
+  content:'';
+  display: block;
+  position:absolute;
+  right:10px;
+  bottom:10px;
+  width:61px;
+  height:32px;
+  background-image: url('assets/header_title.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.mb-view{
+  position: absolute;
+  width:100%;
+  height: 100vh;
+  overflow-y: hidden;
+  max-width:1026px;
+  background-color: white;
+  box-sizing: border-box;
+  font-weight: bold;
+  box-shadow: 0 0 43px rgba(0,0,0,.4);
+}
+
+/* .mb-view.verCenter{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+} */
+.content_inner{
+  position: relative;
+  overflow-y: auto;
+  width:100%;
+  height:calc(100vh - 55px);
+  padding:20px;
+  padding-top: 55px;
+  padding-bottom:80px;
+  box-sizing: border-box;
+}
+
+@media (min-width:1026px){
+  .mb-view {
+    width:500px;
+  }
+}
