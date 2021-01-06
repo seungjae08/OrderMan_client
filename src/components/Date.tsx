@@ -20,7 +20,7 @@ export const Date = ({ dates, nowdate, setNowdate, todayOrder, setTodayOrder }: 
             {dates.map((ele,index) => {
               return ((ele === nowdate) ?
                 <button key={index}>
-                  <p>{ele.slice(3, 5) + "-" + ele.slice(6)}</p>
+                  <p>{ele}</p>
                 </button>
                 :
                 <button
@@ -29,7 +29,7 @@ export const Date = ({ dates, nowdate, setNowdate, todayOrder, setTodayOrder }: 
                   setNowdate(ele);
                   setTodayOrder(false);
                 }}>
-                  <p>{ele.slice(3, 5) + "-" + ele.slice(6)}</p>
+                  <p>{ele}</p>
                 </button>
               )
             })}
